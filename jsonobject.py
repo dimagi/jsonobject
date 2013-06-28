@@ -14,7 +14,8 @@ class AssertTypeProperty(JsonProperty):
     _type = None
 
     def assert_type(self, obj):
-        assert isinstance(obj, self._type)
+        assert isinstance(obj, self._type), \
+            '{} not of type {}'.format(obj, self._type)
         return obj
 
     wrap = unwrap = assert_type
@@ -47,7 +48,7 @@ class ObjectProperty(JsonProperty):
         return self.obj_type.wrap(obj)
 
     def unwrap(self, obj):
-        assert isinstance(obj, self.obj_type),\
+        assert isinstance(obj, self.obj_type), \
             '{} is not an instance of {}'.format(obj, self.obj_type)
         return obj._obj
 
@@ -63,7 +64,8 @@ class ListProperty(ObjectProperty):
         return JsonArray(obj, wrapper=type_to_property(self.obj_type))
 
     def unwrap(self, obj):
-        assert isinstance(obj, (JsonArray, list))
+        assert isinstance(obj, list), \
+            '{} is not an instance of list'.format(obj)
 
         if isinstance(obj, JsonArray):
             return obj._obj
@@ -137,9 +139,6 @@ class JsonObject(dict):
         try:
             return self._wrappers[key]
         except (TypeError, KeyError):
-            if isinstance(value, JsonProperty):
-                # this shouldn't happen
-                raise
             return None
 
     def __wrap(self, key, value):
