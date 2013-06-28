@@ -78,6 +78,16 @@ class JsonObjectTestCase(unittest.TestCase):
         self.assertEqual(danny.favorite_numbers, numbers)
         self.assertEqual(danny.to_json()['favorite_numbers'], numbers)
 
+    def test_default(self):
+        p = Person()
+        self.assertEqual(p.to_json(), {
+            'first_name': None,
+            'last_name': None,
+            'brothers': [],
+            'features': {'hair': None, 'eyes': None},
+            'favorite_numbers': [],
+        })
+
 
 if __name__ == '__main__':
     unittest.main()

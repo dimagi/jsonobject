@@ -2,8 +2,12 @@ import inspect
 
 
 class JsonProperty(object):
+
     def __init__(self, default=None):
-        self.default = default
+        if not callable(default):
+            self.default = lambda: default
+        else:
+            self.default = default
 
 
 class AssertTypeProperty(JsonProperty):
@@ -25,9 +29,12 @@ class IntegerProperty(AssertTypeProperty):
 
 
 class ObjectProperty(JsonProperty):
-    def __init__(self, obj_type, **kwargs):
-        super(ObjectProperty, self).__init__(**kwargs)
+    def __init__(self, obj_type, default=Ellipsis):
         self._obj_type = obj_type
+        if default is Ellipsis:
+            default = self.obj_type
+        super(ObjectProperty, self).__init__(default=default)
+
 
     @property
     def obj_type(self):
@@ -46,6 +53,11 @@ class ObjectProperty(JsonProperty):
 
 
 class ListProperty(ObjectProperty):
+
+    def __init__(self, obj_type, default=Ellipsis):
+        if default is Ellipsis:
+            default = list
+        super(ListProperty, self).__init__(obj_type, default=default)
 
     def wrap(self, obj):
         return JsonArray(obj, wrapper=type_to_property(self.obj_type))
@@ -107,11 +119,12 @@ class JsonObject(dict):
     def __init__(self, **kwargs):
         super(JsonObject, self).__init__()
         self._obj = kwargs
-        for key, value in self._wrappers.items():
-            if value.default and 'key' not in self._obj:
-                self[key] = value.default
         for key, value in self._obj.items():
             self[key] = self.__wrap(key, value)
+        for key, value in self._wrappers.items():
+            if key not in self._obj:
+                d = value.default()
+                self[key] = d
 
     @classmethod
     def wrap(cls, obj):
@@ -120,24 +133,28 @@ class JsonObject(dict):
     def to_json(self):
         return self._obj
 
-    def __wrap(self, key, value):
+    def __get_wrapper(self, key):
         try:
-            wrapper = self._wrappers[key]
+            return self._wrappers[key]
         except (TypeError, KeyError):
             if isinstance(value, JsonProperty):
                 # this shouldn't happen
                 raise
-            return value
-        else:
+            return None
+
+    def __wrap(self, key, value):
+        wrapper = self.__get_wrapper(key)
+        if wrapper and value is not None:
             return wrapper.wrap(value)
+        else:
+            return value
 
     def __unwrap(self, key, value):
-        try:
-            wrapper = self._wrappers[key]
-        except (TypeError, KeyError):
-            return value
-        else:
+        wrapper = self.__get_wrapper(key)
+        if wrapper and value is not None:
             return wrapper.unwrap(value)
+        else:
+            return value
 
     def __getattr__(self, item):
         try:
@@ -147,17 +164,20 @@ class JsonObject(dict):
 
     def __setattr__(self, key, value):
         if key in self._wrappers:
-            unwrapped = self.__unwrap(key, value)
-            if isinstance(unwrapped, tuple):
-                value, unwrapped = unwrapped
             self[key] = value
-            self._obj[key] = unwrapped
         else:
             super(JsonObject, self).__setattr__(key, value)
 
+    def __setitem__(self, key, value):
+        unwrapped = self.__unwrap(key, value)
+        if isinstance(unwrapped, tuple):
+            value, unwrapped = unwrapped
+        super(JsonObject, self).__setitem__(key, value)
+        self._obj[key] = unwrapped
+
 TYPE_TO_PROPERTY = {
     int: IntegerProperty,
-    basestring: StringProperty
+    basestring: StringProperty,
 }
 
 
