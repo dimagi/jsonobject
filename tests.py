@@ -1,6 +1,7 @@
 from copy import deepcopy
 import unittest
-from jsonobject import JsonObject, StringProperty, ListProperty, JsonArray, ObjectProperty, IntegerProperty
+from jsonobject.base import JsonObject, JsonArray
+from jsonobject.properties import StringProperty, ListProperty, ObjectProperty, IntegerProperty
 
 
 class Features(JsonObject):
