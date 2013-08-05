@@ -89,6 +89,7 @@ class JsonObjectMeta(type):
                 for key, value in base._properties_by_attr.items():
                     if key not in properties:
                         properties[key] = value
+                        properties_by_name[value.name] = value
 
         cls._properties_by_attr = properties
         cls._properties_by_key = properties_by_name

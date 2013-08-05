@@ -12,13 +12,16 @@ class Features(JsonObject):
 class Person(JsonObject):
     first_name = StringProperty()
     last_name = StringProperty()
-    brothers = ListProperty(lambda: Person)
     features = ObjectProperty(Features)
     favorite_numbers = ListProperty(int)
 
     @property
     def full_name(self):
         return u'{self.first_name} {self.last_name}'.format(self=self)
+
+
+class FamilyMember(Person):
+    brothers = ListProperty(lambda: Person)
 
 
 class JunkCD(JsonObject):
@@ -29,6 +32,7 @@ class JunkCD(JsonObject):
 class JunkAB(JsonObject):
     a_property = ListProperty(int, name='a')
     b_property = ObjectProperty(JunkCD, name='b')
+
 
 class JsonObjectTestCase(unittest2.TestCase):
     def test_wrap(self):
@@ -45,7 +49,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             'features': {'hair': 'brown', 'eyes': 'brown'},
             'favorite_numbers': [1, 1, 2, 3, 5, 8],
         }
-        danny = Person.wrap(data)
+        danny = FamilyMember.wrap(data)
         self.assertEqual(danny.first_name, 'Danny')
         self.assertEqual(danny.last_name, 'Roberts')
         self.assertEqual(danny.brothers[0].full_name, 'Alex Roberts')
@@ -90,7 +94,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(danny.to_json()['favorite_numbers'], numbers)
 
     def test_default(self):
-        p = Person()
+        p = FamilyMember()
         self.assertEqual(p.to_json(), {
             'first_name': None,
             'last_name': None,
