@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dannyroberts/jsonobject.png)](https://travis-ci.org/dannyroberts/jsonobject)
+
 A python library for handling deeply nested JSON objects
 as well-schema'd python objects.
 
