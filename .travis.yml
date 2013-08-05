@@ -5,4 +5,4 @@ python:
   - "3.2"
   - "3.3"
 install: "pip install . --use-mirrors"
-script: "python test.py"
+script: "python tests.py"
