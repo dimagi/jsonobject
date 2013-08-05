@@ -1,11 +1,12 @@
 class JsonProperty(object):
 
-    def __init__(self, default=None, name=None):
+    def __init__(self, default=None, name=None, choices=None):
         self.name = name
         if not callable(default):
             self.default = lambda: default
         else:
             self.default = default
+        self.choices = choices
 
     def init_property(self, default_name):
         self.name = self.name or default_name
@@ -45,6 +46,11 @@ class JsonProperty(object):
         self.default = method
         self.name = self.name or method.func_name
         return self
+
+    def validate(self, value):
+        if self.choices and value not in self.choices:
+            raise ValueError('{0!r} not in choices: {1!r}'.format(
+                value, self.choices))
 
 
 class AssertTypeProperty(JsonProperty):
@@ -175,7 +181,9 @@ class JsonObject(dict):
         if value is None:
             return None, None
 
-        return self._properties_by_key[key].unwrap(value)
+        property_ = self._properties_by_key[key]
+        property_.validate(value)
+        return property_.unwrap(value)
 
     def __setitem__(self, key, value):
         wrapped, unwrapped = self.__unwrap(key, value)

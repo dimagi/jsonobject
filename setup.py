@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='jsonobject',
-    version='0.0.2',
+    version='0.0.3',
     author='Danny Roberts',
     author_email='droberts@dimagi.com',
     description='A library for dealing with JSON as python objects',
