@@ -27,7 +27,7 @@ class DateProperty(JsonProperty):
         return datetime.datetime.strptime(date_string, self.FORMAT).date()
 
     def unwrap(self, date):
-        return date.strftime(self.FORMAT)
+        return date, date.strftime(self.FORMAT)
 
 
 class DateTimeProperty(JsonProperty):
@@ -37,7 +37,7 @@ class DateTimeProperty(JsonProperty):
         return datetime.datetime.strptime(datetime_string, self.FORMAT)
 
     def unwrap(self, datetime):
-        return datetime.strftime(self.FORMAT)
+        return datetime, datetime.strftime(self.FORMAT)
 
 
 class ObjectProperty(JsonProperty):

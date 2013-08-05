@@ -14,6 +14,15 @@ class JsonProperty(object):
         raise NotImplementedError()
 
     def unwrap(self, obj):
+        """
+        must return tuple of (wrapped, unwrapped)
+
+        If obj is already a fully wrapped object,
+        it must be returned as the first element.
+
+        For an example where the first element is relevant see ListProperty
+
+        """
         raise NotImplementedError()
 
     def __get__(self, instance, owner):

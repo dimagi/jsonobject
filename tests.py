@@ -181,7 +181,7 @@ class PropertyTestCase(unittest2.TestCase):
         p = DateProperty()
         for string, date in [('1988-07-07', datetime.date(1988, 7, 7))]:
             self.assertEqual(p.wrap(string), date)
-            self.assertEqual(p.unwrap(date), string)
+            self.assertEqual(p.unwrap(date), (date, string))
         with self.assertRaises(ValueError):
             p.wrap('1234-05-90')
         with self.assertRaises(ValueError):
@@ -192,7 +192,7 @@ class PropertyTestCase(unittest2.TestCase):
         p = DateTimeProperty()
         for string, dt in [('2011-01-18T12:38:09Z', datetime.datetime(2011, 1, 18, 12, 38, 9))]:
             self.assertEqual(p.wrap(string), dt)
-            self.assertEqual(p.unwrap(dt), string)
+            self.assertEqual(p.unwrap(dt), (dt, string))
         with self.assertRaises(ValueError):
             p.wrap('1234-05-90T00:00:00Z')
         with self.assertRaises(ValueError):
