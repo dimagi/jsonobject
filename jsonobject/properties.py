@@ -100,4 +100,4 @@ def type_to_property(obj_type):
         for key, value in TYPE_TO_PROPERTY.items():
             if issubclass(obj_type, key):
                 return value()
-        raise TypeError('Type {} not recognized'.format(obj_type))
+        raise TypeError('Type {0} not recognized'.format(obj_type))
