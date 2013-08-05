@@ -1,5 +1,5 @@
 import datetime
-from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject
+from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta
 import inspect
 
 
@@ -85,19 +85,24 @@ class ListProperty(ObjectProperty):
             wrapped.extend(obj)
             return self.unwrap(wrapped)
 
+
 TYPE_TO_PROPERTY = {
     int: IntegerProperty,
     basestring: StringProperty,
+    bool: BooleanProperty,
+    float: FloatProperty,
+    datetime.date: DateProperty,
+    datetime.datetime: DateTimeProperty,
 }
 
 
-def type_to_property(obj_type):
+def type_to_property(obj_type, *args, **kwargs):
     if issubclass(obj_type, JsonObject):
-        return ObjectProperty(obj_type)
+        return ObjectProperty(obj_type, *args, **kwargs)
     elif obj_type in TYPE_TO_PROPERTY:
-        return TYPE_TO_PROPERTY[obj_type]()
+        return TYPE_TO_PROPERTY[obj_type](*args, **kwargs)
     else:
         for key, value in TYPE_TO_PROPERTY.items():
             if issubclass(obj_type, key):
-                return value()
+                return value(*args, **kwargs)
         raise TypeError('Type {0} not recognized'.format(obj_type))

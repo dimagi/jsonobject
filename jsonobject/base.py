@@ -91,12 +91,24 @@ class JsonArray(list):
 
 
 class JsonObjectMeta(type):
+    # There's a pretty fundamental cyclic dependency between this metaclass
+    # and knowledge of all available property types (in properties module).
+    # The current solution is to monkey patch this metaclass
+    # with a reference to the properties module
+    properties_module = None
+
     def __new__(mcs, name, bases, dct):
+        _p = mcs.properties_module
         properties = {}
         properties_by_name = {}
         for key, value in dct.items():
             if isinstance(value, JsonProperty):
                 properties[key] = value
+            elif key == '__module__':
+                continue
+            elif _p and isinstance(value, tuple(_p.TYPE_TO_PROPERTY.keys())):
+                property_ = _p.type_to_property(type(value), default=value)
+                properties[key] = dct[key] = property_
 
         cls = type.__new__(mcs, name, bases, dct)
 

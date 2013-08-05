@@ -30,6 +30,7 @@ class Person(Document):
 
 
 class FamilyMember(Person):
+    base_doc = 'Person'
     brothers = ListProperty(lambda: Person)
 
 
@@ -113,6 +114,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         p = FamilyMember()
         self.assertEqual(p.to_json(), {
             'doc_type': 'FamilyMember',
+            'base_doc': 'Person',
             'first_name': None,
             'last_name': None,
             'brothers': [],
