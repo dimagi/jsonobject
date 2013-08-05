@@ -1,13 +1,43 @@
-import inspect
+import datetime
 from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject
+import inspect
 
 
 class StringProperty(AssertTypeProperty):
     _type = basestring
 
 
+class BooleanProperty(AssertTypeProperty):
+    _type = bool
+
+
 class IntegerProperty(AssertTypeProperty):
     _type = int
+
+
+class FloatProperty(AssertTypeProperty):
+    _type = float
+
+
+class DateProperty(JsonProperty):
+
+    FORMAT = '%Y-%m-%d'
+
+    def wrap(self, date_string):
+        return datetime.datetime.strptime(date_string, self.FORMAT).date()
+
+    def unwrap(self, date):
+        return date.strftime(self.FORMAT)
+
+
+class DatetimeProperty(JsonProperty):
+    FORMAT = '%Y-%m-%dT%H:%M:%SZ'
+
+    def wrap(self, datetime_string):
+        return datetime.datetime.strptime(datetime_string, self.FORMAT)
+
+    def unwrap(self, datetime):
+        return datetime.strftime(self.FORMAT)
 
 
 class ObjectProperty(JsonProperty):

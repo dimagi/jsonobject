@@ -1,6 +1,8 @@
 from base import JsonObject, JsonArray
-from properties import IntegerProperty, StringProperty, ObjectProperty, ListProperty
+from properties import *
 __all__ = [
-    'IntegerProperty', 'StringProperty', 'ObjectProperty', 'ListProperty',
+    'IntegerProperty', 'FloatProperty', 'StringProperty', 'BooleanProperty',
+    'DateProperty', 'DatetimeProperty',
+    'ObjectProperty', 'ListProperty',
     'JsonObject', 'JsonArray',
 ]
