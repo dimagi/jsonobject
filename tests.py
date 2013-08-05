@@ -199,5 +199,32 @@ class PropertyTestCase(unittest2.TestCase):
             p.wrap('1988-07-07')
 
 
+class User(JsonObject):
+    username = StringProperty()
+    name = StringProperty()
+    active = BooleanProperty(default=False)
+    date_joined = DateTimeProperty()
+    tags = ListProperty(unicode)
+
+
+class TestReadmeExamples(unittest2.TestCase):
+    def test(self):
+        import datetime
+        user1 = User(
+            name='John Doe',
+            username='jdoe',
+            date_joined=datetime.datetime(2013, 8, 5, 2, 46, 58),
+            tags=['generic', 'anonymous']
+        )
+        self.assertEqual(
+            user1.to_json(), {
+                'name': 'John Doe',
+                'username': 'jdoe',
+                'active': False,
+                'date_joined': '2013-08-05T02:46:58Z',
+                'tags': ['generic', 'anonymous']
+            }
+        )
+
 if __name__ == '__main__':
     unittest2.main()
