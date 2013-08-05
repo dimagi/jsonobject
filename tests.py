@@ -34,7 +34,10 @@ class FamilyMember(Person):
 
 class JunkCD(JsonObject):
     c_property = IntegerProperty(name='c')
-    d_property = StringProperty(name='d')
+
+    @StringProperty(name='d')
+    def d_property(self):
+        return None
 
 
 class JunkAB(JsonObject):

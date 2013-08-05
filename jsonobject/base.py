@@ -32,8 +32,9 @@ class JsonProperty(object):
             def doc_type(self):
                 return self.__class__.__name__
         """
+        assert self.default() is None
         self.default = method
-        self.name = method.func_name
+        self.name = self.name or method.func_name
         return self
 
 
