@@ -9,7 +9,15 @@ class Features(JsonObject):
     eyes = StringProperty()
 
 
-class Person(JsonObject):
+class Document(JsonObject):
+
+    @StringProperty()
+    def doc_type(self):
+        return self.__class__.__name__
+
+
+class Person(Document):
+
     first_name = StringProperty()
     last_name = StringProperty()
     features = ObjectProperty(Features)
@@ -50,6 +58,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             'favorite_numbers': [1, 1, 2, 3, 5, 8],
         }
         danny = FamilyMember.wrap(data)
+        self.assertEqual(danny.doc_type, 'FamilyMember')
         self.assertEqual(danny.first_name, 'Danny')
         self.assertEqual(danny.last_name, 'Roberts')
         self.assertEqual(danny.brothers[0].full_name, 'Alex Roberts')
@@ -96,6 +105,7 @@ class JsonObjectTestCase(unittest2.TestCase):
     def test_default(self):
         p = FamilyMember()
         self.assertEqual(p.to_json(), {
+            'doc_type': 'FamilyMember',
             'first_name': None,
             'last_name': None,
             'brothers': [],
