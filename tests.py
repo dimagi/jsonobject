@@ -22,6 +22,7 @@ class Person(Document):
     last_name = StringProperty()
     features = ObjectProperty(Features)
     favorite_numbers = ListProperty(int)
+    tags = ListProperty(unicode)
 
     @property
     def full_name(self):
@@ -59,6 +60,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             }],
             'features': {'hair': 'brown', 'eyes': 'brown'},
             'favorite_numbers': [1, 1, 2, 3, 5, 8],
+            'tags': ['happy', 'know it'],
         }
         danny = FamilyMember.wrap(data)
         self.assertEqual(danny.doc_type, 'FamilyMember')
@@ -68,6 +70,8 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(danny.brothers[1].full_name, 'Nicky Roberts')
         self.assertEqual(danny.features.hair, 'brown')
         self.assertEqual(danny.features.eyes, 'brown')
+        self.assertEqual(danny.favorite_numbers, [1, 1, 2, 3, 5, 8])
+        self.assertEqual(danny.tags, ['happy', 'know it'])
 
         danny.brothers[1].first_name = 'Nick'
         self.assertEqual(danny.brothers[1].full_name, 'Nick Roberts')
@@ -114,6 +118,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             'brothers': [],
             'features': {'hair': None, 'eyes': None},
             'favorite_numbers': [],
+            'tags': [],
         })
 
     def test_name(self):
