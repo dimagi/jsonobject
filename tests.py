@@ -22,6 +22,7 @@ class Person(Document):
     last_name = StringProperty()
     features = ObjectProperty(Features)
     favorite_numbers = ListProperty(int)
+    tags = ListProperty(unicode)
 
     @property
     def full_name(self):
@@ -59,6 +60,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             }],
             'features': {'hair': 'brown', 'eyes': 'brown'},
             'favorite_numbers': [1, 1, 2, 3, 5, 8],
+            'tags': ['happy', 'know it'],
         }
         danny = FamilyMember.wrap(data)
         self.assertEqual(danny.doc_type, 'FamilyMember')
@@ -68,6 +70,8 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(danny.brothers[1].full_name, 'Nicky Roberts')
         self.assertEqual(danny.features.hair, 'brown')
         self.assertEqual(danny.features.eyes, 'brown')
+        self.assertEqual(danny.favorite_numbers, [1, 1, 2, 3, 5, 8])
+        self.assertEqual(danny.tags, ['happy', 'know it'])
 
         danny.brothers[1].first_name = 'Nick'
         self.assertEqual(danny.brothers[1].full_name, 'Nick Roberts')
@@ -114,6 +118,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             'brothers': [],
             'features': {'hair': None, 'eyes': None},
             'favorite_numbers': [],
+            'tags': [],
         })
 
     def test_name(self):
@@ -176,7 +181,7 @@ class PropertyTestCase(unittest2.TestCase):
         p = DateProperty()
         for string, date in [('1988-07-07', datetime.date(1988, 7, 7))]:
             self.assertEqual(p.wrap(string), date)
-            self.assertEqual(p.unwrap(date), string)
+            self.assertEqual(p.unwrap(date), (date, string))
         with self.assertRaises(ValueError):
             p.wrap('1234-05-90')
         with self.assertRaises(ValueError):
@@ -184,15 +189,42 @@ class PropertyTestCase(unittest2.TestCase):
 
     def test_datetime(self):
         import datetime
-        p = DatetimeProperty()
+        p = DateTimeProperty()
         for string, dt in [('2011-01-18T12:38:09Z', datetime.datetime(2011, 1, 18, 12, 38, 9))]:
             self.assertEqual(p.wrap(string), dt)
-            self.assertEqual(p.unwrap(dt), string)
+            self.assertEqual(p.unwrap(dt), (dt, string))
         with self.assertRaises(ValueError):
             p.wrap('1234-05-90T00:00:00Z')
         with self.assertRaises(ValueError):
             p.wrap('1988-07-07')
 
+
+class User(JsonObject):
+    username = StringProperty()
+    name = StringProperty()
+    active = BooleanProperty(default=False)
+    date_joined = DateTimeProperty()
+    tags = ListProperty(unicode)
+
+
+class TestReadmeExamples(unittest2.TestCase):
+    def test(self):
+        import datetime
+        user1 = User(
+            name='John Doe',
+            username='jdoe',
+            date_joined=datetime.datetime(2013, 8, 5, 2, 46, 58),
+            tags=['generic', 'anonymous']
+        )
+        self.assertEqual(
+            user1.to_json(), {
+                'name': 'John Doe',
+                'username': 'jdoe',
+                'active': False,
+                'date_joined': '2013-08-05T02:46:58Z',
+                'tags': ['generic', 'anonymous']
+            }
+        )
 
 if __name__ == '__main__':
     unittest2.main()
