@@ -29,7 +29,7 @@ class AssertTypeProperty(JsonProperty):
 
     def assert_type(self, obj):
         assert isinstance(obj, self._type), \
-            '{} not of type {}'.format(obj, self._type)
+            '{0} not of type {1}'.format(obj, self._type)
 
     def wrap(self, obj):
         self.assert_type(obj)
@@ -81,7 +81,7 @@ class JsonObjectMeta(type):
             property_.init_property(default_name=key)
             assert property_.name is not None, property_
             assert property_.name not in properties_by_name, \
-                'You can only have one property named {}'.format(property_.name)
+                'You can only have one property named {0}'.format(property_.name)
             properties_by_name[property_.name] = property_
 
         for base in bases:

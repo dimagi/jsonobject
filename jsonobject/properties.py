@@ -60,7 +60,7 @@ class ObjectProperty(JsonProperty):
 
     def unwrap(self, obj):
         assert isinstance(obj, self.obj_type), \
-            '{} is not an instance of {}'.format(obj, self.obj_type)
+            '{0} is not an instance of {1}'.format(obj, self.obj_type)
         return obj, obj._obj
 
 
@@ -76,7 +76,7 @@ class ListProperty(ObjectProperty):
 
     def unwrap(self, obj):
         assert isinstance(obj, list), \
-            '{} is not an instance of list'.format(obj)
+            '{0} is not an instance of list'.format(obj)
 
         if isinstance(obj, JsonArray):
             return obj, obj._obj
