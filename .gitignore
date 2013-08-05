@@ -1,2 +1,4 @@
 *.pyc
 /.idea
+jsonobject.egg-info/
+unittest2-0.5.1-py2.7.egg/
