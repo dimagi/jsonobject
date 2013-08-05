@@ -23,6 +23,20 @@ class JsonProperty(object):
     def __set__(self, instance, value):
         instance[self.name] = value
 
+    def __call__(self, method):
+        """
+        use a property as a decorator to set its default value
+
+        class Document(JsonObject):
+            @StringProperty()
+            def doc_type(self):
+                return self.__class__.__name__
+        """
+        assert self.default() is None
+        self.default = method
+        self.name = self.name or method.func_name
+        return self
+
 
 class AssertTypeProperty(JsonProperty):
     _type = None
@@ -117,7 +131,10 @@ class JsonObject(dict):
 
         for key, value in self._properties_by_key.items():
             if key not in self._obj:
-                d = value.default()
+                try:
+                    d = value.default()
+                except TypeError:
+                    d = value.default(self)
                 self[key] = d
 
     @classmethod
