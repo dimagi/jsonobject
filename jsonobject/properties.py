@@ -30,7 +30,7 @@ class DateProperty(JsonProperty):
         return date.strftime(self.FORMAT)
 
 
-class DatetimeProperty(JsonProperty):
+class DateTimeProperty(JsonProperty):
     FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
     def wrap(self, datetime_string):

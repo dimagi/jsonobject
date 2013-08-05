@@ -189,7 +189,7 @@ class PropertyTestCase(unittest2.TestCase):
 
     def test_datetime(self):
         import datetime
-        p = DatetimeProperty()
+        p = DateTimeProperty()
         for string, dt in [('2011-01-18T12:38:09Z', datetime.datetime(2011, 1, 18, 12, 38, 9))]:
             self.assertEqual(p.wrap(string), dt)
             self.assertEqual(p.unwrap(dt), string)
