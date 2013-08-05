@@ -5,6 +5,9 @@ setup(
     version='0.0.1',
     author='Danny Roberts',
     author_email='droberts@dimagi.com',
+    description='A library for dealing with JSON as python objects',
+    long_description=open('README.md').read(),
+    url='https://github.com/dannyroberts/jsonobject',
     packages=['jsonobject'],
     install_requires=[
     ],
