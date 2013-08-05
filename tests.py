@@ -1,5 +1,5 @@
 from copy import deepcopy
-import unittest
+import unittest2
 from jsonobject.base import JsonObject, JsonArray
 from jsonobject import *
 
@@ -30,7 +30,7 @@ class JunkAB(JsonObject):
     a_property = ListProperty(int, name='a')
     b_property = ObjectProperty(JunkCD, name='b')
 
-class JsonObjectTestCase(unittest.TestCase):
+class JsonObjectTestCase(unittest2.TestCase):
     def test_wrap(self):
         data = {
             'first_name': 'Danny',
@@ -153,7 +153,7 @@ class JsonObjectTestCase(unittest.TestCase):
         })
 
 
-class PropertyTestCase(unittest.TestCase):
+class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
         import datetime
         p = DateProperty()
@@ -178,4 +178,4 @@ class PropertyTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest2.main()

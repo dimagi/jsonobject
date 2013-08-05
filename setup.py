@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='jsonobject',
@@ -6,5 +6,7 @@ setup(
     author='Danny Roberts',
     packages=['jsonobject'],
     install_requires=[
-    ]
+    ],
+    tests_require=['unittest2'],
+    test_suite='tests',
 )
