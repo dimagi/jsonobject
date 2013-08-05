@@ -5,7 +5,7 @@ from jsonobject import *
 
 
 class Features(JsonObject):
-    hair = StringProperty()
+    hair = StringProperty(choices=['brown', 'blond', 'grey'])
     eyes = StringProperty()
 
 
@@ -94,16 +94,18 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertTrue(isinstance(danny.brothers, JsonArray))
         self.assertEqual(danny.to_json(), data)
 
-        danny.features.hair = 'green'
-        self.assertEqual(danny.features.hair, 'green')
+        danny.features.hair = 'blond'
+        self.assertEqual(danny.features.hair, 'blond')
+        with self.assertRaises(ValueError):
+            danny.features.hair = 'green'
 
-        features = {'hair': 'blue', 'eyes': 'blue'}
+        features = {'hair': 'grey', 'eyes': 'blue'}
         with self.assertRaises(AssertionError):
             danny.features = features
 
         features = Features.wrap(features)
         danny.features = features
-        self.assertEqual(danny.features, {'hair': 'blue', 'eyes': 'blue'})
+        self.assertEqual(danny.features, {'hair': 'grey', 'eyes': 'blue'})
 
         numbers = [1, 2, 3, 4, 5]
         danny.favorite_numbers = numbers
@@ -176,6 +178,15 @@ class JsonObjectTestCase(unittest2.TestCase):
             }
         })
 
+    def test_choices(self):
+
+        with self.assertRaises(ValueError):
+            Features(hair='blue')
+        with self.assertRaises(ValueError):
+            Features.wrap({'hair': 'blue'})
+        with self.assertRaises(ValueError):
+            f = Features()
+            f.hair = 'blue'
 
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
