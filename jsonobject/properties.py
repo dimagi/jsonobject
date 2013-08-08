@@ -86,6 +86,17 @@ class ListProperty(ObjectProperty):
             return self.unwrap(wrapped)
 
 
+class DictProperty(JsonProperty):
+
+    def wrap(self, obj):
+        assert isinstance(obj, dict)
+        return obj
+
+    def unwrap(self, obj):
+        assert isinstance(obj, dict)
+        return obj, obj
+
+
 TYPE_TO_PROPERTY = {
     int: IntegerProperty,
     basestring: StringProperty,

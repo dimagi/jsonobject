@@ -47,6 +47,10 @@ class JunkAB(JsonObject):
     b_property = ObjectProperty(JunkCD, name='b')
 
 
+class ObjectWithDictProperty(JsonObject):
+    mapping = DictProperty()
+
+
 class JsonObjectTestCase(unittest2.TestCase):
     def test_wrap(self):
         data = {
@@ -188,6 +192,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             f = Features()
             f.hair = 'blue'
 
+
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
         import datetime
@@ -210,6 +215,11 @@ class PropertyTestCase(unittest2.TestCase):
             p.wrap('1234-05-90T00:00:00Z')
         with self.assertRaises(ValueError):
             p.wrap('1988-07-07')
+
+    def test_dict(self):
+        mapping = {'one': 1, 'two': 2}
+        o = ObjectWithDictProperty(mapping=mapping)
+        self.assertEqual(o.mapping, mapping)
 
 
 class User(JsonObject):
