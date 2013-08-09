@@ -113,7 +113,7 @@ class JsonObjectMeta(type):
         for key, value in dct.items():
             if isinstance(value, JsonProperty):
                 properties[key] = value
-            elif key == '__module__':
+            elif key in ('__module__', '__doc__'):
                 continue
             elif _p and isinstance(value, tuple(_p.TYPE_TO_PROPERTY.keys())):
                 property_ = _p.type_to_property(type(value), default=value)

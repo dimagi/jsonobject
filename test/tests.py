@@ -5,6 +5,11 @@ from jsonobject import *
 
 
 class Features(JsonObject):
+    """
+    Make sure doc string isn't treated as a property called __doc__!
+
+    """
+
     hair = StringProperty(choices=['brown', 'blond', 'grey'])
     eyes = StringProperty()
 
