@@ -195,8 +195,7 @@ class JsonObjectTestCase(unittest2.TestCase):
     def test_required(self):
         with self.assertRaises(ValueError):
             Person()
-        with self.assertRaises(ValueError):
-            Person(first_name='')
+        Person(first_name='')
         Person(first_name='James')
 
 
@@ -232,7 +231,7 @@ class PropertyTestCase(unittest2.TestCase):
 class User(JsonObject):
     username = StringProperty()
     name = StringProperty()
-    active = BooleanProperty(default=False)
+    active = BooleanProperty(default=False, required=True)
     date_joined = DateTimeProperty()
     tags = ListProperty(unicode)
 
