@@ -18,7 +18,7 @@ class Document(JsonObject):
 
 class Person(Document):
 
-    first_name = StringProperty()
+    first_name = StringProperty(required=True)
     last_name = StringProperty()
     features = ObjectProperty(Features)
     favorite_numbers = ListProperty(int)
@@ -117,11 +117,11 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(danny.to_json()['favorite_numbers'], numbers)
 
     def test_default(self):
-        p = FamilyMember()
+        p = FamilyMember(first_name='PJ')
         self.assertEqual(p.to_json(), {
             'doc_type': 'FamilyMember',
             'base_doc': 'Person',
-            'first_name': None,
+            'first_name': 'PJ',
             'last_name': None,
             'brothers': [],
             'features': {'hair': None, 'eyes': None},
@@ -191,6 +191,13 @@ class JsonObjectTestCase(unittest2.TestCase):
         with self.assertRaises(ValueError):
             f = Features()
             f.hair = 'blue'
+
+    def test_required(self):
+        with self.assertRaises(ValueError):
+            Person()
+        with self.assertRaises(ValueError):
+            Person(first_name='')
+        Person(first_name='James')
 
 
 class PropertyTestCase(unittest2.TestCase):
