@@ -48,12 +48,18 @@ class JsonProperty(object):
         self.name = self.name or method.func_name
         return self
 
+    def empty(self, value):
+        return value is None
+
     def validate(self, value):
-        if value and self.choices and value not in self.choices:
-            raise ValueError('{0!r} not in choices: {1!r}'.format(
-                value, self.choices))
-        if not value and self.required:
-            raise ValueError('Required property received value None')
+        if self.choices and value not in self.choices and value is not None:
+            raise ValueError(
+                '{0!r} not in choices: {1!r}'.format(value, self.choices)
+            )
+        if self.empty(value) and self.required:
+            raise ValueError(
+                'Required property received value {0!r}'.format(value)
+            )
 
 
 class AssertTypeProperty(JsonProperty):
