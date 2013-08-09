@@ -62,6 +62,14 @@ class JsonProperty(object):
             )
 
 
+class DefaultProperty(JsonProperty):
+    def wrap(self, obj):
+        return obj
+
+    def unwrap(self, obj):
+        return obj, obj
+
+
 class AssertTypeProperty(JsonProperty):
     _type = None
 
@@ -152,11 +160,13 @@ class JsonObject(dict):
 
     _properties_by_attr = None
     _properties_by_key = None
+    __save_dynamic_properties = False
 
     def __init__(self, _obj=None, **kwargs):
         super(JsonObject, self).__init__()
 
         self._obj = _obj or {}
+        self.__save_dynamic_properties = True
 
         for key, value in self._obj.items():
             self[key] = self.__wrap(key, value)
@@ -181,13 +191,22 @@ class JsonObject(dict):
     def to_json(self):
         return self._obj
 
+    def __get_property(self, key):
+        try:
+            return self._properties_by_key[key]
+        except KeyError:
+            return DefaultProperty()
+
     def __wrap(self, key, value):
+        property_ = self.__get_property(key)
+
         if value is None:
             return None
-        return self._properties_by_key[key].wrap(value)
+
+        return property_.wrap(value)
 
     def __unwrap(self, key, value):
-        property_ = self._properties_by_key[key]
+        property_ = self.__get_property(key)
         property_.validate(value)
 
         if value is None:
@@ -199,3 +218,8 @@ class JsonObject(dict):
         wrapped, unwrapped = self.__unwrap(key, value)
         super(JsonObject, self).__setitem__(key, wrapped)
         self._obj[key] = unwrapped
+
+    def __setattr__(self, name, value):
+        if self.__save_dynamic_properties and name not in self._properties_by_attr:
+            self[name] = value
+        super(JsonObject, self).__setattr__(name, value)
