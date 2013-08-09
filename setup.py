@@ -11,5 +11,5 @@ setup(
     packages=['jsonobject'],
     install_requires=[],
     tests_require=['unittest2'],
-    test_suite='tests',
+    test_suite='test',
 )
