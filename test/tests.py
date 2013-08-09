@@ -255,6 +255,3 @@ class TestReadmeExamples(unittest2.TestCase):
                 'tags': ['generic', 'anonymous']
             }
         )
-
-if __name__ == '__main__':
-    unittest2.main()
