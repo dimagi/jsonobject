@@ -26,9 +26,7 @@ class HQMediaMapItem(DocumentSchema):
 
 
 class HQMediaMixin(Document):
-    # once SchemaDictProperty works, should switch this back
-    # multimedia_map = SchemaDictProperty(HQMediaMapItem)
-    multimedia_map = DictProperty(HQMediaMapItem)
+    multimedia_map = SchemaDictProperty(HQMediaMapItem)
 
 
 class SnapshotMixin(DocumentSchema):

@@ -14,6 +14,10 @@ class Features(JsonObject):
     eyes = StringProperty()
 
 
+class FeatureMap(JsonObject):
+    feature_map = DictProperty(Features)
+
+
 class Document(JsonObject):
 
     @StringProperty()
@@ -242,6 +246,28 @@ class PropertyTestCase(unittest2.TestCase):
         mapping = {'one': 1, 'two': 2}
         o = ObjectWithDictProperty(mapping=mapping)
         self.assertEqual(o.mapping, mapping)
+        o.mapping.update({'three': 3}, four=4)
+        self.assertEqual(o.mapping, {'one': 1, 'two': 2, 'three': 3, 'four': 4})
+
+    def test_typed_dict(self):
+        features = FeatureMap({'feature_map': {'lala': {}, 'foo': None}})
+        self.assertEqual(features.to_json(), {
+            'feature_map': {
+                'lala': {'hair': None, 'eyes': None},
+                'foo': {'hair': None, 'eyes': None},
+            },
+        })
+        with self.assertRaises(ValueError):
+            FeatureMap({'feature_map': {'lala': 10}})
+
+        features.feature_map.update({'hoho': Features(eyes='brown')})
+        self.assertEqual(features.to_json(), {
+            'feature_map': {
+                'lala': {'hair': None, 'eyes': None},
+                'foo': {'hair': None, 'eyes': None},
+                'hoho': {'hair': None, 'eyes': 'brown'},
+            },
+        })
 
 
 class User(JsonObject):

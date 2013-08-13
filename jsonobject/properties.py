@@ -1,5 +1,5 @@
 import datetime
-from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta, JsonContainerProperty
+from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta, JsonContainerProperty, JsonDict
 
 
 class StringProperty(AssertTypeProperty):
@@ -71,15 +71,21 @@ class ListProperty(JsonContainerProperty):
             return self.unwrap(wrapped)
 
 
-class DictProperty(JsonProperty):
+class DictProperty(JsonContainerProperty):
+
+    default = dict
 
     def wrap(self, obj):
-        assert isinstance(obj, dict)
-        return obj
+        wrapper = type_to_property(self.obj_type) if self.obj_type else None
+        return JsonDict(obj, wrapper)
 
     def unwrap(self, obj):
-        assert isinstance(obj, dict)
-        return obj, obj
+        if isinstance(obj, JsonDict):
+            return obj, obj._obj
+        else:
+            wrapped = self.wrap({})
+            wrapped.update(obj)
+            return self.unwrap(wrapped)
 
 
 TYPE_TO_PROPERTY = {
