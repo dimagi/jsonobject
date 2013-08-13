@@ -17,3 +17,6 @@ class CouchdbkitTestCase(TestCase):
 
     def test_large(self):
         self._test('large')
+
+    def test_multimedia_map(self):
+        self._test('multimedia_map')
