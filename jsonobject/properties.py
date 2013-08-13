@@ -1,6 +1,5 @@
 import datetime
-from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta
-import inspect
+from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta, JsonContainerProperty
 
 
 class StringProperty(AssertTypeProperty):
@@ -40,20 +39,9 @@ class DateTimeProperty(JsonProperty):
         return datetime, datetime.strftime(self.FORMAT)
 
 
-class ObjectProperty(JsonProperty):
-    def __init__(self, obj_type, default=Ellipsis, **kwargs):
-        self._obj_type = obj_type
-        if default is Ellipsis:
-            default = self.obj_type
-        super(ObjectProperty, self).__init__(default=default, **kwargs)
+class ObjectProperty(JsonContainerProperty):
 
-
-    @property
-    def obj_type(self):
-        if inspect.isfunction(self._obj_type):
-            return self._obj_type()
-        else:
-            return self._obj_type
+    default = lambda self: self.obj_type()
 
     def wrap(self, obj):
         return self.obj_type.wrap(obj)
@@ -64,12 +52,9 @@ class ObjectProperty(JsonProperty):
         return obj, obj._obj
 
 
-class ListProperty(ObjectProperty):
+class ListProperty(JsonContainerProperty):
 
-    def __init__(self, obj_type, default=Ellipsis, **kwargs):
-        if default is Ellipsis:
-            default = list
-        super(ListProperty, self).__init__(obj_type, default=default, **kwargs)
+    default = list
 
     def wrap(self, obj):
         return JsonArray(obj, wrapper=type_to_property(self.obj_type))
