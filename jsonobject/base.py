@@ -144,6 +144,34 @@ class JsonArray(list):
         super(JsonArray, self).extend(wrapped_list)
 
 
+class JsonDict(dict):
+
+    def __init__(self, _obj=None, wrapper=None, **kwargs):
+        super(JsonDict, self).__init__()
+        self._obj = check_type(_obj, dict, 'JsonDict must wrap a dict or None')
+        self._wrapper = wrapper or DefaultProperty()
+
+        for key, value in self._obj.items():
+            self[key] = self.__wrap(key, value)
+
+    def __wrap(self, key, unwrapped):
+        return self._wrapper.wrap(unwrapped)
+
+    def __unwrap(self, key, wrapped):
+        return self._wrapper.unwrap(wrapped)
+
+    def __setitem__(self, key, value):
+        wrapped, unwrapped = self.__unwrap(key, value)
+        self._obj[key] = unwrapped
+        super(JsonDict, self).__setitem__(key, wrapped)
+
+    def update(self, E=None, **F):
+        for dct in (E, F):
+            if dct:
+                for key, value in dct.items():
+                    self[key] = value
+
+
 class JsonObjectMeta(type):
     # There's a pretty fundamental cyclic dependency between this metaclass
     # and knowledge of all available property types (in properties module).
