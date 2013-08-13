@@ -1,11 +1,18 @@
+import inspect
+
+
 class JsonProperty(object):
 
-    def __init__(self, default=None, name=None, choices=None, required=False):
+    default = None
+
+    def __init__(self, default=Ellipsis, name=None, choices=None, required=False):
         self.name = name
-        if not callable(default):
-            self.default = lambda: default
-        else:
+        if default is Ellipsis:
+            default = self.default
+        if callable(default):
             self.default = default
+        else:
+            self.default = lambda: default
         self.choices = choices
         self.required = required
 
@@ -60,6 +67,20 @@ class JsonProperty(object):
             raise ValueError(
                 'Required property received value {0!r}'.format(value)
             )
+
+
+class JsonContainerProperty(JsonProperty):
+
+    def __init__(self, obj_type=None, **kwargs):
+        self._obj_type = obj_type
+        super(JsonContainerProperty, self).__init__(**kwargs)
+
+    @property
+    def obj_type(self):
+        if inspect.isfunction(self._obj_type):
+            return self._obj_type()
+        else:
+            return self._obj_type
 
 
 class DefaultProperty(JsonProperty):
