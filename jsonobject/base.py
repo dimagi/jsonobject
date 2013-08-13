@@ -144,7 +144,19 @@ class JsonArray(list):
         super(JsonArray, self).extend(wrapped_list)
 
 
-class JsonDict(dict):
+class SimpleDict(dict):
+    """
+    Re-implements destructive methods of dict
+    to use only setitem and getitem
+    """
+    def update(self, E=None, **F):
+        for dct in (E, F):
+            if dct:
+                for key, value in dct.items():
+                    self[key] = value
+
+
+class JsonDict(SimpleDict):
 
     def __init__(self, _obj=None, wrapper=None, **kwargs):
         super(JsonDict, self).__init__()
@@ -164,12 +176,6 @@ class JsonDict(dict):
         wrapped, unwrapped = self.__unwrap(key, value)
         self._obj[key] = unwrapped
         super(JsonDict, self).__setitem__(key, wrapped)
-
-    def update(self, E=None, **F):
-        for dct in (E, F):
-            if dct:
-                for key, value in dct.items():
-                    self[key] = value
 
 
 class JsonObjectMeta(type):
@@ -213,7 +219,7 @@ class JsonObjectMeta(type):
         return cls
 
 
-class JsonObject(dict):
+class JsonObject(SimpleDict):
 
     __metaclass__ = JsonObjectMeta
 
