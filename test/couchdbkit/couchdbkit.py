@@ -4,6 +4,7 @@ from jsonobject import *
 SchemaProperty = ObjectProperty
 SchemaListProperty = ListProperty
 StringListProperty = functools.partial(ListProperty, unicode)
+SchemaDictProperty = DictProperty
 
 
 class DocumentSchema(JsonObject):
