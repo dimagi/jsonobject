@@ -107,10 +107,20 @@ class AssertTypeProperty(JsonProperty):
         return obj, obj
 
 
+def check_type(obj, obj_type, message):
+    if obj is None:
+        return obj_type()
+    elif not isinstance(obj, obj_type):
+        raise ValueError(message)
+    else:
+        return obj
+
+
 class JsonArray(list):
-    def __init__(self, obj, wrapper=None):
+    def __init__(self, _obj=None, wrapper=None):
         super(JsonArray, self).__init__()
-        self._obj = obj
+
+        self._obj = check_type(_obj, list, 'JsonArray must wrap a list or None')
         self._wrapper = wrapper
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
@@ -186,7 +196,8 @@ class JsonObject(dict):
     def __init__(self, _obj=None, **kwargs):
         super(JsonObject, self).__init__()
 
-        self._obj = _obj or {}
+        self._obj = check_type(_obj, dict,
+                               'JsonObject must wrap a dict or None')
         self.__save_dynamic_properties = True
 
         for key, value in self._obj.items():
