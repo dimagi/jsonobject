@@ -53,16 +53,17 @@ datetime.datetime(2013, 8, 5, 2, 46, 58, 451286)
 ##Performance Comparison with Couchdbkit##
 In order to do a direct comparison with couchdbkit, the test suite includes a large sample schema originally written with couchdbkit. It is easy to swap in jsonobject for couchdbkit and run the tests with each. Here are the results:
 ```
-$ python -m unittest test.test_couchdbkit  # using couchdbkit
-...
+$ python -m unittest test.test_couchdbkit
+....
 ----------------------------------------------------------------------
-Ran 3 tests in 1.349s
+Ran 4 tests in 1.403s
 
 OK
-$ python -m unittest test.test_couchdbkit  # using jsonobject
-...
+$ python -m unittest test.test_couchdbkit
+....
 ----------------------------------------------------------------------
-Ran 3 tests in 0.055s
+Ran 4 tests in 0.067s
 
 OK
+
 ```
