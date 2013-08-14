@@ -252,6 +252,18 @@ class JsonObjectTestCase(unittest2.TestCase):
         with self.assertRaises(DeleteNotAllowed):
             del p['hair']
 
+    def test_dict_clear(self):
+        class Foo(JsonObject):
+            dct = DictProperty()
+        dct = {'mydict': 'yay'}
+        foo = Foo(dct=dct)
+        json_dict = foo.dct
+        self.assertEqual(json_dict, dct)
+        json_dict.clear()
+        self.assertEqual(json_dict, {})
+        self.assertEqual(json_dict._obj, {})
+
+
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
         import datetime
