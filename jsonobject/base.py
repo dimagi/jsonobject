@@ -294,3 +294,17 @@ class JsonObject(SimpleDict):
         if self.__save_dynamic_properties and name not in self._properties_by_attr:
             self[name] = value
         super(JsonObject, self).__setattr__(name, value)
+
+    def __repr__(self):
+        name = self.__class__.__name__
+        predefined_properties = self._properties_by_attr.keys()
+        predefined_property_keys = set(self._properties_by_attr[p].name for p in predefined_properties)
+        dynamic_properties = set(self.keys()) - predefined_property_keys
+        properties = sorted(predefined_properties) + sorted(dynamic_properties)
+        return u'{name}({keyword_args})'.format(
+            name=name,
+            keyword_args=', '.join('{key}={value!r}'.format(
+                key=key,
+                value=getattr(self, key))
+            for key in properties),
+        )
