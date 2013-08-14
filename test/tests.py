@@ -208,8 +208,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         Person(first_name='James')
 
     def test_dynamic_properties(self):
-        p = Features()
-        p.platypus = 'James'
+        p = Features.wrap({'platypus': 'James'})
         p.marmot = 'Sally'
         self.assertEqual(p.to_json(), {
             'platypus': 'James',
@@ -217,6 +216,8 @@ class JsonObjectTestCase(unittest2.TestCase):
             'eyes': None,
             'hair': None,
         })
+        self.assertEqual(p.platypus, 'James')
+        self.assertEqual(p.marmot, 'Sally')
 
 
 class PropertyTestCase(unittest2.TestCase):
