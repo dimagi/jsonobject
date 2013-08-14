@@ -1,0 +1,2 @@
+class DeleteNotAllowed(Exception):
+    pass
