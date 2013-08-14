@@ -235,7 +235,12 @@ class JsonObject(SimpleDict):
         self.__save_dynamic_properties = True
 
         for key, value in self._obj.items():
-            self[key] = self.__wrap(key, value)
+            wrapped = self.__wrap(key, value)
+            if key in self._properties_by_key:
+                self[key] = wrapped
+            else:
+                # these should be added as attributes
+                setattr(self, key, value)
 
         for attr, value in kwargs.items():
             assert attr in self._properties_by_attr
