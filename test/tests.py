@@ -2,6 +2,7 @@ from copy import deepcopy
 import unittest2
 from jsonobject.base import JsonObject, JsonArray
 from jsonobject import *
+from jsonobject.exceptions import DeleteNotAllowed
 
 
 class Features(JsonObject):
@@ -219,6 +220,37 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(p.platypus, 'James')
         self.assertEqual(p.marmot, 'Sally')
 
+    def test_delete_dynamic(self):
+        def assertReallyThere():
+            self.assertEqual(p.a, 1)
+            self.assertEqual(p['a'], 1)
+            self.assertEqual(p.to_json()['a'], 1)
+
+        def assertReallyDeleted():
+            with self.assertRaises(AttributeError):
+                p.a
+            with self.assertRaises(KeyError):
+                p['a']
+            with self.assertRaises(KeyError):
+                p.to_json()['a']
+
+        # delete attribute
+        p = Features.wrap({'a': 1})
+        assertReallyThere()
+        del p.a
+        assertReallyDeleted()
+
+        # delete dict item
+        p = Features.wrap({'a': 1})
+        assertReallyThere()
+        del p['a']
+        assertReallyDeleted()
+
+        with self.assertRaises(DeleteNotAllowed):
+            del p.hair
+
+        with self.assertRaises(DeleteNotAllowed):
+            del p['hair']
 
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):

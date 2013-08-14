@@ -1,4 +1,5 @@
 import inspect
+from jsonobject.exceptions import DeleteNotAllowed
 
 
 class JsonProperty(object):
@@ -147,7 +148,7 @@ class JsonArray(list):
 class SimpleDict(dict):
     """
     Re-implements destructive methods of dict
-    to use only setitem and getitem
+    to use only setitem and getitem and delitem
     """
     def update(self, E=None, **F):
         for dct in (E, F):
@@ -158,7 +159,7 @@ class SimpleDict(dict):
 
 class JsonDict(SimpleDict):
 
-    def __init__(self, _obj=None, wrapper=None, **kwargs):
+    def __init__(self, _obj=None, wrapper=None):
         super(JsonDict, self).__init__()
         self._obj = check_type(_obj, dict, 'JsonDict must wrap a dict or None')
         self._wrapper = wrapper or DefaultProperty()
@@ -176,6 +177,10 @@ class JsonDict(SimpleDict):
         wrapped, unwrapped = self.__unwrap(key, value)
         self._obj[key] = unwrapped
         super(JsonDict, self).__setitem__(key, wrapped)
+
+    def __delitem__(self, key):
+        del self._obj[key]
+        super(JsonDict, self).__delitem__(key)
 
 
 class JsonObjectMeta(type):
@@ -294,6 +299,20 @@ class JsonObject(SimpleDict):
         if self.__save_dynamic_properties and name not in self._properties_by_attr:
             self[name] = value
         super(JsonObject, self).__setattr__(name, value)
+
+    def __delitem__(self, key):
+        if key in self._properties_by_key:
+            raise DeleteNotAllowed(key)
+        else:
+            del self._obj[key]
+            super(JsonObject, self).__delitem__(key)
+            super(JsonObject, self).__delattr__(key)
+
+    def __delattr__(self, name):
+        if name in self._properties_by_attr:
+            raise DeleteNotAllowed(name)
+        else:
+            del self[name]
 
     def __repr__(self):
         name = self.__class__.__name__
