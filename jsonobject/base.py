@@ -156,6 +156,10 @@ class SimpleDict(dict):
                 for key, value in dct.items():
                     self[key] = value
 
+    def clear(self):
+        for key in self.keys():
+            del self[key]
+
 
 class JsonDict(SimpleDict):
 
