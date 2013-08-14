@@ -291,6 +291,9 @@ class JsonObject(SimpleDict):
         return property_.unwrap(value)
 
     def __setitem__(self, key, value):
+        if key not in self._properties_by_key:
+            assert key not in self._properties_by_attr
+            super(JsonObject, self).__setattr__(key, value)
         wrapped, unwrapped = self.__unwrap(key, value)
         super(JsonObject, self).__setitem__(key, wrapped)
         self._obj[key] = unwrapped
