@@ -30,7 +30,6 @@ ALLOWED_PROPERTY_TYPES = set([
     decimal.Decimal,
     dict,
     list,
-    set,
     type(None)
 ])
 
@@ -47,7 +46,6 @@ MAP_TYPES_PROPERTIES = {
     float: properties.FloatProperty,
     list: properties.ListProperty,
     dict: properties.DictProperty,
-    set: properties.SetProperty,
 }
 
 
@@ -111,7 +109,7 @@ def value_to_json(value, item_type=None):
         value = value.replace(microsecond=0).isoformat()
     elif isinstance(value, decimal.Decimal) and is_type_ok(item_type, decimal.Decimal):
         value = unicode(value)
-    elif isinstance(value, (list, MutableSet)):
+    elif isinstance(value, list):
         value = list_to_json(value, item_type)
     elif isinstance(value, dict):
         value = dict_to_json(value, item_type)
@@ -143,7 +141,7 @@ def value_to_python(value, item_type=None):
                 value = prop.to_python(value)
             except:
                 pass
-    elif isinstance(value, (list, MutableSet)):
+    elif isinstance(value, list):
         value = list_to_python(value, item_type=item_type)
     elif isinstance(value, dict):
         value = dict_to_python(value, item_type=item_type)
