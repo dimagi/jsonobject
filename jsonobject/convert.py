@@ -3,6 +3,10 @@ This file was excerpted directly from couchdbkit.schema.properties
 and edited to fit the needs of jsonobject
 
 """
+import decimal
+import datetime
+
+from . import properties
 import re
 
 
@@ -31,23 +35,23 @@ ALLOWED_PROPERTY_TYPES = set([
 ])
 
 MAP_TYPES_PROPERTIES = {
-        decimal.Decimal: DecimalProperty,
-        datetime.datetime: DateTimeProperty,
-        datetime.date: DateProperty,
-        datetime.time: TimeProperty,
-        str: StringProperty,
-        unicode: StringProperty,
-        bool: BooleanProperty,
-        int: IntegerProperty,
-        long: LongProperty,
-        float: FloatProperty,
-        list: ListProperty,
-        dict: DictProperty,
-        set: SetProperty,
+    decimal.Decimal: properties.DecimalProperty,
+    datetime.datetime: properties.DateTimeProperty,
+    datetime.date: properties.DateProperty,
+    datetime.time: properties.TimeProperty,
+    str: properties.StringProperty,
+    unicode: properties.StringProperty,
+    bool: properties.BooleanProperty,
+    int: properties.IntegerProperty,
+    long: properties.IntegerProperty,
+    float: properties.FloatProperty,
+    list: properties.ListProperty,
+    dict: properties.DictProperty,
+    set: properties.SetProperty,
 }
 
+
 def convert_property(value):
-    """ convert a value to json from Property._to_json """
     if type(value) in MAP_TYPES_PROPERTIES:
         prop = MAP_TYPES_PROPERTIES[type(value)]()
         value = prop.to_json(value)
@@ -55,30 +59,23 @@ def convert_property(value):
 
 
 def value_to_property(value):
-    """ Convert value in a Property object """
     if type(value) in MAP_TYPES_PROPERTIES:
         prop = MAP_TYPES_PROPERTIES[type(value)]()
         return prop
     else:
         return value
 
-# utilities functions
 
 def validate_list_content(value, item_type=None):
-    """ validate type of values in a list """
     return [validate_content(item, item_type=item_type) for item in value]
 
+
 def validate_dict_content(value, item_type=None):
-    """ validate type of values in a dict """
     return dict([(k, validate_content(v,
                 item_type=item_type)) for k, v in value.iteritems()])
 
-def validate_set_content(value, item_type=None):
-    """ validate type of values in a set """
-    return set(validate_content(item, item_type=item_type) for item in value)
 
 def validate_content(value, item_type=None):
-    """ validate a value. test if value is in supported types """
     if isinstance(value, list):
         value = validate_list_content(value, item_type=item_type)
     elif isinstance(value, dict):
@@ -92,13 +89,14 @@ def validate_content(value, item_type=None):
                     (ALLOWED_PROPERTY_TYPES))
     return value
 
+
 def dict_to_json(value, item_type=None):
-    """ convert a dict to json """
     return dict([(k, value_to_json(v, item_type=item_type)) for k, v in value.iteritems()])
 
+
 def list_to_json(value, item_type=None):
-    """ convert a list to json """
     return [value_to_json(item, item_type=item_type) for item in value]
+
 
 def value_to_json(value, item_type=None):
     """ convert a value to json using appropriate regexp.
@@ -119,12 +117,13 @@ def value_to_json(value, item_type=None):
         value = dict_to_json(value, item_type)
     return value
 
+
 def is_type_ok(item_type, value_type):
     return item_type is None or item_type == value_type
 
 
 def value_to_python(value, item_type=None):
-    """ convert a json value to python type using regexp. values converted
+    """convert a json value to python type using regexp. values converted
     have been put in json via `value_to_json` .
     """
     data_type = None
@@ -150,10 +149,10 @@ def value_to_python(value, item_type=None):
         value = dict_to_python(value, item_type=item_type)
     return value
 
+
 def list_to_python(value, item_type=None):
-    """ convert a list of json values to python list """
     return [value_to_python(item, item_type=item_type) for item in value]
 
+
 def dict_to_python(value, item_type=None):
-    """ convert a json object values to python dict """
     return dict([(k, value_to_python(v, item_type=item_type)) for k, v in value.iteritems()])
