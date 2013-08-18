@@ -1,4 +1,5 @@
 import datetime
+import decimal
 from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta, JsonContainerProperty, JsonDict
 
 
@@ -16,6 +17,16 @@ class IntegerProperty(AssertTypeProperty):
 
 class FloatProperty(AssertTypeProperty):
     _type = float
+
+
+class DecimalProperty(JsonProperty):
+
+    def wrap(self, obj):
+        return decimal.Decimal(obj)
+
+    def unwrap(self, obj):
+        assert isinstance(obj, decimal.Decimal)
+        return obj, unicode(obj)
 
 
 class DateProperty(JsonProperty):
@@ -37,6 +48,16 @@ class DateTimeProperty(JsonProperty):
 
     def unwrap(self, datetime):
         return datetime, datetime.strftime(self.FORMAT)
+
+
+class TimeProperty(JsonProperty):
+    FORMAT = '%H:%M:%S'
+
+    def wrap(self, time_string):
+        return datetime.datetime.strptime(time_string, self.FORMAT).time()
+
+    def unwrap(self, time):
+        return time, time.strftime(self.FORMAT)
 
 
 class ObjectProperty(JsonContainerProperty):

@@ -177,9 +177,13 @@ class JsonObjectTestCase(unittest2.TestCase):
                 eh = StringProperty(name='ay')
 
     def test_init(self):
+        from jsonobject.base import get_dynamic_properties
         self.assertEqual(JunkCD(c_property=1, d_property='yyy').to_json(),
                          JunkCD({'c': 1, 'd': 'yyy'}).to_json())
-        JunkCD(non_existent_property=2)
+        x = JunkCD(non_existent_property=2)
+        self.assertEqual(get_dynamic_properties(x),
+                         {'non_existent_property': 2})
+
 
         ab = JunkAB(a_property=[1, 2, 3],
                     b_property=JunkCD({'c': 1, 'd': 'string'}))
@@ -285,6 +289,29 @@ class PropertyTestCase(unittest2.TestCase):
             p.wrap('1234-05-90T00:00:00Z')
         with self.assertRaises(ValueError):
             p.wrap('1988-07-07')
+
+    def test_time(self):
+        import datetime
+        p = TimeProperty()
+        for string, time in [('12:38:09', datetime.time(12, 38, 9))]:
+            self.assertEqual(p.wrap(string), time)
+            self.assertEqual(p.unwrap(time), (time, string))
+        with self.assertRaises(ValueError):
+            p.wrap('25:00:00')
+        with self.assertRaises(ValueError):
+            p.wrap('2011-01-18T12:38:09Z')
+        with self.assertRaises(ValueError):
+            p.wrap('1988-07-07')
+
+    def test_decimal(self):
+        import decimal
+
+        class Foo(JsonObject):
+            decimal = DecimalProperty()
+
+        foo = Foo(decimal=decimal.Decimal('2.0'))
+        self.assertEqual(foo.decimal, decimal.Decimal('2.0'))
+        self.assertEqual(foo.to_json()['decimal'], '2.0')
 
     def test_dict(self):
         mapping = {'one': 1, 'two': 2}
