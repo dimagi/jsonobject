@@ -35,6 +35,13 @@ class JsonProperty(object):
         """
         raise NotImplementedError()
 
+    def to_json(self, value):
+        _, unwrapped = self.unwrap(value)
+        return unwrapped
+
+    def to_python(self, value):
+        return self.wrap(value)
+
     def __get__(self, instance, owner):
         assert self.name in instance
         return instance[self.name]
