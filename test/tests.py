@@ -290,6 +290,19 @@ class PropertyTestCase(unittest2.TestCase):
         with self.assertRaises(ValueError):
             p.wrap('1988-07-07')
 
+    def test_time(self):
+        import datetime
+        p = TimeProperty()
+        for string, time in [('12:38:09', datetime.time(12, 38, 9))]:
+            self.assertEqual(p.wrap(string), time)
+            self.assertEqual(p.unwrap(time), (time, string))
+        with self.assertRaises(ValueError):
+            p.wrap('25:00:00')
+        with self.assertRaises(ValueError):
+            p.wrap('2011-01-18T12:38:09Z')
+        with self.assertRaises(ValueError):
+            p.wrap('1988-07-07')
+
     def test_decimal(self):
         import decimal
 
