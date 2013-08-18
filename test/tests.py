@@ -290,6 +290,16 @@ class PropertyTestCase(unittest2.TestCase):
         with self.assertRaises(ValueError):
             p.wrap('1988-07-07')
 
+    def test_decimal(self):
+        import decimal
+
+        class Foo(JsonObject):
+            decimal = DecimalProperty()
+
+        foo = Foo(decimal=decimal.Decimal('2.0'))
+        self.assertEqual(foo.decimal, decimal.Decimal('2.0'))
+        self.assertEqual(foo.to_json()['decimal'], '2.0')
+
     def test_dict(self):
         mapping = {'one': 1, 'two': 2}
         o = ObjectWithDictProperty(mapping=mapping)
