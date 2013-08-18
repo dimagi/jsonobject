@@ -252,7 +252,6 @@ class JsonObject(SimpleDict):
                 setattr(self, key, value)
 
         for attr, value in kwargs.items():
-            assert attr in self._properties_by_attr
             setattr(self, attr, value)
 
         for key, value in self._properties_by_key.items():

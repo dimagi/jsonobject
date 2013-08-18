@@ -179,8 +179,7 @@ class JsonObjectTestCase(unittest2.TestCase):
     def test_init(self):
         self.assertEqual(JunkCD(c_property=1, d_property='yyy').to_json(),
                          JunkCD({'c': 1, 'd': 'yyy'}).to_json())
-        with self.assertRaises(AssertionError):
-            JunkCD(non_existent_property=2)
+        JunkCD(non_existent_property=2)
 
         ab = JunkAB(a_property=[1, 2, 3],
                     b_property=JunkCD({'c': 1, 'd': 'string'}))
