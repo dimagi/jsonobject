@@ -177,9 +177,13 @@ class JsonObjectTestCase(unittest2.TestCase):
                 eh = StringProperty(name='ay')
 
     def test_init(self):
+        from jsonobject.base import get_dynamic_properties
         self.assertEqual(JunkCD(c_property=1, d_property='yyy').to_json(),
                          JunkCD({'c': 1, 'd': 'yyy'}).to_json())
-        JunkCD(non_existent_property=2)
+        x = JunkCD(non_existent_property=2)
+        self.assertEqual(get_dynamic_properties(x),
+                         {'non_existent_property': 2})
+
 
         ab = JunkAB(a_property=[1, 2, 3],
                     b_property=JunkCD({'c': 1, 'd': 'string'}))
