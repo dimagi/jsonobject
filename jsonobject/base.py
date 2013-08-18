@@ -199,10 +199,10 @@ class JsonObjectMeta(type):
     # and knowledge of all available property types (in properties module).
     # The current solution is to monkey patch this metaclass
     # with a reference to the properties module
-    properties_module = None
+    _convert = None
 
     def __new__(mcs, name, bases, dct):
-        _p = mcs.properties_module
+        _c = mcs._convert
         properties = {}
         properties_by_name = {}
         for key, value in dct.items():
@@ -210,8 +210,8 @@ class JsonObjectMeta(type):
                 properties[key] = value
             elif key in ('__module__', '__doc__'):
                 continue
-            elif _p and isinstance(value, tuple(_p.TYPE_TO_PROPERTY.keys())):
-                property_ = _p.type_to_property(type(value), default=value)
+            elif _c and type(value) in _c.MAP_TYPES_PROPERTIES:
+                property_ = _c.MAP_TYPES_PROPERTIES[type(value)](default=value)
                 properties[key] = dct[key] = property_
 
         cls = type.__new__(mcs, name, bases, dct)
