@@ -3,6 +3,15 @@ This file was excerpted directly from couchdbkit.schema.properties
 and edited to fit the needs of jsonobject
 
 """
+import re
+
+
+re_date = re.compile('^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
+re_time = re.compile('^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?$')
+re_datetime = re.compile('^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])(\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$')
+re_decimal = re.compile('^(\d+)\.(\d+)$')
+
+
 ALLOWED_PROPERTY_TYPES = set([
     basestring,
     str,
