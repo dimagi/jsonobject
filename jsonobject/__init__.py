@@ -1,6 +1,7 @@
 from base import JsonObject, JsonArray
 from .properties import *
-import properties
+import convert
+
 __all__ = [
     'IntegerProperty', 'FloatProperty', 'DecimalProperty',
     'StringProperty', 'BooleanProperty',
@@ -9,4 +10,4 @@ __all__ = [
     'JsonObject', 'JsonArray',
 ]
 
-JsonObjectMeta.properties_module = properties
+JsonObjectMeta._convert = convert

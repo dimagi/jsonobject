@@ -109,23 +109,14 @@ class DictProperty(JsonContainerProperty):
             return self.unwrap(wrapped)
 
 
-TYPE_TO_PROPERTY = {
-    int: IntegerProperty,
-    basestring: StringProperty,
-    bool: BooleanProperty,
-    float: FloatProperty,
-    datetime.date: DateProperty,
-    datetime.datetime: DateTimeProperty,
-}
-
-
 def type_to_property(obj_type, *args, **kwargs):
+    from .convert import MAP_TYPES_PROPERTIES
     if issubclass(obj_type, JsonObject):
         return ObjectProperty(obj_type, *args, **kwargs)
-    elif obj_type in TYPE_TO_PROPERTY:
-        return TYPE_TO_PROPERTY[obj_type](*args, **kwargs)
+    elif obj_type in MAP_TYPES_PROPERTIES:
+        return MAP_TYPES_PROPERTIES[obj_type](*args, **kwargs)
     else:
-        for key, value in TYPE_TO_PROPERTY.items():
+        for key, value in MAP_TYPES_PROPERTIES.items():
             if issubclass(obj_type, key):
                 return value(*args, **kwargs)
         raise TypeError('Type {0} not recognized'.format(obj_type))
