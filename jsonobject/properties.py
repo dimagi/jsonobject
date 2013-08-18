@@ -50,6 +50,16 @@ class DateTimeProperty(JsonProperty):
         return datetime, datetime.strftime(self.FORMAT)
 
 
+class TimeProperty(JsonProperty):
+    FORMAT = '%H:%M:%S'
+
+    def wrap(self, time_string):
+        return datetime.datetime.strptime(time_string, self.FORMAT).time()
+
+    def unwrap(self, time):
+        return time, time.strftime(self.FORMAT)
+
+
 class ObjectProperty(JsonContainerProperty):
 
     default = lambda self: self.obj_type()

@@ -4,7 +4,7 @@ import properties
 __all__ = [
     'IntegerProperty', 'FloatProperty', 'DecimalProperty',
     'StringProperty', 'BooleanProperty',
-    'DateProperty', 'DateTimeProperty',
+    'DateProperty', 'DateTimeProperty', 'TimeProperty',
     'ObjectProperty', 'ListProperty', 'DictProperty',
     'JsonObject', 'JsonArray',
 ]
