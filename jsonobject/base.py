@@ -228,6 +228,12 @@ class JsonObjectMeta(type):
         return cls
 
 
+class _JsonObjectPrivateInstanceVariables(object):
+
+    def __init__(self, dynamic_properties=None):
+        self.dynamic_properties = dynamic_properties or {}
+
+
 class JsonObject(SimpleDict):
 
     __metaclass__ = JsonObjectMeta
@@ -238,6 +244,8 @@ class JsonObject(SimpleDict):
 
     def __init__(self, _obj=None, **kwargs):
         super(JsonObject, self).__init__()
+
+        setattr(self, '$', _JsonObjectPrivateInstanceVariables())
 
         self._obj = check_type(_obj, dict,
                                'JsonObject must wrap a dict or None')
@@ -261,6 +269,10 @@ class JsonObject(SimpleDict):
                 except TypeError:
                     d = value.default(self)
                 self[key] = d
+
+    @property
+    def __dynamic_properties(self):
+        return getattr(self, '$').dynamic_properties
 
     @classmethod
     def wrap(cls, obj):
@@ -296,6 +308,7 @@ class JsonObject(SimpleDict):
     def __setitem__(self, key, value):
         if key not in self._properties_by_key:
             assert key not in self._properties_by_attr
+            self.__dynamic_properties[key] = value
             super(JsonObject, self).__setattr__(key, value)
         wrapped, unwrapped = self.__unwrap(key, value)
         super(JsonObject, self).__setitem__(key, wrapped)
@@ -333,3 +346,7 @@ class JsonObject(SimpleDict):
                 value=getattr(self, key))
             for key in properties),
         )
+
+
+def get_dynamic_properties(obj):
+    return getattr(obj, '$').dynamic_properties.copy()
