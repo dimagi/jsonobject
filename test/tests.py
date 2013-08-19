@@ -340,6 +340,25 @@ class PropertyTestCase(unittest2.TestCase):
             },
         })
 
+    def test_dynamic_conversion(self):
+        import datetime
+
+        class Foo(JsonObject):
+            pass
+        string_date = '2012-01-01'
+        date_date = datetime.date(2012, 01, 01)
+        foo = Foo({'date1': string_date},
+                  date2=date_date)
+        foo.date3 = date_date
+
+        self.assertEqual(foo.to_json()['date1'], string_date)
+        self.assertEqual(foo.date1, date_date)
+
+        self.assertEqual(foo.to_json()['date2'], string_date)
+        self.assertEqual(foo.date2, date_date)
+
+        self.assertEqual(foo.to_json()['date3'], string_date)
+        self.assertEqual(foo.date3, date_date)
 
 class User(JsonObject):
     username = StringProperty()
