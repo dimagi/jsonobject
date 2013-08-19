@@ -93,10 +93,12 @@ class JsonContainerProperty(JsonProperty):
 
 class DefaultProperty(JsonProperty):
     def wrap(self, obj):
-        return obj
+        from . import convert
+        return convert.value_to_python(obj)
 
     def unwrap(self, obj):
-        return obj, obj
+        from . import convert
+        return convert.value_to_python(obj), convert.value_to_json(obj)
 
 
 class AssertTypeProperty(JsonProperty):
@@ -313,18 +315,19 @@ class JsonObject(SimpleDict):
         return property_.unwrap(value)
 
     def __setitem__(self, key, value):
-        if key not in self._properties_by_key:
-            assert key not in self._properties_by_attr
-            self.__dynamic_properties[key] = value
-            super(JsonObject, self).__setattr__(key, value)
         wrapped, unwrapped = self.__unwrap(key, value)
         super(JsonObject, self).__setitem__(key, wrapped)
         self._obj[key] = unwrapped
+        if key not in self._properties_by_key:
+            assert key not in self._properties_by_attr
+            self.__dynamic_properties[key] = wrapped
+            super(JsonObject, self).__setattr__(key, wrapped)
 
     def __setattr__(self, name, value):
         if self.__save_dynamic_properties and name not in self._properties_by_attr:
             self[name] = value
-        super(JsonObject, self).__setattr__(name, value)
+        else:
+            super(JsonObject, self).__setattr__(name, value)
 
     def __delitem__(self, key):
         if key in self._properties_by_key:
