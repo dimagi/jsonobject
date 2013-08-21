@@ -6,7 +6,8 @@ class JsonProperty(object):
 
     default = None
 
-    def __init__(self, default=Ellipsis, name=None, choices=None, required=False):
+    def __init__(self, default=Ellipsis, name=None, choices=None, required=False,
+                 exclude_if_none=False):
         self.name = name
         if default is Ellipsis:
             default = self.default
@@ -16,6 +17,7 @@ class JsonProperty(object):
             self.default = lambda: default
         self.choices = choices
         self.required = required
+        self.exclude_if_none = exclude_if_none
 
     def init_property(self, default_name):
         self.name = self.name or default_name
@@ -63,15 +65,15 @@ class JsonProperty(object):
         self.name = self.name or method.func_name
         return self
 
-    def empty(self, value):
-        return value is None
+    def exclude(self, value):
+        return self.exclude_if_none and not value
 
     def validate(self, value):
         if self.choices and value not in self.choices and value is not None:
             raise ValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choices)
             )
-        if self.empty(value) and self.required:
+        if value is None and self.required:
             raise ValueError(
                 'Required property received value {0!r}'.format(value)
             )
@@ -317,7 +319,10 @@ class JsonObject(SimpleDict):
     def __setitem__(self, key, value):
         wrapped, unwrapped = self.__unwrap(key, value)
         super(JsonObject, self).__setitem__(key, wrapped)
-        self._obj[key] = unwrapped
+        if self.__get_property(key).exclude(unwrapped):
+            self._obj.pop(key, None)
+        else:
+            self._obj[key] = unwrapped
         if key not in self._properties_by_key:
             assert key not in self._properties_by_attr
             self.__dynamic_properties[key] = wrapped
