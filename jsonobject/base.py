@@ -210,7 +210,7 @@ class JsonObjectMeta(type):
         for key, value in dct.items():
             if isinstance(value, JsonProperty):
                 properties[key] = value
-            elif key in ('__module__', '__doc__'):
+            elif key.startswith('_'):
                 continue
             elif _c and type(value) in _c.MAP_TYPES_PROPERTIES:
                 property_ = _c.MAP_TYPES_PROPERTIES[type(value)](default=value)
@@ -246,6 +246,8 @@ class _JsonObjectPrivateInstanceVariables(object):
 class JsonObject(SimpleDict):
 
     __metaclass__ = JsonObjectMeta
+
+    _allow_dynamic_properties = True
 
     _properties_by_attr = None
     _properties_by_key = None
@@ -321,9 +323,21 @@ class JsonObject(SimpleDict):
             self.__dynamic_properties[key] = wrapped
             super(JsonObject, self).__setattr__(key, wrapped)
 
+    def __is_dynamic_property(self, name):
+        return (
+            name not in self._properties_by_attr and
+            not name.startswith('_')
+        )
+
     def __setattr__(self, name, value):
-        if not name.startswith('_') and name not in self._properties_by_attr:
-            self[name] = value
+        if self.__is_dynamic_property(name):
+            if self._allow_dynamic_properties:
+                self[name] = value
+            else:
+                raise AttributeError(
+                    "{0} is not defined in schema "
+                    "(not a valid property)".format(name)
+                )
         else:
             super(JsonObject, self).__setattr__(name, value)
 

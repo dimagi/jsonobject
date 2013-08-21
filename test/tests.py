@@ -362,6 +362,18 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json()['date3'], string_date)
         self.assertEqual(foo.date3, date_date)
 
+    def test_allow_dynamic(self):
+        class Foo(JsonObject):
+            _allow_dynamic_properties = False
+
+        foo = Foo()
+        with self.assertRaises(AttributeError):
+            foo.blah = 3
+        foo._blah = 5
+        self.assertEqual(foo, {})
+        self.assertEqual(foo.to_json(), {})
+        self.assertEqual(foo._blah, 5)
+
 class User(JsonObject):
     username = StringProperty()
     name = StringProperty()
