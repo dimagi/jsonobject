@@ -249,16 +249,14 @@ class JsonObject(SimpleDict):
 
     _properties_by_attr = None
     _properties_by_key = None
-    __save_dynamic_properties = False
 
     def __init__(self, _obj=None, **kwargs):
         super(JsonObject, self).__init__()
 
-        setattr(self, '$', _JsonObjectPrivateInstanceVariables())
+        setattr(self, '_$', _JsonObjectPrivateInstanceVariables())
 
         self._obj = check_type(_obj, dict,
                                'JsonObject must wrap a dict or None')
-        self.__save_dynamic_properties = True
 
         for key, value in self._obj.items():
             wrapped = self.__wrap(key, value)
@@ -281,7 +279,7 @@ class JsonObject(SimpleDict):
 
     @property
     def __dynamic_properties(self):
-        return getattr(self, '$').dynamic_properties
+        return getattr(self, '_$').dynamic_properties
 
     @classmethod
     def wrap(cls, obj):
@@ -324,7 +322,7 @@ class JsonObject(SimpleDict):
             super(JsonObject, self).__setattr__(key, wrapped)
 
     def __setattr__(self, name, value):
-        if self.__save_dynamic_properties and name not in self._properties_by_attr:
+        if not name.startswith('_') and name not in self._properties_by_attr:
             self[name] = value
         else:
             super(JsonObject, self).__setattr__(name, value)
@@ -359,4 +357,4 @@ class JsonObject(SimpleDict):
 
 
 def get_dynamic_properties(obj):
-    return getattr(obj, '$').dynamic_properties.copy()
+    return getattr(obj, '_$').dynamic_properties.copy()
