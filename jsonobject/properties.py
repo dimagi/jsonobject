@@ -1,6 +1,9 @@
+# DateTimeProperty, DateProperty, and TimeProperty
+# include code copied from couchdbkit
 import datetime
+import time
 import decimal
-from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonObjectMeta, JsonContainerProperty, JsonDict
+from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonContainerProperty, JsonDict
 
 
 class StringProperty(AssertTypeProperty):
