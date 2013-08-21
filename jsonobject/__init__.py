@@ -1,4 +1,4 @@
-from base import JsonObject, JsonArray
+from base import JsonObject,JsonObjectMeta, JsonArray
 from .properties import *
 import convert
 
