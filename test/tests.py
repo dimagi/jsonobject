@@ -374,6 +374,21 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json(), {})
         self.assertEqual(foo._blah, 5)
 
+    def test_exclude_if_none(self):
+        class Foo(JsonObject):
+            _id = StringProperty(exclude_if_none=True)
+            name = StringProperty()
+
+        foo = Foo()
+        self.assertEqual(foo.to_json(), {'name': None})
+        self.assertEqual(foo._id, None)
+        foo = Foo(_id='xxx')
+        self.assertEqual(foo, {'name': None, '_id': 'xxx'})
+        foo._id = None
+        self.assertEqual(foo.to_json(), {'name': None})
+        self.assertEqual(foo._id, None)
+
+
 class User(JsonObject):
     username = StringProperty()
     name = StringProperty()
