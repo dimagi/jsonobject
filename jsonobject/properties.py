@@ -104,7 +104,8 @@ class ListProperty(JsonContainerProperty):
     default = list
 
     def wrap(self, obj):
-        return JsonArray(obj, wrapper=type_to_property(self.obj_type))
+        wrapper = type_to_property(self.obj_type) if self.obj_type else None
+        return JsonArray(obj, wrapper=wrapper)
 
     def unwrap(self, obj):
         assert isinstance(obj, list), \
