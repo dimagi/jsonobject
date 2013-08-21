@@ -2,7 +2,7 @@ from copy import deepcopy
 import unittest2
 from jsonobject.base import JsonObject, JsonArray
 from jsonobject import *
-from jsonobject.exceptions import DeleteNotAllowed
+from jsonobject.exceptions import DeleteNotAllowed, BadValueError
 
 
 class Features(JsonObject):
@@ -110,7 +110,7 @@ class JsonObjectTestCase(unittest2.TestCase):
 
         danny.features.hair = 'blond'
         self.assertEqual(danny.features.hair, 'blond')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             danny.features.hair = 'green'
 
         features = {'hair': 'grey', 'eyes': 'blue'}
@@ -197,16 +197,16 @@ class JsonObjectTestCase(unittest2.TestCase):
 
     def test_choices(self):
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             Features(hair='blue')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             Features.wrap({'hair': 'blue'})
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             f = Features()
             f.hair = 'blue'
 
     def test_required(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             Person()
         Person(first_name='')
         Person(first_name='James')
@@ -276,9 +276,9 @@ class PropertyTestCase(unittest2.TestCase):
         for string, date in [('1988-07-07', datetime.date(1988, 7, 7))]:
             self.assertEqual(p.wrap(string), date)
             self.assertEqual(p.unwrap(date), (date, string))
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('1234-05-90')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('2000-01-01T00:00:00Z')
 
     def test_datetime(self):
@@ -287,9 +287,9 @@ class PropertyTestCase(unittest2.TestCase):
         for string, dt in [('2011-01-18T12:38:09Z', datetime.datetime(2011, 1, 18, 12, 38, 9))]:
             self.assertEqual(p.wrap(string), dt)
             self.assertEqual(p.unwrap(dt), (dt, string))
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('1234-05-90T00:00:00Z')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('1988-07-07')
 
     def test_time(self):
@@ -298,11 +298,11 @@ class PropertyTestCase(unittest2.TestCase):
         for string, time in [('12:38:09', datetime.time(12, 38, 9))]:
             self.assertEqual(p.wrap(string), time)
             self.assertEqual(p.unwrap(time), (time, string))
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('25:00:00')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('2011-01-18T12:38:09Z')
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             p.wrap('1988-07-07')
 
     def test_decimal(self):
@@ -330,7 +330,7 @@ class PropertyTestCase(unittest2.TestCase):
                 'foo': {'hair': None, 'eyes': None},
             },
         })
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadValueError):
             FeatureMap({'feature_map': {'lala': 10}})
 
         features.feature_map.update({'hoho': Features(eyes='brown')})

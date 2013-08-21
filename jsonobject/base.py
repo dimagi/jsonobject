@@ -1,5 +1,5 @@
 import inspect
-from jsonobject.exceptions import DeleteNotAllowed
+from jsonobject.exceptions import DeleteNotAllowed, BadValueError
 
 
 class JsonProperty(object):
@@ -70,11 +70,11 @@ class JsonProperty(object):
 
     def validate(self, value):
         if self.choices and value not in self.choices and value is not None:
-            raise ValueError(
+            raise BadValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choices)
             )
         if value is None and self.required:
-            raise ValueError(
+            raise BadValueError(
                 'Required property received value {0!r}'.format(value)
             )
 
@@ -107,8 +107,8 @@ class AssertTypeProperty(JsonProperty):
     _type = None
 
     def assert_type(self, obj):
-        assert isinstance(obj, self._type), \
-            '{0} not of type {1}'.format(obj, self._type)
+        if not isinstance(obj, self._type):
+            raise BadValueError('{0} not of type {1}'.format(obj, self._type))
 
     def wrap(self, obj):
         self.assert_type(obj)
@@ -119,11 +119,41 @@ class AssertTypeProperty(JsonProperty):
         return obj, obj
 
 
+class AbstractDateProperty(JsonProperty):
+
+    _type = None
+
+    def wrap(self, obj):
+        try:
+            if not isinstance(obj, basestring):
+                raise ValueError()
+            return self._wrap(obj)
+        except ValueError:
+            raise BadValueError('{0!r} is not a {1}-formatted string'.format(
+                obj,
+                self._type.__name__,
+            ))
+
+    def unwrap(self, obj):
+        if not isinstance(obj, self._type):
+            raise BadValueError('{0!r} is not a {1} object'.format(
+                obj,
+                self._type.__name__,
+            ))
+        return self._unwrap(obj)
+
+    def _wrap(self, obj):
+        raise NotImplementedError()
+
+    def _unwrap(self, obj):
+        raise NotImplementedError()
+
+
 def check_type(obj, obj_type, message):
     if obj is None:
         return obj_type()
     elif not isinstance(obj, obj_type):
-        raise ValueError(message)
+        raise BadValueError(message)
     else:
         return obj
 
