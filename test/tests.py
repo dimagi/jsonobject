@@ -214,6 +214,7 @@ class JsonObjectTestCase(unittest2.TestCase):
     def test_dynamic_properties(self):
         p = Features.wrap({'platypus': 'James'})
         p.marmot = 'Sally'
+        p._nope = 10
         self.assertEqual(p.to_json(), {
             'platypus': 'James',
             'marmot': 'Sally',
@@ -222,6 +223,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         })
         self.assertEqual(p.platypus, 'James')
         self.assertEqual(p.marmot, 'Sally')
+        self.assertEqual(p._nope, 10)
 
     def test_delete_dynamic(self):
         def assertReallyThere():
