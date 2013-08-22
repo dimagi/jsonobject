@@ -96,11 +96,25 @@ class JsonContainerProperty(JsonProperty):
 class DefaultProperty(JsonProperty):
     def wrap(self, obj):
         from . import convert
-        return convert.value_to_python(obj)
+        from properties import DictProperty
+        from properties import ListProperty
+        if isinstance(obj, dict):
+            return DictProperty().wrap(obj)
+        elif isinstance(obj, list):
+            return ListProperty().wrap(obj)
+        else:
+            return convert.value_to_python(obj)
 
     def unwrap(self, obj):
         from . import convert
-        return convert.value_to_python(obj), convert.value_to_json(obj)
+        from properties import DictProperty
+        from properties import ListProperty
+        if isinstance(obj, dict):
+            return DictProperty().unwrap(obj)
+        elif isinstance(obj, list):
+            return ListProperty().unwrap(obj)
+        else:
+            return convert.value_to_python(obj), convert.value_to_json(obj)
 
 
 class AssertTypeProperty(JsonProperty):
