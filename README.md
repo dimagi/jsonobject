@@ -62,8 +62,9 @@ OK
 $ python -m unittest test.test_couchdbkit
 ....
 ----------------------------------------------------------------------
-Ran 4 tests in 0.067s
+Ran 4 tests in 0.153s
 
 OK
+
 
 ```
