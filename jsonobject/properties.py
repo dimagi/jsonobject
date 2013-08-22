@@ -61,18 +61,13 @@ class DateTimeProperty(AbstractDateProperty):
         return value
 
     def _unwrap(self, value):
-        return value, value.replace(microsecond=0).isoformat() + 'Z'
+        value = value.replace(microsecond=0)
+        return value, value.isoformat() + 'Z'
 
 
 class TimeProperty(AbstractDateProperty):
 
     _type = datetime.time
-
-    def _wrap(self, time_string):
-        return datetime.datetime.strptime(time_string, self.FORMAT).time()
-
-    def _unwrap(self, time):
-        return time, time.strftime(self.FORMAT)
 
     def _wrap(self, value):
         try:
@@ -83,7 +78,8 @@ class TimeProperty(AbstractDateProperty):
         return value
 
     def _unwrap(self, value):
-        return value, value.replace(microsecond=0).isoformat()
+        value = value.replace(microsecond=0)
+        return value, value.isoformat()
 
 
 class ObjectProperty(JsonContainerProperty):
