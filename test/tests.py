@@ -299,6 +299,78 @@ class JsonObjectTestCase(unittest2.TestCase):
             }
         })
 
+
+class LazyValidationTest(unittest2.TestCase):
+
+    def _validate_raises(self, foo):
+        with self.assertRaises(BadValueError):
+            foo.validate()
+
+        with self.assertRaises(BadValueError):
+            foo.to_json()
+
+    def _validate_not_raises(self, foo):
+        foo.validate()
+        foo.to_json()
+
+    def test_string(self):
+        class Foo(JsonObject):
+            _validate_lazily = True
+            string = StringProperty(required=True)
+
+        foo = Foo()
+        self._validate_raises(foo)
+        foo.string = 'hi'
+        self._validate_not_raises(foo)
+
+    def test_object(self):
+        class Bar(JsonObject):
+            _validate_lazily = True
+            string = StringProperty(required=True)
+
+        class Foo(JsonObject):
+            _validate_lazily = True
+            bar = ObjectProperty(Bar)
+
+        foo = Foo()
+        self._validate_raises(foo)
+        foo.bar.string = 'hi'
+        self._validate_not_raises(foo)
+
+    def test_list(self):
+        class Bar(JsonObject):
+            _validate_lazily = True
+            string = StringProperty(required=True)
+
+        class Foo(JsonObject):
+            _validate_lazily = True
+            bars = ListProperty(Bar, required=True)
+
+        foo = Foo()
+        self._validate_raises(foo)
+        foo.bars.append(Bar())
+        self._validate_raises(foo)
+        foo.bars[0].string = 'hi'
+        self._validate_not_raises(foo)
+
+    def test_dict(self):
+        class Bar(JsonObject):
+            _validate_lazily = True
+            string = StringProperty(required=True)
+
+        class Foo(JsonObject):
+            _validate_lazily = True
+            bar_map = DictProperty(Bar, required=True)
+
+        foo = Foo()
+        self._validate_raises(foo)
+        foo.bar_map['hi'] = Bar()
+        self._validate_raises(foo)
+        foo.bar_map['hi'].string = 'hi'
+        self._validate_not_raises(foo)
+
+
+
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
         import datetime
