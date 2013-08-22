@@ -68,15 +68,20 @@ class JsonProperty(object):
     def exclude(self, value):
         return self.exclude_if_none and not value
 
+    def empty(self, value):
+        return value is None
+
     def validate(self, value):
         if self.choices and value not in self.choices and value is not None:
             raise BadValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choices)
             )
-        if value is None and self.required:
+        if self.empty(value) and self.required:
             raise BadValueError(
-                'Required property received value {0!r}'.format(value)
+                'Property {0} is required.'.format(self.name)
             )
+        if hasattr(value, 'validate'):
+            value.validate()
 
 
 class JsonContainerProperty(JsonProperty):
@@ -91,6 +96,9 @@ class JsonContainerProperty(JsonProperty):
             return self._obj_type()
         else:
             return self._obj_type
+
+    def empty(self, value):
+        return not value
 
 
 class DefaultProperty(JsonProperty):
@@ -193,6 +201,10 @@ class JsonArray(list):
     def to_json(self):
         return self._obj
 
+    def validate(self):
+        for obj in self:
+            self._wrapper.validate(obj)
+
     def append(self, wrapped):
         wrapped, unwrapped = self._wrapper.unwrap(wrapped)
         self._obj.append(unwrapped)
@@ -234,6 +246,10 @@ class JsonDict(SimpleDict):
 
         for key, value in self._obj.items():
             self[key] = self.__wrap(key, value)
+
+    def validate(self):
+        for obj in self.values():
+            self._wrapper.validate(obj)
 
     def __wrap(self, key, unwrapped):
         return self._wrapper.wrap(unwrapped)
@@ -303,6 +319,7 @@ class JsonObject(SimpleDict):
     __metaclass__ = JsonObjectMeta
 
     _allow_dynamic_properties = True
+    _validate_lazily = False
 
     _properties_by_attr = None
     _properties_by_key = None
@@ -343,7 +360,12 @@ class JsonObject(SimpleDict):
         self = cls(obj)
         return self
 
+    def validate(self):
+        for key, value in self.items():
+            self.__get_property(key).validate(value)
+
     def to_json(self):
+        self.validate()
         return self._obj
 
     def __get_property(self, key):
@@ -362,7 +384,8 @@ class JsonObject(SimpleDict):
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
-        property_.validate(value)
+        if not self._validate_lazily:
+            property_.validate(value)
 
         if value is None:
             return None, None
