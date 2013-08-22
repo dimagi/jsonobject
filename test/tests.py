@@ -276,6 +276,19 @@ class JsonObjectTestCase(unittest2.TestCase):
         foo = Foo(my_dict={})
         self.assertIs(foo.my_dict._obj, foo._obj['my_dict'])
 
+    def test_date_truncation(self):
+        "dates copied from couchdbkit"
+        import datetime
+
+        class Foo(JsonObject):
+            my_datetime = DateTimeProperty()
+            my_dict = DictProperty()
+        foo = Foo()
+
+        full_datetime = datetime.datetime(2009, 5, 10, 21, 19, 21, 127380)
+        normalized_datetime = datetime.datetime(2009, 5, 10, 21, 19, 21)
+        foo.my_datetime = full_datetime
+        self.assertEqual(foo.my_datetime, normalized_datetime)
 
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
