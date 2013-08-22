@@ -163,7 +163,7 @@ class JsonArray(list):
         super(JsonArray, self).__init__()
 
         self._obj = check_type(_obj, list, 'JsonArray must wrap a list or None')
-        self._wrapper = wrapper
+        self._wrapper = wrapper or DefaultProperty()
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
 
