@@ -386,7 +386,6 @@ class DynamicConversionTestCase(unittest2.TestCase):
     date_date = datetime.date(2012, 01, 01)
 
     def _test_dynamic_conversion(self, foo):
-        Foo = self.Foo
         string_date = self.string_date
         date_date = self.date_date
 
