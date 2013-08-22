@@ -99,22 +99,31 @@ class DefaultProperty(JsonProperty):
         from properties import DictProperty
         from properties import ListProperty
         if isinstance(obj, dict):
-            return DictProperty().wrap(obj)
+            property_ = DictProperty()
         elif isinstance(obj, list):
-            return ListProperty().wrap(obj)
+            property_ = ListProperty()
         else:
-            return convert.value_to_python(obj)
+            value = convert.value_to_python(obj)
+            property_ = convert.value_to_property(value)
+
+        if property_:
+            return property_.wrap(obj)
 
     def unwrap(self, obj):
         from . import convert
         from properties import DictProperty
         from properties import ListProperty
         if isinstance(obj, dict):
-            return DictProperty().unwrap(obj)
+            property_ = DictProperty()
         elif isinstance(obj, list):
-            return ListProperty().unwrap(obj)
+            property_ = ListProperty()
         else:
-            return convert.value_to_python(obj), convert.value_to_json(obj)
+            property_ = convert.value_to_property(obj)
+
+        if property_:
+            return property_.unwrap(obj)
+        else:
+            return obj, None
 
 
 class AssertTypeProperty(JsonProperty):
@@ -312,7 +321,7 @@ class JsonObject(SimpleDict):
                 self[key] = wrapped
             else:
                 # these should be added as attributes
-                setattr(self, key, value)
+                setattr(self, key, wrapped)
 
         for attr, value in kwargs.items():
             setattr(self, attr, value)
