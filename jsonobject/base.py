@@ -321,7 +321,7 @@ class JsonObject(SimpleDict):
                 self[key] = wrapped
             else:
                 # these should be added as attributes
-                setattr(self, key, value)
+                setattr(self, key, wrapped)
 
         for attr, value in kwargs.items():
             setattr(self, attr, value)
