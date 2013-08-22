@@ -268,6 +268,14 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(json_dict, {})
         self.assertEqual(json_dict._obj, {})
 
+    def test_dynamic_container(self):
+        class Foo(JsonObject):
+            pass
+        foo = Foo(my_list=[])
+        self.assertIs(foo.my_list._obj, foo._obj['my_list'])
+        foo = Foo(my_dict={})
+        self.assertIs(foo.my_dict._obj, foo._obj['my_dict'])
+
 
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
@@ -342,26 +350,6 @@ class PropertyTestCase(unittest2.TestCase):
             },
         })
 
-    def test_dynamic_conversion(self):
-        import datetime
-
-        class Foo(JsonObject):
-            pass
-        string_date = '2012-01-01'
-        date_date = datetime.date(2012, 01, 01)
-        foo = Foo({'date1': string_date},
-                  date2=date_date)
-        foo.date3 = date_date
-
-        self.assertEqual(foo.to_json()['date1'], string_date)
-        self.assertEqual(foo.date1, date_date)
-
-        self.assertEqual(foo.to_json()['date2'], string_date)
-        self.assertEqual(foo.date2, date_date)
-
-        self.assertEqual(foo.to_json()['date3'], string_date)
-        self.assertEqual(foo.date3, date_date)
-
     def test_allow_dynamic(self):
         class Foo(JsonObject):
             _allow_dynamic_properties = False
@@ -387,6 +375,62 @@ class PropertyTestCase(unittest2.TestCase):
         foo._id = None
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
+
+
+class DynamicConversionTestCase(unittest2.TestCase):
+    import datetime
+
+    class Foo(JsonObject):
+        pass
+    string_date = '2012-01-01'
+    date_date = datetime.date(2012, 01, 01)
+
+    def _test_dynamic_conversion(self, foo):
+        Foo = self.Foo
+        string_date = self.string_date
+        date_date = self.date_date
+
+        self.assertEqual(foo.to_json()['my_date'], string_date)
+        self.assertEqual(foo.my_date, date_date)
+
+        self.assertEqual(foo.to_json()['my_list'], [1, 2, [string_date]])
+        self.assertEqual(foo.my_list, [1, 2, [date_date]])
+
+        self.assertEqual(foo.to_json()['my_dict'], {'a': {'b': string_date}})
+        self.assertEqual(foo.my_dict, {'a': {'b': date_date}})
+
+    def test_wrapping(self):
+        foo = self.Foo({
+            'my_date': self.string_date,
+            'my_list': [1, 2, [self.string_date]],
+            'my_dict': {'a': {'b': self.string_date}},
+        })
+        self._test_dynamic_conversion(foo)
+
+    def test_kwargs(self):
+
+        foo = self.Foo(
+            my_date=self.date_date,
+            my_list=[1, 2, [self.date_date]],
+            my_dict={'a': {'b': self.date_date}},
+        )
+        self._test_dynamic_conversion(foo)
+
+    def test_assignment(self):
+        foo = self.Foo()
+        foo.my_date = self.date_date
+        foo.my_list = [1, 2, [self.date_date]]
+        foo.my_dict = {'a': {'b': self.date_date}}
+        self._test_dynamic_conversion(foo)
+
+    def test_manipulation(self):
+        foo = self.Foo()
+        foo.my_date = self.date_date
+        foo.my_list = [1, 2, []]
+        foo.my_list[2].append(self.date_date)
+        foo.my_dict = {'a': {}}
+        foo.my_dict['a']['b'] = self.date_date
+        self._test_dynamic_conversion(foo)
 
 
 class User(JsonObject):
