@@ -273,6 +273,8 @@ class JsonObjectTestCase(unittest2.TestCase):
             pass
         foo = Foo(my_list=[])
         self.assertIs(foo.my_list._obj, foo._obj['my_list'])
+        foo = Foo(my_dict={})
+        self.assertIs(foo.my_dict._obj, foo._obj['my_dict'])
 
 
 class PropertyTestCase(unittest2.TestCase):
