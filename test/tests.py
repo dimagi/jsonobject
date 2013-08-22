@@ -268,6 +268,12 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(json_dict, {})
         self.assertEqual(json_dict._obj, {})
 
+    def test_dynamic_container(self):
+        class Foo(JsonObject):
+            pass
+        foo = Foo(my_list=[])
+        self.assertIs(foo.my_list._obj, foo._obj['my_list'])
+
 
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
