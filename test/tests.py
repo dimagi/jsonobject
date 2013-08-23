@@ -315,7 +315,7 @@ class LazyValidationTest(unittest2.TestCase):
 
     def test_string(self):
         class Foo(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             string = StringProperty(required=True)
 
         foo = Foo()
@@ -325,11 +325,11 @@ class LazyValidationTest(unittest2.TestCase):
 
     def test_object(self):
         class Bar(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             string = StringProperty(required=True)
 
         class Foo(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             bar = ObjectProperty(Bar)
 
         foo = Foo()
@@ -339,11 +339,11 @@ class LazyValidationTest(unittest2.TestCase):
 
     def test_list(self):
         class Bar(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             string = StringProperty(required=True)
 
         class Foo(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             bars = ListProperty(Bar, required=True)
 
         foo = Foo()
@@ -355,11 +355,11 @@ class LazyValidationTest(unittest2.TestCase):
 
     def test_dict(self):
         class Bar(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             string = StringProperty(required=True)
 
         class Foo(JsonObject):
-            _validate_lazily = True
+            _validate_required_lazily = True
             bar_map = DictProperty(Bar, required=True)
 
         foo = Foo()
