@@ -90,23 +90,27 @@ class JsonContainerProperty(JsonProperty):
     _type = default = None
     container_class = None
 
-    def __init__(self, obj_type=None, **kwargs):
-        self._obj_type = obj_type
-        super(JsonContainerProperty, self).__init__(**kwargs)
-
-    @property
-    def obj_type(self):
-        if inspect.isfunction(self._obj_type):
-            return self._obj_type()
+    def __init__(self, item_type=None, **kwargs):
+        from convert import ALLOWED_PROPERTY_TYPES
+        if inspect.isfunction(item_type):
+            item_type = item_type()
         else:
-            return self._obj_type
+            item_type = item_type
+        self.item_type = item_type
+        if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
+                and not issubclass(item_type, JsonObject):
+            raise ValueError("item_type {0!r} not in {1!r}".format(
+                item_type,
+                ALLOWED_PROPERTY_TYPES,
+            ))
+        super(JsonContainerProperty, self).__init__(**kwargs)
 
     def empty(self, value):
         return not value
 
     def wrap(self, obj):
         from properties import type_to_property
-        wrapper = type_to_property(self.obj_type) if self.obj_type else None
+        wrapper = type_to_property(self.item_type) if self.item_type else None
         return self.container_class(obj, wrapper=wrapper)
 
     def unwrap(self, obj):
@@ -203,10 +207,10 @@ class AbstractDateProperty(JsonProperty):
         raise NotImplementedError()
 
 
-def check_type(obj, obj_type, message):
+def check_type(obj, item_type, message):
     if obj is None:
-        return obj_type()
-    elif not isinstance(obj, obj_type):
+        return item_type()
+    elif not isinstance(obj, item_type):
         raise BadValueError(message)
     else:
         return obj
