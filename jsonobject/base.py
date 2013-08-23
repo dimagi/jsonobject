@@ -252,6 +252,65 @@ class JsonArray(list):
         self._obj.extend(unwrapped_list)
         super(JsonArray, self).extend(wrapped_list)
 
+    def insert(self, index, wrapped):
+        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        self._obj.insert(index, unwrapped)
+        super(JsonArray, self).insert(index, wrapped)
+
+    def remove(self, value):
+        i = self.index(value)
+        super(JsonArray, self).remove(value)
+        self._obj.pop(i)
+
+    def pop(self, index=-1):
+        self._obj.pop(index)
+        return super(JsonArray, self).pop(index)
+
+    def sort(self, cmp=None, key=None, reverse=False):
+        zipped = zip(self, self._obj)
+        if key:
+            new_key = lambda pair: key(pair[0])
+            zipped.sort(key=new_key, reverse=reverse)
+        elif cmp:
+            new_cmp = lambda pair1, pair2: cmp(pair1[0], pair2[0])
+            zipped.sort(cmp=new_cmp, reverse=reverse)
+        else:
+            zipped.sort(reverse=reverse)
+
+        wrapped_list, unwrapped_list = zip(*zipped)
+        while self:
+            self.pop()
+        super(JsonArray, self).extend(wrapped_list)
+        self._obj.extend(unwrapped_list)
+
+    def reverse(self):
+        self._obj.reverse()
+        super(JsonArray, self).reverse()
+
+    def __fix_slice(self, i, j):
+        length = len(self)
+        if j < 0:
+            j += length
+        if i < 0:
+            i += length
+        if i > length:
+            i = length
+        if j > length:
+            j = length
+        return i, j
+
+    def __setslice__(self, i, j, sequence):
+        i, j = self.__fix_slice(i, j)
+        for _ in range(j - i):
+            self.pop(i)
+        for k, wrapped in enumerate(sequence):
+            self.insert(i + k, wrapped)
+
+    def __delslice__(self, i, j):
+        i, j = self.__fix_slice(i, j)
+        for _ in range(j - i):
+            self.pop(i)
+
 
 class SimpleDict(dict):
     """
