@@ -92,14 +92,14 @@ class TimeProperty(AbstractDateProperty):
 
 class ObjectProperty(JsonContainerProperty):
 
-    default = lambda self: self.obj_type()
+    default = lambda self: self.item_type()
 
     def wrap(self, obj):
-        return self.obj_type.wrap(obj)
+        return self.item_type.wrap(obj)
 
     def unwrap(self, obj):
-        assert isinstance(obj, self.obj_type), \
-            '{0} is not an instance of {1}'.format(obj, self.obj_type)
+        assert isinstance(obj, self.item_type), \
+            '{0} is not an instance of {1}'.format(obj, self.item_type)
         return obj, obj._obj
 
 
@@ -122,14 +122,14 @@ class DictProperty(JsonContainerProperty):
 
 
 
-def type_to_property(obj_type, *args, **kwargs):
+def type_to_property(item_type, *args, **kwargs):
     from .convert import MAP_TYPES_PROPERTIES
-    if issubclass(obj_type, JsonObject):
-        return ObjectProperty(obj_type, *args, **kwargs)
-    elif obj_type in MAP_TYPES_PROPERTIES:
-        return MAP_TYPES_PROPERTIES[obj_type](*args, **kwargs)
+    if issubclass(item_type, JsonObject):
+        return ObjectProperty(item_type, *args, **kwargs)
+    elif item_type in MAP_TYPES_PROPERTIES:
+        return MAP_TYPES_PROPERTIES[item_type](*args, **kwargs)
     else:
         for key, value in MAP_TYPES_PROPERTIES.items():
-            if issubclass(obj_type, key):
+            if issubclass(item_type, key):
                 return value(*args, **kwargs)
-        raise TypeError('Type {0} not recognized'.format(obj_type))
+        raise TypeError('Type {0} not recognized'.format(item_type))
