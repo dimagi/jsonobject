@@ -3,7 +3,15 @@
 import datetime
 import time
 import decimal
-from jsonobject.base import AssertTypeProperty, JsonProperty, JsonArray, JsonObject, JsonContainerProperty, JsonDict, AbstractDateProperty
+from jsonobject.base import (
+    JsonProperty,
+    AssertTypeProperty,
+    AbstractDateProperty,
+    JsonContainerProperty,
+    JsonArray,
+    JsonDict,
+    JsonObject,
+)
 
 
 class StringProperty(AssertTypeProperty):
