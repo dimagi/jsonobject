@@ -8,7 +8,7 @@ class JsonProperty(object):
     default = None
 
     def __init__(self, default=Ellipsis, name=None, choices=None, required=False,
-                 exclude_if_none=False):
+                 exclude_if_none=False, validators=()):
         self.name = name
         if default is Ellipsis:
             default = self.default
@@ -19,6 +19,13 @@ class JsonProperty(object):
         self.choices = choices
         self.required = required
         self.exclude_if_none = exclude_if_none
+        if hasattr(validators, '__iter__'):
+            def _validator(value):
+                for validator in validators:
+                    validator(value)
+            self.custom_validator = _validator
+        else:
+            self.custom_validator = validators
 
     def init_property(self, default_name):
         self.name = self.name or default_name
@@ -77,6 +84,7 @@ class JsonProperty(object):
             raise BadValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choices)
             )
+        self.custom_validator(value)
         if required and self.empty(value) and self.required:
             raise BadValueError(
                 'Property {0} is required.'.format(self.name)
