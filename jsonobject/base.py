@@ -1,3 +1,4 @@
+import copy
 import inspect
 from jsonobject.exceptions import DeleteNotAllowed, BadValueError
 
@@ -199,7 +200,7 @@ class JsonArray(list):
             super(JsonArray, self).append(self._wrapper.wrap(item))
 
     def to_json(self):
-        return self._obj
+        return copy.deepcopy(self._obj)
 
     def validate(self):
         for obj in self:
