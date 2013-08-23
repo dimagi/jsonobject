@@ -294,6 +294,101 @@ class JsonDict(SimpleDict):
         super(JsonDict, self).__delitem__(key)
 
 
+class JsonSet(set):
+    def __init__(self, _obj=None, wrapper=None):
+        super(JsonSet, self).__init__()
+        if isinstance(_obj, set):
+            _obj = list(_obj)
+        self._obj = check_type(_obj, list, 'JsonSet must wrap a list or None')
+        self._wrapper = wrapper or DefaultProperty()
+
+        for item in self._obj:
+            super(JsonSet, self).add(self._wrapper.wrap(item))
+
+    def validate(self):
+        for obj in self:
+            self._wrapper.validate(obj)
+
+    def add(self, wrapped):
+        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        if wrapped not in self:
+            self._obj.append(unwrapped)
+            super(JsonSet, self).add(wrapped)
+
+    def remove(self, wrapped):
+        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        if wrapped in self:
+            self._obj.remove(unwrapped)
+            super(JsonSet, self).remove(wrapped)
+        else:
+            raise KeyError(wrapped)
+
+    def discard(self, wrapped):
+        try:
+            self.remove(wrapped)
+        except KeyError:
+            pass
+
+    def pop(self):
+        # get first item
+        for wrapped in self:
+            break
+        else:
+            raise KeyError()
+        wrapped_, unwrapped = self._wrapper.unwrap(wrapped)
+        assert wrapped is wrapped_
+        self.remove(unwrapped)
+        return wrapped
+
+    def clear(self):
+        while self:
+            self.pop()
+
+    def __ior__(self, other):
+        for wrapped in other:
+            self.add(wrapped)
+        return self
+
+    def update(self, *args):
+        for wrapped_list in args:
+            self |= set(wrapped_list)
+
+    union_update = update
+
+    def __iand__(self, other):
+        for wrapped in list(self):
+            if wrapped not in other:
+                self.remove(wrapped)
+        return self
+
+    def intersection_update(self, *args):
+        for wrapped_list in args:
+            self &= set(wrapped_list)
+
+    def __isub__(self, other):
+        for wrapped in list(self):
+            if wrapped in other:
+                self.remove(wrapped)
+        return self
+
+    def difference_update(self, *args):
+        for wrapped_list in args:
+            self -= set(wrapped_list)
+
+    def __ixor__(self, other):
+        removed = set()
+        for wrapped in list(self):
+            if wrapped in other:
+                self.remove(wrapped)
+                removed.add(wrapped)
+        self.update(other - removed)
+        return self
+
+    def symmetric_difference_update(self, *args):
+        for wrapped_list in args:
+            self ^= set(wrapped_list)
+
+
 class JsonObjectMeta(type):
     # There's a pretty fundamental cyclic dependency between this metaclass
     # and knowledge of all available property types (in properties module).
