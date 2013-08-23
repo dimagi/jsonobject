@@ -91,15 +91,19 @@ class JsonContainerProperty(JsonProperty):
     container_class = None
 
     def __init__(self, obj_type=None, **kwargs):
-        self._obj_type = obj_type
-        super(JsonContainerProperty, self).__init__(**kwargs)
-
-    @property
-    def obj_type(self):
-        if inspect.isfunction(self._obj_type):
-            return self._obj_type()
+        from convert import ALLOWED_PROPERTY_TYPES
+        if inspect.isfunction(obj_type):
+            obj_type = obj_type()
         else:
-            return self._obj_type
+            obj_type = obj_type
+        self.obj_type = obj_type
+        if obj_type and obj_type not in tuple(ALLOWED_PROPERTY_TYPES) \
+                and not issubclass(obj_type, JsonObject):
+            raise ValueError("item_type {0!r} not in {1!r}".format(
+                obj_type,
+                ALLOWED_PROPERTY_TYPES,
+            ))
+        super(JsonContainerProperty, self).__init__(**kwargs)
 
     def empty(self, value):
         return not value
