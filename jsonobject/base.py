@@ -349,6 +349,9 @@ class JsonDict(SimpleDict):
         return self._wrapper.unwrap(wrapped)
 
     def __setitem__(self, key, value):
+        if isinstance(key, int):
+            key = unicode(key)
+
         wrapped, unwrapped = self.__unwrap(key, value)
         self._obj[key] = unwrapped
         super(JsonDict, self).__setitem__(key, wrapped)
@@ -356,6 +359,11 @@ class JsonDict(SimpleDict):
     def __delitem__(self, key):
         del self._obj[key]
         super(JsonDict, self).__delitem__(key)
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            key = unicode(key)
+        return super(JsonDict, self).__getitem__(key)
 
 
 class JsonSet(set):
