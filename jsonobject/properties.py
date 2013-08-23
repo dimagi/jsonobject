@@ -97,39 +97,21 @@ class ObjectProperty(JsonContainerProperty):
 
 class ListProperty(JsonContainerProperty):
 
-    default = list
+    _type = default = list
+    container_class = JsonArray
 
-    def wrap(self, obj):
-        wrapper = type_to_property(self.obj_type) if self.obj_type else None
-        return JsonArray(obj, wrapper=wrapper)
-
-    def unwrap(self, obj):
-        assert isinstance(obj, list), \
-            '{0} is not an instance of list'.format(obj)
-
-        if isinstance(obj, JsonArray):
-            return obj, obj._obj
-        else:
-            wrapped = self.wrap([])
-            wrapped.extend(obj)
-            return self.unwrap(wrapped)
+    def _update(self, container, extension):
+        container.extend(extension)
 
 
 class DictProperty(JsonContainerProperty):
 
-    default = dict
+    _type = default = dict
+    container_class = JsonDict
 
-    def wrap(self, obj):
-        wrapper = type_to_property(self.obj_type) if self.obj_type else None
-        return JsonDict(obj, wrapper)
+    def _update(self, container, extension):
+        container.update(extension)
 
-    def unwrap(self, obj):
-        if isinstance(obj, JsonDict):
-            return obj, obj._obj
-        else:
-            wrapped = self.wrap({})
-            wrapped.update(obj)
-            return self.unwrap(wrapped)
 
 
 def type_to_property(obj_type, *args, **kwargs):
