@@ -87,6 +87,9 @@ class JsonProperty(object):
 
 class JsonContainerProperty(JsonProperty):
 
+    _type = default = None
+    container_class = None
+
     def __init__(self, obj_type=None, **kwargs):
         self._obj_type = obj_type
         super(JsonContainerProperty, self).__init__(**kwargs)
@@ -101,6 +104,25 @@ class JsonContainerProperty(JsonProperty):
     def empty(self, value):
         return not value
 
+    def wrap(self, obj):
+        from properties import type_to_property
+        wrapper = type_to_property(self.obj_type) if self.obj_type else None
+        return self.container_class(obj, wrapper=wrapper)
+
+    def unwrap(self, obj):
+        if not isinstance(obj, self._type):
+            raise BadValueError(
+                '{0} is not an instance of {1}'.format(obj, self._type.__name__)
+            )
+        if isinstance(obj, self.container_class):
+            return obj, obj._obj
+        else:
+            wrapped = self.wrap(self._type())
+            self._update(wrapped, obj)
+            return self.unwrap(wrapped)
+
+    def _update(self, container, extension):
+        raise NotImplementedError()
 
 class DefaultProperty(JsonProperty):
     def wrap(self, obj):
