@@ -221,9 +221,6 @@ class JsonArray(list):
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
 
-    def to_json(self):
-        return copy.deepcopy(self._obj)
-
     def validate(self):
         for obj in self:
             self._wrapper.validate(obj)
@@ -389,7 +386,7 @@ class JsonObject(SimpleDict):
 
     def to_json(self):
         self.validate()
-        return self._obj
+        return copy.deepcopy(self._obj)
 
     def __get_property(self, key):
         try:
