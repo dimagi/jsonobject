@@ -10,6 +10,7 @@ from jsonobject.base import (
     JsonContainerProperty,
     JsonArray,
     JsonDict,
+    JsonSet,
     JsonObject,
 )
 
@@ -120,6 +121,14 @@ class DictProperty(JsonContainerProperty):
     def _update(self, container, extension):
         container.update(extension)
 
+
+class SetProperty(JsonContainerProperty):
+
+    _type = default = set
+    container_class = JsonSet
+
+    def _update(self, container, extension):
+        container.update(extension)
 
 
 def type_to_property(obj_type, *args, **kwargs):
