@@ -452,12 +452,7 @@ class JsonObject(SimpleDict):
                                'JsonObject must wrap a dict or None')
 
         for key, value in self._obj.items():
-            wrapped = self.__wrap(key, value)
-            if key in self._properties_by_key:
-                self[key] = wrapped
-            else:
-                # these should be added as attributes
-                setattr(self, key, wrapped)
+           self.set_raw_value(key, value)
 
         for attr, value in kwargs.items():
             setattr(self, attr, value)
@@ -469,6 +464,13 @@ class JsonObject(SimpleDict):
                 except TypeError:
                     d = value.default(self)
                 self[key] = d
+
+    def set_raw_value(self, key, value):
+        wrapped = self.__wrap(key, value)
+        if key in self._properties_by_key:
+            self[key] = wrapped
+        else:
+            setattr(self, key, wrapped)
 
     @property
     def __dynamic_properties(self):
