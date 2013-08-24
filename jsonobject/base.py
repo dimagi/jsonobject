@@ -8,7 +8,7 @@ class JsonProperty(object):
     default = None
 
     def __init__(self, default=Ellipsis, name=None, choices=None, required=False,
-                 exclude_if_none=False, validators=()):
+                 exclude_if_none=False, validators=(), verbose_name=None):
         self.name = name
         if default is Ellipsis:
             default = self.default
@@ -26,6 +26,7 @@ class JsonProperty(object):
             self.custom_validator = _validator
         else:
             self.custom_validator = validators
+        self.verbose_name = verbose_name
 
     def init_property(self, default_name):
         self.name = self.name or default_name
