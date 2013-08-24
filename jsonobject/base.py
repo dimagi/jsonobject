@@ -554,6 +554,9 @@ class JsonObject(SimpleDict):
         else:
             setattr(self, key, wrapped)
 
+    def properties(self):
+        return self._properties_by_attr.copy()
+
     @property
     def __dynamic_properties(self):
         return getattr(self, '_$').dynamic_properties
