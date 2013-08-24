@@ -140,6 +140,7 @@ class JsonContainerProperty(JsonProperty):
     def _update(self, container, extension):
         raise NotImplementedError()
 
+
 class DefaultProperty(JsonProperty):
     def wrap(self, obj):
         from . import convert
@@ -531,7 +532,7 @@ class JsonObject(SimpleDict):
                                'JsonObject must wrap a dict or None')
 
         for key, value in self._obj.items():
-           self.set_raw_value(key, value)
+            self.set_raw_value(key, value)
 
         for attr, value in kwargs.items():
             setattr(self, attr, value)
