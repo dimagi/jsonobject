@@ -652,6 +652,9 @@ class JsonObject(SimpleDict):
             for key in properties),
         )
 
+    def __hash__(self):
+        return id(self)
+
 
 def get_dynamic_properties(obj):
     return getattr(obj, '_$').dynamic_properties.copy()
