@@ -88,8 +88,10 @@ class JsonProperty(object):
             raise BadValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choices)
             )
-        self.custom_validator(value)
-        if required and self.empty(value) and self.required:
+
+        if not self.empty(value):
+            self.custom_validator(value)
+        elif required and self.required:
             raise BadValueError(
                 'Property {0} is required.'.format(self.name)
             )
