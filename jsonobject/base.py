@@ -53,8 +53,11 @@ class JsonProperty(object):
         return self.wrap(value)
 
     def __get__(self, instance, owner):
-        assert self.name in instance
-        return instance[self.name]
+        if instance:
+            assert self.name in instance
+            return instance[self.name]
+        else:
+            return self
 
     def __set__(self, instance, value):
         instance[self.name] = value
