@@ -299,6 +299,13 @@ class JsonObjectTestCase(unittest2.TestCase):
             }
         })
 
+    def test_access_to_descriptor(self):
+        p = StringProperty()
+        class Foo(JsonObject):
+            string = p
+
+        self.assertIs(Foo.string, p)
+
 
 class LazyValidationTest(unittest2.TestCase):
 
