@@ -106,8 +106,8 @@ class JsonContainerProperty(JsonProperty):
         from convert import ALLOWED_PROPERTY_TYPES
         if inspect.isfunction(item_type):
             item_type = item_type()
-        else:
-            item_type = item_type
+        if hasattr(item_type, '_type'):
+            item_type = item_type._type
         self.item_type = item_type
         if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
                 and not issubclass(item_type, JsonObject):
