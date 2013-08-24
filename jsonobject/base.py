@@ -55,10 +55,7 @@ class JsonProperty(object):
 
     def __get__(self, instance, owner):
         assert self.name in instance
-        if instance:
-            return instance[self.name]
-        else:
-            return self
+        return instance[self.name]
 
     def __set__(self, instance, value):
         instance[self.name] = value
