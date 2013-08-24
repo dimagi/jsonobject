@@ -477,6 +477,21 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
 
+    def test_key_error(self):
+        class Foo(JsonObject):
+            pass
+        foo = Foo()
+
+        with self.assertRaises(KeyError):
+            foo['hello']
+
+    def test_attribute_error(self):
+        class Foo(JsonObject):
+            pass
+        foo = Foo()
+        
+        with self.assertRaises(AttributeError):
+            foo.hello
 
 class DynamicConversionTestCase(unittest2.TestCase):
     import datetime
