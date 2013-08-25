@@ -477,6 +477,29 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
 
+    def test_descriptor(self):
+        class Desc(object):
+            def __get__(self, instance, owner):
+                if not instance:
+                    return self
+                return instance._string
+
+            def __set__(self, instance, value):
+                instance._string = value
+
+        class Foo(JsonObject):
+            _string = StringProperty()
+            string = Desc()
+
+        foo = Foo(_string='hello')
+        self.assertEqual(foo._string, 'hello')
+        self.assertEqual(foo.string, 'hello')
+        foo.string = 'goodbye'
+        self.assertEqual(foo.string, 'goodbye')
+        self.assertEqual(foo._string, 'goodbye')
+        self.assertEqual(foo.to_json(), {
+            '_string': 'goodbye',
+        })
     def test_key_error(self):
         class Foo(JsonObject):
             pass
