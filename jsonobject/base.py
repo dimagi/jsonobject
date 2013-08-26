@@ -612,7 +612,8 @@ class JsonObject(SimpleDict):
     def __is_dynamic_property(self, name):
         return (
             name not in self._properties_by_attr and
-            not name.startswith('_')
+            not name.startswith('_') and
+            not hasattr(self.__class__, name)
         )
 
     def __setattr__(self, name, value):
