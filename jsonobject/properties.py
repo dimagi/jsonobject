@@ -37,6 +37,8 @@ class DecimalProperty(JsonProperty):
         return decimal.Decimal(obj)
 
     def unwrap(self, obj):
+        if isinstance(obj, (int, long)):
+            obj = decimal.Decimal(obj)
         assert isinstance(obj, decimal.Decimal)
         return obj, unicode(obj)
 
