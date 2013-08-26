@@ -638,8 +638,10 @@ class JsonObject(SimpleDict):
     def __delattr__(self, name):
         if name in self._properties_by_attr:
             raise DeleteNotAllowed(name)
-        else:
+        elif self.__is_dynamic_property(name):
             del self[name]
+        else:
+            super(JsonObject, self).__delattr__(name)
 
     def __repr__(self):
         name = self.__class__.__name__
