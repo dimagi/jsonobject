@@ -11,7 +11,7 @@ class Features(JsonObject):
 
     """
 
-    hair = StringProperty(choices=['brown', 'blond', 'grey'])
+    hair = StringProperty(choices=['brown', ('blond', 'Blond'), 'grey'])
     eyes = StringProperty()
 
 
