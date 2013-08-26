@@ -17,6 +17,12 @@ class JsonProperty(object):
         else:
             self.default = lambda: default
         self.choices = choices
+        self.choice_keys = []
+        if choices:
+            for choice in choices:
+                if isinstance(choice, tuple):
+                    choice, _ = choice
+                self.choice_keys.append(choice)
         self.required = required
         self.exclude_if_none = exclude_if_none
         if hasattr(validators, '__iter__'):
@@ -84,9 +90,9 @@ class JsonProperty(object):
         return value is None
 
     def validate(self, value, required=True):
-        if self.choices and value not in self.choices and value is not None:
+        if self.choice_keys and value not in self.choice_keys and value is not None:
             raise BadValueError(
-                '{0!r} not in choices: {1!r}'.format(value, self.choices)
+                '{0!r} not in choices: {1!r}'.format(value, self.choice_keys)
             )
 
         if not self.empty(value):
