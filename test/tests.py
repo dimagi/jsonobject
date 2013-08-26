@@ -424,6 +424,18 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.decimal, decimal.Decimal('2.0'))
         self.assertEqual(foo.to_json()['decimal'], '2.0')
 
+        foo.decimal = 3
+        self.assertEqual(foo.decimal, decimal.Decimal(3L))
+        self.assertEqual(foo.to_json()['decimal'], '3')
+
+        foo.decimal = 4L
+        self.assertEqual(foo.decimal, decimal.Decimal(4L))
+        self.assertEqual(foo.to_json()['decimal'], '4')
+
+        foo.decimal = 5.25
+        self.assertEqual(foo.decimal, decimal.Decimal(5.25))
+        self.assertEqual(foo.to_json()['decimal'], '5.25')
+
     def test_dict(self):
         mapping = {'one': 1, 'two': 2}
         o = ObjectWithDictProperty(mapping=mapping)
