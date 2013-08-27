@@ -433,7 +433,7 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json()['decimal'], '4')
 
         foo.decimal = 5.25
-        self.assertEqual(foo.decimal, decimal.Decimal(5.25))
+        self.assertEqual(foo.decimal, decimal.Decimal(unicode(5.25)))
         self.assertEqual(foo.to_json()['decimal'], '5.25')
 
     def test_dict(self):
