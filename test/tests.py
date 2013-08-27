@@ -119,7 +119,7 @@ class JsonObjectTestCase(unittest2.TestCase):
 
         features = Features.wrap(features)
         danny.features = features
-        self.assertEqual(danny.features, {'hair': 'grey', 'eyes': 'blue'})
+        self.assertEqual(dict(danny.features), {'hair': 'grey', 'eyes': 'blue'})
 
         numbers = [1, 2, 3, 4, 5]
         danny.favorite_numbers = numbers
@@ -471,7 +471,7 @@ class PropertyTestCase(unittest2.TestCase):
         with self.assertRaises(AttributeError):
             foo.blah = 3
         foo._blah = 5
-        self.assertEqual(foo, {})
+        self.assertEqual(dict(foo), {})
         self.assertEqual(foo.to_json(), {})
         self.assertEqual(foo._blah, 5)
 
@@ -484,7 +484,7 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
         foo = Foo(_id='xxx')
-        self.assertEqual(foo, {'name': None, '_id': 'xxx'})
+        self.assertEqual(dict(foo), {'name': None, '_id': 'xxx'})
         foo._id = None
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
@@ -539,7 +539,6 @@ class DynamicConversionTestCase(unittest2.TestCase):
     def _test_dynamic_conversion(self, foo):
         string_date = self.string_date
         date_date = self.date_date
-
         self.assertEqual(foo.to_json()['my_date'], string_date)
         self.assertEqual(foo.my_date, date_date)
 
