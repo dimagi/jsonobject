@@ -522,7 +522,7 @@ class _JsonObjectPrivateInstanceVariables(object):
         self.dynamic_properties = dynamic_properties or {}
 
 
-class JsonObject(SimpleDict):
+class JsonObjectBase(object):
 
     __metaclass__ = JsonObjectMeta
 
@@ -533,12 +533,11 @@ class JsonObject(SimpleDict):
     _properties_by_key = None
 
     def __init__(self, _obj=None, **kwargs):
-        super(JsonObject, self).__init__()
-
         setattr(self, '_$', _JsonObjectPrivateInstanceVariables())
 
         self._obj = check_type(_obj, dict,
                                'JsonObject must wrap a dict or None')
+        self._wrapped = {}
 
         for key, value in self._obj.items():
             self.set_raw_value(key, value)
@@ -574,7 +573,7 @@ class JsonObject(SimpleDict):
         return self
 
     def validate(self, required=True):
-        for key, value in self.items():
+        for key, value in self._wrapped.items():
             self.__get_property(key).validate(value, required=required)
 
     def to_json(self):
@@ -606,7 +605,7 @@ class JsonObject(SimpleDict):
 
     def __setitem__(self, key, value):
         wrapped, unwrapped = self.__unwrap(key, value)
-        super(JsonObject, self).__setitem__(key, wrapped)
+        self._wrapped[key] = wrapped
         if self.__get_property(key).exclude(unwrapped):
             self._obj.pop(key, None)
         else:
@@ -614,7 +613,7 @@ class JsonObject(SimpleDict):
         if key not in self._properties_by_key:
             assert key not in self._properties_by_attr
             self.__dynamic_properties[key] = wrapped
-            super(JsonObject, self).__setattr__(key, wrapped)
+            super(JsonObjectBase, self).__setattr__(key, wrapped)
 
     def __is_dynamic_property(self, name):
         return (
@@ -633,15 +632,18 @@ class JsonObject(SimpleDict):
                     "(not a valid property)".format(name)
                 )
         else:
-            super(JsonObject, self).__setattr__(name, value)
+            super(JsonObjectBase, self).__setattr__(name, value)
 
     def __delitem__(self, key):
         if key in self._properties_by_key:
             raise DeleteNotAllowed(key)
         else:
+            if not self.__is_dynamic_property(key):
+                raise KeyError(key)
             del self._obj[key]
-            super(JsonObject, self).__delitem__(key)
-            super(JsonObject, self).__delattr__(key)
+            del self._wrapped[key]
+            del self.__dynamic_properties[key]
+            super(JsonObjectBase, self).__delattr__(key)
 
     def __delattr__(self, name):
         if name in self._properties_by_attr:
@@ -649,13 +651,13 @@ class JsonObject(SimpleDict):
         elif self.__is_dynamic_property(name):
             del self[name]
         else:
-            super(JsonObject, self).__delattr__(name)
+            super(JsonObjectBase, self).__delattr__(name)
 
     def __repr__(self):
         name = self.__class__.__name__
         predefined_properties = self._properties_by_attr.keys()
         predefined_property_keys = set(self._properties_by_attr[p].name for p in predefined_properties)
-        dynamic_properties = set(self.keys()) - predefined_property_keys
+        dynamic_properties = set(self._wrapped.keys()) - predefined_property_keys
         properties = sorted(predefined_properties) + sorted(dynamic_properties)
         return u'{name}({keyword_args})'.format(
             name=name,
@@ -665,8 +667,42 @@ class JsonObject(SimpleDict):
             for key in properties),
         )
 
-    def __hash__(self):
-        return id(self)
+
+class _LimitedDictInterfaceMixin(object):
+    """
+    mindlessly farms selected dict methods out to an internal dict
+
+    really only a separate class from JsonObject
+    to keep this mindlessness separate from the methods
+    that need to be more carefully understood
+
+    """
+    _wrapped = None
+
+    def keys(self):
+        return self._wrapped.keys()
+
+    def items(self):
+        return self._wrapped.items()
+
+    def iteritems(self):
+        return self._wrapped.iteritems()
+
+    def __contains__(self, item):
+        return item in self._wrapped
+
+    def __getitem__(self, item):
+        return self._wrapped[item]
+
+    def __iter__(self):
+        return iter(self._wrapped)
+
+    def __len__(self):
+        return len(self._wrapped)
+
+
+class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
+    pass
 
 
 def get_dynamic_properties(obj):
