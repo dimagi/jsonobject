@@ -52,71 +52,12 @@ MAP_TYPES_PROPERTIES = {
 }
 
 
-def convert_property(value):
-    if type(value) in MAP_TYPES_PROPERTIES:
-        prop = MAP_TYPES_PROPERTIES[type(value)]()
-        value = prop.to_json(value)
-    return value
-
-
 def value_to_property(value):
     if type(value) in MAP_TYPES_PROPERTIES:
         prop = MAP_TYPES_PROPERTIES[type(value)]()
         return prop
     else:
         return value
-
-
-def validate_list_content(value, item_type=None):
-    return [validate_content(item, item_type=item_type) for item in value]
-
-
-def validate_dict_content(value, item_type=None):
-    return dict([(k, validate_content(v,
-                item_type=item_type)) for k, v in value.iteritems()])
-
-
-def validate_content(value, item_type=None):
-    if isinstance(value, list):
-        value = validate_list_content(value, item_type=item_type)
-    elif isinstance(value, dict):
-        value = validate_dict_content(value, item_type=item_type)
-    elif item_type is not None and not isinstance(value, item_type):
-        raise BadValueError(
-            'Items  must all be in %s' % item_type)
-    elif type(value) not in ALLOWED_PROPERTY_TYPES:
-            raise BadValueError(
-                'Items  must all be in %s' %
-                    (ALLOWED_PROPERTY_TYPES))
-    return value
-
-
-def dict_to_json(value, item_type=None):
-    return dict([(k, value_to_json(v, item_type=item_type)) for k, v in value.iteritems()])
-
-
-def list_to_json(value, item_type=None):
-    return [value_to_json(item, item_type=item_type) for item in value]
-
-
-def value_to_json(value, item_type=None):
-    """ convert a value to json using appropriate regexp.
-    For Dates we use ISO 8601. Decimal are converted to string.
-
-    """
-    if isinstance(value, datetime.datetime) and is_type_ok(item_type, datetime.datetime):
-        value = value.replace(microsecond=0).isoformat() + 'Z'
-    elif isinstance(value, datetime.date) and is_type_ok(item_type, datetime.date):
-        value = value.isoformat()
-    elif isinstance(value, datetime.time) and is_type_ok(item_type, datetime.time):
-        value = value.replace(microsecond=0).isoformat()
-    elif isinstance(value, decimal.Decimal) and is_type_ok(item_type, decimal.Decimal):
-        value = unicode(value)
-    elif isinstance(value, list):
-        value = list_to_json(value, item_type)
-    elif isinstance(value, dict):
-        value = dict_to_json(value, item_type)
-    return value
 
 
 def is_type_ok(item_type, value_type):
@@ -144,16 +85,6 @@ def value_to_python(value, item_type=None):
                 value = prop.to_python(value)
             except:
                 pass
-    elif isinstance(value, list):
-        value = list_to_python(value, item_type=item_type)
-    elif isinstance(value, dict):
-        value = dict_to_python(value, item_type=item_type)
+    elif isinstance(value, (list, dict)):
+        raise NotImplementedError()
     return value
-
-
-def list_to_python(value, item_type=None):
-    return [value_to_python(item, item_type=item_type) for item in value]
-
-
-def dict_to_python(value, item_type=None):
-    return dict([(k, value_to_python(v, item_type=item_type)) for k, v in value.iteritems()])
