@@ -256,6 +256,10 @@ class JsonArray(list):
         self._obj.append(unwrapped)
         super(JsonArray, self).append(wrapped)
 
+    def __delitem__(self, i):
+        super(JsonArray, self).__delitem__(i)
+        del self._obj[i]
+
     def extend(self, wrapped_list):
         if wrapped_list:
             wrapped_list, unwrapped_list = zip(
