@@ -581,6 +581,19 @@ class DynamicConversionTestCase(unittest2.TestCase):
         foo.my_dict['a']['b'] = self.date_date
         self._test_dynamic_conversion(foo)
 
+    def test_properties(self):
+        class Foo(JsonObject):
+            string = StringProperty()
+            date = DateProperty()
+            dict = DictProperty()
+
+        self.assertEqual(Foo.properties(), Foo().properties())
+        self.assertEqual(Foo.properties(), {
+            'string': Foo.string,
+            'date': Foo.date,
+            'dict': Foo.dict,
+        })
+
 
 class User(JsonObject):
     username = StringProperty()
