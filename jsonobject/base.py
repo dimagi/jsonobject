@@ -564,8 +564,9 @@ class JsonObjectBase(object):
         else:
             setattr(self, key, wrapped)
 
-    def properties(self):
-        return self._properties_by_attr.copy()
+    @classmethod
+    def properties(cls):
+        return cls._properties_by_attr.copy()
 
     @property
     def __dynamic_properties(self):
