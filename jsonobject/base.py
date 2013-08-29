@@ -624,7 +624,7 @@ class JsonObjectBase(object):
         return (
             name not in self._properties_by_attr and
             not name.startswith('_') and
-            not hasattr(self.__class__, name)
+            not inspect.isdatadescriptor(getattr(self.__class__, name, None))
         )
 
     def __setattr__(self, name, value):

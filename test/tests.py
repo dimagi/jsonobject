@@ -594,6 +594,14 @@ class DynamicConversionTestCase(unittest2.TestCase):
             'dict': Foo.dict,
         })
 
+    def test_change_type(self):
+        class Foo(JsonObject):
+            my_list = ('bar',)
+
+        foo = Foo()
+        foo.my_list = list(foo.my_list)
+        self.assertEqual(foo.to_json(), {'my_list': ['bar']})
+
 
 class User(JsonObject):
     username = StringProperty()
