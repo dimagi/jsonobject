@@ -601,12 +601,17 @@ class JsonObjectBase(object):
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
-        property_.validate(
-            value,
-            required=not self._validate_required_lazily,
-            recursive=False,
-        )
-
+        try:
+            property_.validate(
+                value,
+                required=not self._validate_required_lazily,
+                recursive=False,
+            )
+        except TypeError:
+            property_.validate(
+                value,
+                required=not self._validate_required_lazily,
+            )
         if value is None:
             return None, None
 
