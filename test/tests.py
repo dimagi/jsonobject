@@ -306,6 +306,26 @@ class JsonObjectTestCase(unittest2.TestCase):
 
         self.assertIs(Foo.string, p)
 
+    def test_recursive_validation(self):
+        class Baz(JsonObject):
+            string = StringProperty()
+
+        class Bar(JsonObject):
+            baz = ObjectProperty(Baz)
+
+        class Foo(JsonObject):
+            bar = ObjectProperty(Bar)
+
+        with self.assertRaises(BadValueError):
+            Foo.wrap({'bar': {'baz': {'string': 1}}})
+        with self.assertRaises(BadValueError):
+            Foo.wrap({'bar': {'baz': []}})
+        with self.assertRaises(BadValueError):
+            Foo.wrap({'bar': {'baz': 1}})
+        with self.assertRaises(BadValueError):
+            Foo.wrap({'bar': []})
+        Foo.wrap({'bar': {'baz': {'string': ''}}})
+
 
 class LazyValidationTest(unittest2.TestCase):
 
@@ -375,7 +395,6 @@ class LazyValidationTest(unittest2.TestCase):
         self._validate_raises(foo)
         foo.bar_map['hi'].string = 'hi'
         self._validate_not_raises(foo)
-
 
 
 class PropertyTestCase(unittest2.TestCase):
