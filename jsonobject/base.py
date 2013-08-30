@@ -90,7 +90,7 @@ class JsonProperty(object):
     def empty(self, value):
         return value is None
 
-    def validate(self, value, required=True):
+    def validate(self, value, required=True, recursive=True):
         if self.choice_keys and value not in self.choice_keys and value is not None:
             raise BadValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choice_keys)
@@ -102,7 +102,7 @@ class JsonProperty(object):
             raise BadValueError(
                 'Property {0} is required.'.format(self.name)
             )
-        if hasattr(value, 'validate'):
+        if recursive and hasattr(value, 'validate'):
             value.validate(required=required)
 
 
@@ -601,7 +601,11 @@ class JsonObjectBase(object):
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
-        property_.validate(value, required=not self._validate_required_lazily)
+        property_.validate(
+            value,
+            required=not self._validate_required_lazily,
+            recursive=False,
+        )
 
         if value is None:
             return None, None
