@@ -7,6 +7,7 @@ import decimal
 import datetime
 
 from . import properties
+from jsonobject.exceptions import BadValueError
 import re
 
 
@@ -53,11 +54,20 @@ MAP_TYPES_PROPERTIES = {
 
 
 def value_to_property(value):
-    if type(value) in MAP_TYPES_PROPERTIES:
+    if value is None:
+        return None
+    elif type(value) in MAP_TYPES_PROPERTIES:
         prop = MAP_TYPES_PROPERTIES[type(value)]()
         return prop
     else:
-        return value
+        for value_type, prop_class in MAP_TYPES_PROPERTIES.items():
+            if isinstance(value, value_type):
+                return prop_class()
+        else:
+            raise BadValueError('value {0!r} not in allowed types: {1!r}'.format(
+                value,
+                MAP_TYPES_PROPERTIES.keys(),
+            ))
 
 
 def is_type_ok(item_type, value_type):
