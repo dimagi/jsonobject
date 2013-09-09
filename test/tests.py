@@ -275,6 +275,8 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertIs(foo.my_list._obj, foo._obj['my_list'])
         foo = Foo(my_dict={})
         self.assertIs(foo.my_dict._obj, foo._obj['my_dict'])
+        foo = Foo(my_set=set())
+        self.assertIs(foo.my_set._obj, foo._obj['my_set'])
 
     def test_dynamic_dict_property(self):
         "dates copied from couchdbkit"
