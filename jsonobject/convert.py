@@ -3,6 +3,7 @@ This file was excerpted directly from couchdbkit.schema.properties
 and edited to fit the needs of jsonobject
 
 """
+from collections import MutableSet
 import decimal
 import datetime
 
@@ -33,6 +34,7 @@ ALLOWED_PROPERTY_TYPES = set([
     decimal.Decimal,
     dict,
     list,
+    set,
     type(None)
 ])
 
@@ -50,6 +52,7 @@ MAP_TYPES_PROPERTIES = {
     float: properties.FloatProperty,
     list: properties.ListProperty,
     dict: properties.DictProperty,
+    set: properties.SetProperty,
 }
 
 
@@ -95,6 +98,6 @@ def value_to_python(value, item_type=None):
                 value = prop.to_python(value)
             except:
                 pass
-    elif isinstance(value, (list, dict)):
+    elif isinstance(value, (list, dict, MutableSet)):
         raise NotImplementedError()
     return value
