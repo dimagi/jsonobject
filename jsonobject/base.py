@@ -6,6 +6,7 @@ from jsonobject.exceptions import DeleteNotAllowed, BadValueError
 class JsonProperty(object):
 
     default = None
+    data_type = None
 
     def __init__(self, default=Ellipsis, name=None, choices=None, required=False,
                  exclude_if_none=False, validators=None, verbose_name=None):
@@ -108,15 +109,15 @@ class JsonProperty(object):
 
 class JsonContainerProperty(JsonProperty):
 
-    _type = default = None
+    data_type = default = None
     container_class = None
 
     def __init__(self, item_type=None, **kwargs):
         from convert import ALLOWED_PROPERTY_TYPES
         if inspect.isfunction(item_type):
             item_type = item_type()
-        if hasattr(item_type, '_type'):
-            item_type = item_type._type
+        if hasattr(item_type, 'data_type'):
+            item_type = item_type.data_type
         self.item_type = item_type
         if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
                 and not issubclass(item_type, JsonObject):
@@ -135,14 +136,14 @@ class JsonContainerProperty(JsonProperty):
         return self.container_class(obj, wrapper=wrapper)
 
     def unwrap(self, obj):
-        if not isinstance(obj, self._type):
+        if not isinstance(obj, self.data_type):
             raise BadValueError(
-                '{0} is not an instance of {1}'.format(obj, self._type.__name__)
+                '{0} is not an instance of {1}'.format(obj, self.data_type.__name__)
             )
         if isinstance(obj, self.container_class):
             return obj, obj._obj
         else:
-            wrapped = self.wrap(self._type())
+            wrapped = self.wrap(self.data_type())
             self._update(wrapped, obj)
             return self.unwrap(wrapped)
 
@@ -184,11 +185,11 @@ class DefaultProperty(JsonProperty):
 
 
 class AssertTypeProperty(JsonProperty):
-    _type = None
+    data_type = None
 
     def assert_type(self, obj):
-        if not isinstance(obj, self._type):
-            raise BadValueError('{0} not of type {1}'.format(obj, self._type))
+        if not isinstance(obj, self.data_type):
+            raise BadValueError('{0} not of type {1}'.format(obj, self.data_type))
 
     def wrap(self, obj):
         self.assert_type(obj)
@@ -201,7 +202,7 @@ class AssertTypeProperty(JsonProperty):
 
 class AbstractDateProperty(JsonProperty):
 
-    _type = None
+    data_type = None
 
     def wrap(self, obj):
         try:
@@ -211,14 +212,14 @@ class AbstractDateProperty(JsonProperty):
         except ValueError:
             raise BadValueError('{0!r} is not a {1}-formatted string'.format(
                 obj,
-                self._type.__name__,
+                self.data_type.__name__,
             ))
 
     def unwrap(self, obj):
-        if not isinstance(obj, self._type):
+        if not isinstance(obj, self.data_type):
             raise BadValueError('{0!r} is not a {1} object'.format(
                 obj,
-                self._type.__name__,
+                self.data_type.__name__,
             ))
         return self._unwrap(obj)
 
