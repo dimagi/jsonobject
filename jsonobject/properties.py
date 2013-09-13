@@ -16,19 +16,19 @@ from jsonobject.base import (
 
 
 class StringProperty(AssertTypeProperty):
-    _type = basestring
+    data_type = basestring
 
 
 class BooleanProperty(AssertTypeProperty):
-    _type = bool
+    data_type = bool
 
 
 class IntegerProperty(AssertTypeProperty):
-    _type = int
+    data_type = int
 
 
 class FloatProperty(AssertTypeProperty):
-    _type = float
+    data_type = float
 
 
 class DecimalProperty(JsonProperty):
@@ -48,7 +48,7 @@ class DecimalProperty(JsonProperty):
 
 class DateProperty(AbstractDateProperty):
 
-    _type = datetime.date
+    data_type = datetime.date
 
     def _wrap(self, value):
         try:
@@ -63,7 +63,7 @@ class DateProperty(AbstractDateProperty):
 
 class DateTimeProperty(AbstractDateProperty):
 
-    _type = datetime.datetime
+    data_type = datetime.datetime
 
     def _wrap(self, value):
         try:
@@ -81,7 +81,7 @@ class DateTimeProperty(AbstractDateProperty):
 
 class TimeProperty(AbstractDateProperty):
 
-    _type = datetime.time
+    data_type = datetime.time
 
     def _wrap(self, value):
         try:
@@ -111,7 +111,7 @@ class ObjectProperty(JsonContainerProperty):
 
 class ListProperty(JsonContainerProperty):
 
-    _type = default = list
+    data_type = default = list
     container_class = JsonArray
 
     def _update(self, container, extension):
@@ -120,7 +120,7 @@ class ListProperty(JsonContainerProperty):
 
 class DictProperty(JsonContainerProperty):
 
-    _type = default = dict
+    data_type = default = dict
     container_class = JsonDict
 
     def _update(self, container, extension):
@@ -129,7 +129,7 @@ class DictProperty(JsonContainerProperty):
 
 class SetProperty(JsonContainerProperty):
 
-    _type = default = set
+    data_type = default = set
     container_class = JsonSet
 
     def _update(self, container, extension):
