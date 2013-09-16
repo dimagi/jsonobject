@@ -62,8 +62,8 @@ class ObjectWithDictProperty(JsonObject):
 
 
 class JsonObjectTestCase(unittest2.TestCase):
-    def test_wrap(self):
-        data = {
+    def _danny_data(self):
+        return {
             'first_name': 'Danny',
             'last_name': 'Roberts',
             'brothers': [{
@@ -77,6 +77,9 @@ class JsonObjectTestCase(unittest2.TestCase):
             'favorite_numbers': [1, 1, 2, 3, 5, 8],
             'tags': ['happy', 'know it'],
         }
+
+    def test_wrap(self):
+        data = self._danny_data()
         danny = FamilyMember.wrap(data)
         self.assertEqual(danny.doc_type, 'FamilyMember')
         self.assertEqual(danny.first_name, 'Danny')
@@ -125,6 +128,12 @@ class JsonObjectTestCase(unittest2.TestCase):
         danny.favorite_numbers = numbers
         self.assertEqual(danny.favorite_numbers, numbers)
         self.assertEqual(danny.to_json()['favorite_numbers'], numbers)
+
+    def test_pickle(self):
+        import pickle
+        f1 = FamilyMember.wrap(self._danny_data())
+        f2 = FamilyMember.wrap(self._danny_data())
+        self.assertEqual(f2.to_json(), pickle.loads(pickle.dumps(f1)).to_json())
 
     def test_default(self):
         p = FamilyMember(first_name='PJ')
