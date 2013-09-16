@@ -716,7 +716,12 @@ class _LimitedDictInterfaceMixin(object):
 
 
 class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
-    pass
+
+    def __getstate__(self):
+        return self.to_json()
+
+    def __setstate__(self, dct):
+        self.__init__(dct)
 
 
 def get_dynamic_properties(obj):
