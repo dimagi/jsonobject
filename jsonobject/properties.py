@@ -18,6 +18,18 @@ from jsonobject.base import (
 class StringProperty(AssertTypeProperty):
     _type = basestring
 
+    def wrap(self, obj):
+        super(StringProperty, self).wrap(obj)
+        if isinstance(obj, str):
+            obj = unicode(obj)
+        return obj
+
+    def unwrap(self, obj):
+        super(StringProperty, self).unwrap(obj)
+        if isinstance(obj, str):
+            obj = unicode(obj)
+        return obj, obj
+
 
 class BooleanProperty(AssertTypeProperty):
     _type = bool
