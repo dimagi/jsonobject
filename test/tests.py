@@ -82,6 +82,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         data = self._danny_data()
         danny = FamilyMember.wrap(data)
         self.assertEqual(danny.doc_type, 'FamilyMember')
+        self.assertIsInstance(danny.doc_type, unicode)
         self.assertEqual(danny.first_name, 'Danny')
         self.assertEqual(danny.last_name, 'Roberts')
         self.assertEqual(danny.brothers[0].full_name, 'Alex Roberts')
