@@ -35,11 +35,11 @@ Once it is defined, it can be used to wrap or produce deserialized JSON.
 )
 >>> user1.to_json()
 {
-    'name': 'John Doe',
-    'username': 'jdoe',
+    'name': u'John Doe',
+    'username': u'jdoe',
     'active': False,
     'date_joined': '2013-08-05T02:46:58Z',
-    'tags': ['generic', 'anonymous']
+    'tags': [u'generic', u'anonymous']
 }
 ```
 
@@ -47,7 +47,7 @@ Notice that the datetime is converted to an ISO format string in JSON, but is a 
 
 ```python
 >>> user1.date_joined
-datetime.datetime(2013, 8, 5, 2, 46, 58, 451286)
+datetime.datetime(2013, 8, 5, 2, 46, 58)
 ```
 
 ##Performance Comparison with Couchdbkit##
