@@ -3,7 +3,6 @@ This file was excerpted directly from couchdbkit.schema.properties
 and edited to fit the needs of jsonobject
 
 """
-from collections import MutableSet
 import decimal
 import datetime
 
@@ -89,6 +88,9 @@ def value_to_python(value, string_conversions=STRING_CONVERSIONS):
     >>> value_to_python('2013-10-09T10:05:51Z')
     datetime.datetime(2013, 10, 9, 10, 5, 51)
 
+    other values will be passed through unmodified
+    Note: containers' items are NOT recursively converted
+
     """
     if isinstance(value, basestring):
         convert = None
@@ -103,6 +105,4 @@ def value_to_python(value, string_conversions=STRING_CONVERSIONS):
                 value = convert(value)
             except Exception:
                 pass
-    elif isinstance(value, (list, dict, MutableSet)):
-        raise NotImplementedError()
     return value

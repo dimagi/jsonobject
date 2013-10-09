@@ -153,30 +153,15 @@ class JsonContainerProperty(JsonProperty):
 class DefaultProperty(JsonProperty):
     def wrap(self, obj):
         from . import convert
-        from properties import DictProperty
-        from properties import ListProperty
-        if isinstance(obj, dict):
-            property_ = DictProperty()
-        elif isinstance(obj, list):
-            property_ = ListProperty()
-        else:
-            value = convert.value_to_python(obj)
-            property_ = convert.value_to_property(value)
+        value = convert.value_to_python(obj)
+        property_ = convert.value_to_property(value)
 
         if property_:
             return property_.wrap(obj)
 
     def unwrap(self, obj):
         from . import convert
-        from properties import DictProperty
-        from properties import ListProperty
-        if isinstance(obj, dict):
-            property_ = DictProperty()
-        elif isinstance(obj, list):
-            property_ = ListProperty()
-        else:
-            property_ = convert.value_to_property(obj)
-
+        property_ = convert.value_to_property(obj)
         if property_:
             return property_.unwrap(obj)
         else:
