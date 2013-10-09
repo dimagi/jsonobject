@@ -73,30 +73,35 @@ def value_to_property(value):
             ))
 
 
-def is_type_ok(item_type, value_type):
-    return item_type is None or item_type == value_type
+STRING_CONVERSIONS = (
+    (re_date, properties.DateProperty().to_python),
+    (re_time, properties.TimeProperty().to_python),
+    (re_datetime, properties.DateTimeProperty().to_python),
+    (re_decimal, properties.DecimalProperty().to_python),
+)
 
 
-def value_to_python(value, item_type=None):
-    """convert a json value to python type using regexp. values converted
-    have been put in json via `value_to_json` .
+def value_to_python(value, string_conversions=STRING_CONVERSIONS):
     """
-    data_type = None
+    convert encoded string values to the proper python type
+
+    ex:
+    >>> value_to_python('2013-10-09T10:05:51Z')
+    datetime.datetime(2013, 10, 9, 10, 5, 51)
+
+    """
     if isinstance(value, basestring):
-        if re_date.match(value) and is_type_ok(item_type, datetime.date):
-            data_type = datetime.date
-        elif re_time.match(value) and is_type_ok(item_type, datetime.time):
-            data_type = datetime.time
-        elif re_datetime.match(value) and is_type_ok(item_type, datetime.datetime):
-            data_type = datetime.datetime
-        elif re_decimal.match(value) and is_type_ok(item_type, decimal.Decimal):
-            data_type = decimal.Decimal
-        if data_type is not None:
-            prop = MAP_TYPES_PROPERTIES[data_type]()
+        convert = None
+        for pattern, _convert in string_conversions:
+            if pattern.match(value):
+                convert = _convert
+                break
+
+        if convert is not None:
             try:
                 #sometimes regex fail so return value
-                value = prop.to_python(value)
-            except:
+                value = convert(value)
+            except Exception:
                 pass
     elif isinstance(value, (list, dict, MutableSet)):
         raise NotImplementedError()
