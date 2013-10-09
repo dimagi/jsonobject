@@ -190,11 +190,16 @@ class AssertTypeProperty(JsonProperty):
         if not isinstance(obj, self._type):
             raise BadValueError('{0} not of type {1}'.format(obj, self._type))
 
+    def selective_coerce(self, obj):
+        return obj
+
     def wrap(self, obj):
+        obj = self.selective_coerce(obj)
         self.assert_type(obj)
         return obj
 
     def unwrap(self, obj):
+        obj = self.selective_coerce(obj)
         self.assert_type(obj)
         return obj, obj
 
