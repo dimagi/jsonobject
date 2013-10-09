@@ -149,6 +149,16 @@ class JsonObjectTestCase(unittest2.TestCase):
             'tags': [],
         })
 
+    def test_float(self):
+        class Foo(JsonObject):
+            f = FloatProperty()
+
+        foo = Foo.wrap({'f': 1.0})
+        self.assertEqual(foo.f, 1.0)
+        foo.f = 3
+        self.assertEqual(foo.f, 3.0)
+        self.assertIsInstance(foo.f, float)
+
     def test_name(self):
         class Wack(JsonObject):
             underscore_obj = StringProperty(name='_obj')

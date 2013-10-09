@@ -18,17 +18,10 @@ from jsonobject.base import (
 class StringProperty(AssertTypeProperty):
     _type = basestring
 
-    def wrap(self, obj):
-        super(StringProperty, self).wrap(obj)
+    def selective_coerce(self, obj):
         if isinstance(obj, str):
             obj = unicode(obj)
         return obj
-
-    def unwrap(self, obj):
-        super(StringProperty, self).unwrap(obj)
-        if isinstance(obj, str):
-            obj = unicode(obj)
-        return obj, obj
 
 
 class BooleanProperty(AssertTypeProperty):
@@ -41,6 +34,11 @@ class IntegerProperty(AssertTypeProperty):
 
 class FloatProperty(AssertTypeProperty):
     _type = float
+
+    def selective_coerce(self, obj):
+        if isinstance(obj, (int, long)):
+            obj = float(obj)
+        return obj
 
 
 class DecimalProperty(JsonProperty):
