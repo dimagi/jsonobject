@@ -5,18 +5,24 @@ and edited to fit the needs of jsonobject
 """
 import decimal
 import datetime
+import time
 
-from . import properties
+from . import properties, FormattedDateTime
 from jsonobject.exceptions import BadValueError
 import re
+from jsonobject.formatted_datetime import FormattedTime
 
 
-re_date = re.compile('^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
-re_time = re.compile('^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?$')
-re_datetime = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])('
-                         '\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?'
-                         '([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$')
-re_decimal = re.compile('^(\d+)\.(\d+)$')
+re_date = re.compile(r'^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])$')
+re_time = re.compile(
+    r'^([01]\d|2[0-3]):([0-5]\d):(([0-5]\d)(\.(?P<microsecond>\d{1,6}))?)?$'
+)
+re_datetime = re.compile(
+    r'^(\d{4})-(0[1-9]|1[0-2])-([12]\d|0[1-9]|3[01])T'
+    r'([01]\d|2[0-3]):([0-5]\d):(([0-5]\d)(\.(?P<microsecond>\d{1,6}))?)?'
+    r'(Z|([\+-])([01]\d|2[0-3])(:([0-5]\d))?)?$'
+)
+re_decimal = re.compile(r'^(\d+)\.(\d+)$')
 
 
 ALLOWED_PROPERTY_TYPES = set([
@@ -40,8 +46,10 @@ ALLOWED_PROPERTY_TYPES = set([
 MAP_TYPES_PROPERTIES = {
     decimal.Decimal: properties.DecimalProperty,
     datetime.datetime: properties.DateTimeProperty,
+    FormattedDateTime: properties.DateTimeProperty,
     datetime.date: properties.DateProperty,
     datetime.time: properties.TimeProperty,
+    FormattedTime: properties.TimeProperty,
     str: properties.StringProperty,
     unicode: properties.StringProperty,
     basestring: properties.StringProperty,
@@ -105,4 +113,55 @@ def value_to_python(value, string_conversions=STRING_CONVERSIONS):
                 value = convert(value)
             except Exception:
                 pass
+    return value
+
+
+def _get_microsecond(string, pattern):
+    match = pattern.match(string)
+    if match:
+        microsecond = match.group('microsecond')
+    else:
+        microsecond = ''
+
+    if microsecond:
+        precision = len(microsecond)
+        assert 1 <= precision <= 6
+        microsecond += '0' * (6 - precision)
+        microsecond = int(microsecond)
+    else:
+        microsecond = 0
+
+    return microsecond
+
+
+def convert_string_to_datetime(string):
+    value = string.split('.', 1)[0]  # strip out microseconds
+    value = value[0:19]  # remove timezone
+    try:
+        value = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+    except ValueError, e:
+        raise ValueError('Invalid ISO date/time %r [%s]' % (string, str(e)))
+
+    microsecond = _get_microsecond(string, re_datetime)
+
+    return value.replace(microsecond=microsecond)
+
+
+def convert_string_to_time(string):
+    value = string.split('.', 1)[0]  # strip out microseconds
+    try:
+        value = datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
+    except ValueError, e:
+        raise ValueError('Invalid ISO time %r [%s]' % (value, str(e)))
+
+    microsecond = _get_microsecond(string, re_time)
+
+    return value.replace(microsecond=microsecond)
+
+
+def convert_string_to_date(string):
+    try:
+        value = datetime.date(*time.strptime(string, '%Y-%m-%d')[:3])
+    except ValueError, e:
+        raise ValueError('Invalid ISO date %r [%s]' % (string, str(e)))
     return value

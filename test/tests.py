@@ -1,5 +1,6 @@
 from copy import deepcopy
 import unittest2
+import datetime
 from jsonobject.base import JsonObject, JsonArray
 from jsonobject import *
 from jsonobject.exceptions import DeleteNotAllowed, BadValueError
@@ -300,14 +301,13 @@ class JsonObjectTestCase(unittest2.TestCase):
 
     def test_dynamic_dict_property(self):
         "dates copied from couchdbkit"
-        import datetime
 
         class Foo(JsonObject):
             my_datetime = DateTimeProperty()
             my_dict = DictProperty()
         foo = Foo()
         full_datetime = datetime.datetime(2009, 5, 10, 21, 19, 21, 127380)
-        normalized_datetime = datetime.datetime(2009, 5, 10, 21, 19, 21)
+        normalized_datetime = datetime.datetime(2009, 5, 10, 21, 19, 21, 127380)
 
         foo.my_datetime = full_datetime
         self.assertEqual(foo.my_datetime, normalized_datetime)
@@ -421,7 +421,6 @@ class LazyValidationTest(unittest2.TestCase):
 
 class PropertyTestCase(unittest2.TestCase):
     def test_date(self):
-        import datetime
         p = DateProperty()
         for string, date in [('1988-07-07', datetime.date(1988, 7, 7))]:
             self.assertEqual(p.wrap(string), date)
@@ -432,7 +431,6 @@ class PropertyTestCase(unittest2.TestCase):
             p.wrap('2000-01-01T00:00:00Z')
 
     def test_datetime(self):
-        import datetime
         p = DateTimeProperty()
         for string, dt in [('2011-01-18T12:38:09Z', datetime.datetime(2011, 1, 18, 12, 38, 9))]:
             self.assertEqual(p.wrap(string), dt)
@@ -443,7 +441,6 @@ class PropertyTestCase(unittest2.TestCase):
             p.wrap('1988-07-07')
 
     def test_time(self):
-        import datetime
         p = TimeProperty()
         for string, time in [('12:38:09', datetime.time(12, 38, 9))]:
             self.assertEqual(p.wrap(string), time)
@@ -570,7 +567,6 @@ class PropertyTestCase(unittest2.TestCase):
             foo.hello
 
 class DynamicConversionTestCase(unittest2.TestCase):
-    import datetime
 
     class Foo(JsonObject):
         pass
@@ -644,6 +640,49 @@ class DynamicConversionTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json(), {'my_list': ['bar']})
 
 
+class DateTimeTest(unittest2.TestCase):
+
+    def setUp(self):
+        class Foo(JsonObject):
+            dt = DateTimeProperty()
+            t = TimeProperty()
+            stuff = DictProperty()
+        self.Foo = Foo
+
+    def test_6_digit(self):
+        foo = self.Foo({'dt': '2013-10-30T12:34:56.789012Z'})
+        self.assertEqual(foo.dt, datetime.datetime(2013, 10, 30, 12, 34, 56, 789012))
+        self.assertEqual(foo.to_json()['dt'], '2013-10-30T12:34:56.789012Z')
+
+    def test_3_digit(self):
+        foo = self.Foo({'dt': '2013-10-30T12:34:56.789Z'})
+        self.assertEqual(foo.dt, datetime.datetime(2013, 10, 30, 12, 34, 56, 789000))
+        self.assertEqual(foo.to_json()['dt'], '2013-10-30T12:34:56.789Z')
+
+    def test_0_digit(self):
+        foo = self.Foo({'dt': '2013-10-30T12:34:56Z'})
+        self.assertEqual(foo.dt, datetime.datetime(2013, 10, 30, 12, 34, 56, 0))
+        self.assertEqual(foo.to_json()['dt'], '2013-10-30T12:34:56Z')
+
+    def test_6_digit_dynamic(self):
+        foo = self.Foo({'dynamic': '2013-10-30T12:34:56.789012Z'})
+        self.assertEqual(foo.dynamic, datetime.datetime(2013, 10, 30, 12, 34, 56, 789012))
+        self.assertEqual(foo.to_json()['dynamic'], '2013-10-30T12:34:56.789012Z')
+
+    def test_timezone(self):
+        """
+        timezone information in a wrapped doc should stay but is not interpreted
+
+        There's currently no way to get a timezone into a DateTimeProperty
+        other than wrapping a object that already has it
+
+        """
+
+        foo = self.Foo({'dt': '2013-10-30T12:34:56.789+02'})
+        self.assertEqual(foo.dt, datetime.datetime(2013, 10, 30, 12, 34, 56, 789000))
+        self.assertEqual(foo.to_json()['dt'], '2013-10-30T12:34:56.789+02')
+
+
 class User(JsonObject):
     username = StringProperty()
     name = StringProperty()
@@ -654,7 +693,6 @@ class User(JsonObject):
 
 class TestReadmeExamples(unittest2.TestCase):
     def test(self):
-        import datetime
         user1 = User(
             name='John Doe',
             username='jdoe',

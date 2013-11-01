@@ -1,7 +1,6 @@
 # DateTimeProperty, DateProperty, and TimeProperty
 # include code copied from couchdbkit
 import datetime
-import time
 import decimal
 from jsonobject.base import (
     JsonProperty,
@@ -13,6 +12,7 @@ from jsonobject.base import (
     JsonSet,
     JsonObject,
 )
+from jsonobject.formatted_datetime import FormattedDateTime, FormattedTime
 
 
 class StringProperty(AssertTypeProperty):
@@ -60,12 +60,9 @@ class DateProperty(AbstractDateProperty):
 
     _type = datetime.date
 
-    def _wrap(self, value):
-        try:
-            value = datetime.date(*time.strptime(value, '%Y-%m-%d')[:3])
-        except ValueError, e:
-            raise ValueError('Invalid ISO date %r [%s]' % (value, str(e)))
-        return value
+    def _wrap(self, string):
+        from jsonobject.convert import convert_string_to_date
+        return convert_string_to_date(string)
 
     def _unwrap(self, value):
         return value, value.isoformat()
@@ -75,35 +72,43 @@ class DateTimeProperty(AbstractDateProperty):
 
     _type = datetime.datetime
 
-    def _wrap(self, value):
-        try:
-            value = value.split('.', 1)[0]  # strip out microseconds
-            value = value[0:19]  # remove timezone
-            value = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
-        except ValueError, e:
-            raise ValueError('Invalid ISO date/time %r [%s]' % (value, str(e)))
-        return value
+    def _wrap(self, string):
+        from .convert import convert_string_to_datetime
+        value = convert_string_to_datetime(string)
+        return FormattedDateTime(
+            value.year, value.month, value.day,
+            value.hour, value.minute, value.second,
+            value.microsecond, string_repr=string
+        )
 
     def _unwrap(self, value):
-        value = value.replace(microsecond=0)
-        return value, value.isoformat() + 'Z'
+        try:
+            string_repr = value.string_repr
+        except AttributeError:
+            return value,  value.isoformat() + 'Z'
+        else:
+            return value, string_repr
 
 
 class TimeProperty(AbstractDateProperty):
 
     _type = datetime.time
 
-    def _wrap(self, value):
-        try:
-            value = value.split('.', 1)[0]  # strip out microseconds
-            value = datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
-        except ValueError, e:
-            raise ValueError('Invalid ISO time %r [%s]' % (value, str(e)))
-        return value
+    def _wrap(self, string):
+        from .convert import convert_string_to_time
+        value = convert_string_to_time(string)
+        return FormattedTime(
+            value.hour, value.minute, value.second,
+            value.microsecond, string_repr=string
+        )
 
     def _unwrap(self, value):
-        value = value.replace(microsecond=0)
-        return value, value.isoformat()
+        try:
+            string_repr = value.string_repr
+        except AttributeError:
+            return value, value.isoformat()
+        else:
+            return value, string_repr
 
 
 class ObjectProperty(JsonContainerProperty):
