@@ -2,7 +2,7 @@ from copy import deepcopy
 import unittest2
 from jsonobject.base import JsonObject, JsonArray
 from jsonobject import *
-from jsonobject.exceptions import DeleteNotAllowed, BadValueError
+from jsonobject.exceptions import DeleteNotAllowed, BadValueError, WrappingAttributeError
 
 
 class Features(JsonObject):
@@ -130,6 +130,16 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertEqual(danny.favorite_numbers, numbers)
         self.assertEqual(danny.to_json()['favorite_numbers'], numbers)
 
+    def test_bad_wrap(self):
+        for error_type in (AttributeError, WrappingAttributeError):
+            with self.assertRaises(error_type) as cm:
+                Person.wrap({'full_name': 'Danny Roberts'})
+            self.assertEqual(
+                unicode(cm.exception),
+                "can't set attribute corresponding to "
+                "'full_name' on a <class 'test.tests.Person'> "
+                "while wrapping {'full_name': 'Danny Roberts'}"
+            )
     def test_pickle(self):
         import pickle
         f1 = FamilyMember.wrap(self._danny_data())
@@ -568,6 +578,7 @@ class PropertyTestCase(unittest2.TestCase):
         
         with self.assertRaises(AttributeError):
             foo.hello
+
 
 class DynamicConversionTestCase(unittest2.TestCase):
     import datetime
