@@ -1,6 +1,6 @@
 import copy
 import inspect
-from jsonobject.exceptions import DeleteNotAllowed, BadValueError
+from jsonobject.exceptions import DeleteNotAllowed, BadValueError, WrappingAttributeError
 
 
 class JsonProperty(object):
@@ -534,10 +534,30 @@ class JsonObjectBase(object):
         self._wrapped = {}
 
         for key, value in self._obj.items():
-            self.set_raw_value(key, value)
+            try:
+                self.set_raw_value(key, value)
+            except AttributeError:
+                raise WrappingAttributeError(
+                    "can't set attribute corresponding to {key!r} "
+                    "on a {cls} while wrapping {data!r}".format(
+                        cls=self.__class__,
+                        key=key,
+                        data=_obj,
+                    )
+                )
 
         for attr, value in kwargs.items():
-            setattr(self, attr, value)
+            try:
+                setattr(self, attr, value)
+            except AttributeError:
+                raise WrappingAttributeError(
+                    "can't set attribute {attr!r} "
+                    "on a {cls} while wrapping {data!r}".format(
+                        cls=self.__class__,
+                        key=attr,
+                        data=_obj,
+                    )
+                )
 
         for key, value in self._properties_by_key.items():
             if key not in self._obj:
