@@ -137,7 +137,7 @@ class JsonContainerProperty(JsonProperty):
     def unwrap(self, obj):
         if not isinstance(obj, self._type):
             raise BadValueError(
-                '{0} is not an instance of {1}'.format(obj, self._type.__name__)
+                '{0!r} is not an instance of {1!r}'.format(obj, self._type.__name__)
             )
         if isinstance(obj, self.container_class):
             return obj, obj._obj
@@ -173,7 +173,7 @@ class AssertTypeProperty(JsonProperty):
 
     def assert_type(self, obj):
         if not isinstance(obj, self._type):
-            raise BadValueError('{0} not of type {1}'.format(obj, self._type))
+            raise BadValueError('{0!r} not of type {1!r}'.format(obj, self._type))
 
     def selective_coerce(self, obj):
         return obj
@@ -652,7 +652,7 @@ class JsonObjectBase(object):
                 self[name] = value
             else:
                 raise AttributeError(
-                    "{0} is not defined in schema "
+                    "{0!r} is not defined in schema "
                     "(not a valid property)".format(name)
                 )
         else:
