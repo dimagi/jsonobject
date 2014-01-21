@@ -117,6 +117,9 @@ class JsonContainerProperty(JsonProperty):
             item_type = item_type()
         if hasattr(item_type, '_type'):
             item_type = item_type._type
+        if isinstance(item_type, tuple):
+            # this is for the case where item_type = (int, long)
+            item_type = item_type[0]
         self.item_type = item_type
         if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
                 and not issubclass(item_type, JsonObject):

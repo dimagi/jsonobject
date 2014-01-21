@@ -358,6 +358,21 @@ class JsonObjectTestCase(unittest2.TestCase):
             Foo.wrap({'bar': []})
         Foo.wrap({'bar': {'baz': {'string': ''}}})
 
+    def test_long(self):
+        class Dummy(JsonObject):
+            i = IntegerProperty()
+            l = ListProperty(int)
+            l2 = ListProperty(IntegerProperty)
+        d = Dummy()
+        longint = 2 ** 63
+        self.assertIsInstance(longint, long)
+        d.i = longint
+        self.assertEqual(d.i, longint)
+        d.l = [longint]
+        self.assertEqual(d.l, [longint])
+        d.l2 = [longint]
+        self.assertEqual(d.l2, [longint])
+
 
 class LazyValidationTest(unittest2.TestCase):
 

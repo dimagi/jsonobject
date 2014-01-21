@@ -29,7 +29,7 @@ class BooleanProperty(AssertTypeProperty):
 
 
 class IntegerProperty(AssertTypeProperty):
-    _type = int
+    _type = (int, long)
 
 
 class FloatProperty(AssertTypeProperty):
