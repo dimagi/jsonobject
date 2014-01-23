@@ -41,7 +41,7 @@ class Person(Document):
 
 class FamilyMember(Person):
     base_doc = 'Person'
-    brothers = ListProperty(lambda: Person)
+    brothers = ListProperty(lambda: FamilyMember)
 
 
 class JunkCD(JsonObject):
@@ -105,7 +105,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         with self.assertRaises(AssertionError):
             danny.brothers = brothers
 
-        brothers = map(Person.wrap, brothers)
+        brothers = map(FamilyMember.wrap, brothers)
         danny.brothers = brothers
 
         self.assertEqual(danny.brothers, brothers)

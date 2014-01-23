@@ -112,22 +112,33 @@ class JsonContainerProperty(JsonProperty):
     container_class = None
 
     def __init__(self, item_type=None, **kwargs):
-        from convert import ALLOWED_PROPERTY_TYPES
         if inspect.isfunction(item_type):
-            item_type = item_type()
+            self._item_type_deferred = item_type
+        else:
+            self.set_item_type(item_type)
+        super(JsonContainerProperty, self).__init__(**kwargs)
+
+    def set_item_type(self, item_type):
+        from convert import ALLOWED_PROPERTY_TYPES
         if hasattr(item_type, '_type'):
             item_type = item_type._type
         if isinstance(item_type, tuple):
             # this is for the case where item_type = (int, long)
             item_type = item_type[0]
-        self.item_type = item_type
+        self._item_type = item_type
         if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
                 and not issubclass(item_type, JsonObject):
             raise ValueError("item_type {0!r} not in {1!r}".format(
                 item_type,
                 ALLOWED_PROPERTY_TYPES,
             ))
-        super(JsonContainerProperty, self).__init__(**kwargs)
+
+    @property
+    def item_type(self):
+        if hasattr(self, '_item_type_deferred'):
+            self.set_item_type(self._item_type_deferred())
+            del self._item_type_deferred
+        return self._item_type
 
     def empty(self, value):
         return not value
