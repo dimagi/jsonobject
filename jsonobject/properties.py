@@ -61,11 +61,11 @@ class DateProperty(AbstractDateProperty):
     _type = datetime.date
 
     def _wrap(self, value):
+        fmt = '%Y-%m-%d'
         try:
-            value = datetime.date(*time.strptime(value, '%Y-%m-%d')[:3])
-        except ValueError, e:
-            raise ValueError('Invalid ISO date %r [%s]' % (value, str(e)))
-        return value
+            return datetime.date(*time.strptime(value, fmt)[:3])
+        except ValueError as e:
+            raise ValueError('Invalid ISO date {0!r} [{1}]'.format(value, e))
 
     def _unwrap(self, value):
         return value, value.isoformat()
@@ -76,16 +76,21 @@ class DateTimeProperty(AbstractDateProperty):
     _type = datetime.datetime
 
     def _wrap(self, value):
-        try:
+        if not self.exact:
             value = value.split('.', 1)[0]  # strip out microseconds
             value = value[0:19]  # remove timezone
-            value = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
-        except ValueError, e:
-            raise ValueError('Invalid ISO date/time %r [%s]' % (value, str(e)))
-        return value
+            fmt = '%Y-%m-%dT%H:%M:%S'
+        else:
+            fmt = '%Y-%m-%dT%H:%M:%S.%fZ'
+        try:
+            return datetime.datetime.strptime(value, fmt)
+        except ValueError as e:
+            raise ValueError(
+                'Invalid ISO date/time {0!r} [{1}]'.format(value, e))
 
     def _unwrap(self, value):
-        value = value.replace(microsecond=0)
+        if not self.exact:
+            value = value.replace(microsecond=0)
         return value, value.isoformat() + 'Z'
 
 
@@ -94,15 +99,19 @@ class TimeProperty(AbstractDateProperty):
     _type = datetime.time
 
     def _wrap(self, value):
-        try:
+        if not self.exact:
             value = value.split('.', 1)[0]  # strip out microseconds
-            value = datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
-        except ValueError, e:
-            raise ValueError('Invalid ISO time %r [%s]' % (value, str(e)))
-        return value
+            fmt = '%H:%M:%S'
+        else:
+            fmt = '%H:%M:%S.%f'
+        try:
+            return datetime.time(*time.strptime(value, fmt)[3:6])
+        except ValueError as e:
+            raise ValueError('Invalid ISO time {0!r} [{1}]'.format(value, e))
 
     def _unwrap(self, value):
-        value = value.replace(microsecond=0)
+        if not self.exact:
+            value = value.replace(microsecond=0)
         return value, value.isoformat()
 
 
