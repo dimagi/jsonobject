@@ -678,6 +678,17 @@ class User(JsonObject):
     tags = ListProperty(unicode)
 
 
+class TestExactDateTime(unittest2.TestCase):
+    def test_exact(self):
+        class DateObj(JsonObject):
+            date = DateTimeProperty(exact=True)
+        import datetime
+        date = datetime.datetime.utcnow()
+        date_obj = DateObj(date=date)
+        self.assertEqual(date_obj.date, date)
+        self.assertEqual(date_obj.to_json()['date'], date.isoformat() + 'Z')
+
+
 class TestReadmeExamples(unittest2.TestCase):
     def test(self):
         import datetime

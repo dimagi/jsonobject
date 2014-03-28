@@ -207,6 +207,10 @@ class AbstractDateProperty(JsonProperty):
 
     _type = None
 
+    def __init__(self, exact=False, *args, **kwargs):
+        super(AbstractDateProperty, self).__init__(*args, **kwargs)
+        self.exact = exact
+
     def wrap(self, obj):
         try:
             if not isinstance(obj, basestring):
