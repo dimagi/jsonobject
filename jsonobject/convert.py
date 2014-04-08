@@ -3,19 +3,22 @@ This file was excerpted directly from couchdbkit.schema.properties
 and edited to fit the needs of jsonobject
 
 """
+from __future__ import absolute_import
 import decimal
 import datetime
 
 from . import properties
-from jsonobject.exceptions import BadValueError
+from .exceptions import BadValueError
 import re
 
 
 re_date = re.compile('^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
 re_time = re.compile('^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?$')
-re_datetime = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])('
-                         '\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?'
-                         '([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$')
+re_datetime = re.compile(
+    r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])'
+    '(\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3})?'
+    '([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$'
+)
 re_decimal = re.compile('^(\d+)\.(\d+)$')
 
 
@@ -66,10 +69,10 @@ def value_to_property(value):
             if isinstance(value, value_type):
                 return prop_class()
         else:
-            raise BadValueError('value {0!r} not in allowed types: {1!r}'.format(
-                value,
-                MAP_TYPES_PROPERTIES.keys(),
-            ))
+            raise BadValueError(
+                'value {0!r} not in allowed types: {1!r}'.format(
+                    value, MAP_TYPES_PROPERTIES.keys())
+            )
 
 
 STRING_CONVERSIONS = (

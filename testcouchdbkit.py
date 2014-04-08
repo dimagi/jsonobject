@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from test.couchdbkit.application import Application
 import os
 import json

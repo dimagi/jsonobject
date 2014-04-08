@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 import json
 import os
 from unittest2 import TestCase
-from test.couchdbkit.application import Application
+from .couchdbkit.application import Application
 
 
 class CouchdbkitTestCase(TestCase):

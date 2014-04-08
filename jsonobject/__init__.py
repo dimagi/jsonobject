@@ -1,6 +1,7 @@
-from base import JsonObject,JsonObjectMeta, JsonArray
+from __future__ import absolute_import
+from .base import JsonObject, JsonObjectMeta, JsonArray
 from .properties import *
-import convert
+from . import convert
 
 __all__ = [
     'IntegerProperty', 'FloatProperty', 'DecimalProperty',

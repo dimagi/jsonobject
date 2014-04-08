@@ -1,8 +1,11 @@
 from copy import deepcopy
 import unittest2
-from jsonobject.base import JsonObject, JsonArray
 from jsonobject import *
-from jsonobject.exceptions import DeleteNotAllowed, BadValueError, WrappingAttributeError
+from jsonobject.exceptions import (
+    BadValueError,
+    DeleteNotAllowed,
+    WrappingAttributeError,
+)
 
 
 class Features(JsonObject):
