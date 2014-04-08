@@ -1,9 +1,10 @@
 # DateTimeProperty, DateProperty, and TimeProperty
 # include code copied from couchdbkit
+from __future__ import absolute_import
 import datetime
 import time
 import decimal
-from jsonobject.base import (
+from .base import (
     JsonProperty,
     AssertTypeProperty,
     AbstractDateProperty,

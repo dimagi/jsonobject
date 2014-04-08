@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 import copy
 import inspect
-from jsonobject.exceptions import (
+from .exceptions import (
     BadValueError,
     DeleteNotAllowed,
     WrappingAttributeError,
@@ -125,7 +126,7 @@ class JsonContainerProperty(JsonProperty):
         super(JsonContainerProperty, self).__init__(**kwargs)
 
     def set_item_type(self, item_type):
-        from convert import ALLOWED_PROPERTY_TYPES
+        from .convert import ALLOWED_PROPERTY_TYPES
         if hasattr(item_type, '_type'):
             item_type = item_type._type
         if isinstance(item_type, tuple):
@@ -150,7 +151,7 @@ class JsonContainerProperty(JsonProperty):
         return not value
 
     def wrap(self, obj):
-        from properties import type_to_property
+        from .properties import type_to_property
         wrapper = type_to_property(self.item_type) if self.item_type else None
         return self.container_class(obj, wrapper=wrapper)
 

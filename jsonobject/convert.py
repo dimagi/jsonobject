@@ -3,11 +3,12 @@ This file was excerpted directly from couchdbkit.schema.properties
 and edited to fit the needs of jsonobject
 
 """
+from __future__ import absolute_import
 import decimal
 import datetime
 
 from . import properties
-from jsonobject.exceptions import BadValueError
+from .exceptions import BadValueError
 import re
 
 
