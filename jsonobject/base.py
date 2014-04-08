@@ -1,14 +1,19 @@
 import copy
 import inspect
-from jsonobject.exceptions import DeleteNotAllowed, BadValueError, WrappingAttributeError
+from jsonobject.exceptions import (
+    BadValueError,
+    DeleteNotAllowed,
+    WrappingAttributeError,
+)
 
 
 class JsonProperty(object):
 
     default = None
 
-    def __init__(self, default=Ellipsis, name=None, choices=None, required=False,
-                 exclude_if_none=False, validators=None, verbose_name=None):
+    def __init__(self, default=Ellipsis, name=None, choices=None,
+                 required=False, exclude_if_none=False, validators=None,
+                 verbose_name=None):
         validators = validators or ()
         self.name = name
         if default is Ellipsis:
@@ -91,7 +96,8 @@ class JsonProperty(object):
         return value is None
 
     def validate(self, value, required=True, recursive=True):
-        if self.choice_keys and value not in self.choice_keys and value is not None:
+        if (self.choice_keys and value not in self.choice_keys
+                and value is not None):
             raise BadValueError(
                 '{0!r} not in choices: {1!r}'.format(value, self.choice_keys)
             )
@@ -151,7 +157,8 @@ class JsonContainerProperty(JsonProperty):
     def unwrap(self, obj):
         if not isinstance(obj, self._type):
             raise BadValueError(
-                '{0!r} is not an instance of {1!r}'.format(obj, self._type.__name__)
+                '{0!r} is not an instance of {1!r}'.format(
+                    obj, self._type.__name__)
             )
         if isinstance(obj, self.container_class):
             return obj, obj._obj
@@ -187,7 +194,9 @@ class AssertTypeProperty(JsonProperty):
 
     def assert_type(self, obj):
         if not isinstance(obj, self._type):
-            raise BadValueError('{0!r} not of type {1!r}'.format(obj, self._type))
+            raise BadValueError(
+                '{0!r} not of type {1!r}'.format(obj, self._type)
+            )
 
     def selective_coerce(self, obj):
         return obj
@@ -250,7 +259,8 @@ class JsonArray(list):
     def __init__(self, _obj=None, wrapper=None):
         super(JsonArray, self).__init__()
 
-        self._obj = check_type(_obj, list, 'JsonArray must wrap a list or None')
+        self._obj = check_type(_obj, list,
+                               'JsonArray must wrap a list or None')
         self._wrapper = wrapper or DefaultProperty()
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
@@ -513,7 +523,8 @@ class JsonObjectMeta(type):
             property_.init_property(default_name=key)
             assert property_.name is not None, property_
             assert property_.name not in properties_by_name, \
-                'You can only have one property named {0}'.format(property_.name)
+                'You can only have one property named {0}'.format(
+                    property_.name)
             properties_by_name[property_.name] = property_
 
         for base in bases:
@@ -698,15 +709,17 @@ class JsonObjectBase(object):
     def __repr__(self):
         name = self.__class__.__name__
         predefined_properties = self._properties_by_attr.keys()
-        predefined_property_keys = set(self._properties_by_attr[p].name for p in predefined_properties)
-        dynamic_properties = set(self._wrapped.keys()) - predefined_property_keys
+        predefined_property_keys = set(self._properties_by_attr[p].name
+                                       for p in predefined_properties)
+        dynamic_properties = (set(self._wrapped.keys())
+                              - predefined_property_keys)
         properties = sorted(predefined_properties) + sorted(dynamic_properties)
         return u'{name}({keyword_args})'.format(
             name=name,
             keyword_args=', '.join('{key}={value!r}'.format(
                 key=key,
-                value=getattr(self, key))
-            for key in properties),
+                value=getattr(self, key)
+            ) for key in properties),
         )
 
 
