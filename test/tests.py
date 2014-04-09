@@ -690,6 +690,14 @@ class TestExactDateTime(unittest2.TestCase):
         date_obj = DateObj(date=date)
         self.assertEqual(date_obj.date, date)
         self.assertEqual(date_obj.to_json()['date'], date.isoformat() + 'Z')
+        self.assertEqual(len(date_obj.to_json()['date']), 27)
+
+        date = date.replace(microsecond=0)
+        date_obj = DateObj(date=date)
+        self.assertEqual(date_obj.date, date)
+        self.assertEqual(date_obj.to_json()['date'],
+                         date.isoformat() + '.000000Z')
+        self.assertEqual(len(date_obj.to_json()['date']), 27)
 
 
 class TestReadmeExamples(unittest2.TestCase):
