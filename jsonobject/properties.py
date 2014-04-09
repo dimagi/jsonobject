@@ -92,7 +92,10 @@ class DateTimeProperty(AbstractDateProperty):
     def _unwrap(self, value):
         if not self.exact:
             value = value.replace(microsecond=0)
-        return value, value.isoformat() + 'Z'
+            padding = ''
+        else:
+            padding = '' if value.microsecond else '.000000'
+        return value, value.isoformat() + padding + 'Z'
 
 
 class TimeProperty(AbstractDateProperty):
