@@ -134,7 +134,7 @@ class JsonContainerProperty(JsonProperty):
             item_type = item_type[0]
         self._item_type = item_type
         if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
-                and not issubclass(item_type, JsonObject):
+                and not issubclass(item_type, JsonObjectBase):
             raise ValueError("item_type {0!r} not in {1!r}".format(
                 item_type,
                 ALLOWED_PROPERTY_TYPES,
@@ -150,10 +150,12 @@ class JsonContainerProperty(JsonProperty):
     def empty(self, value):
         return not value
 
-    def wrap(self, obj):
+    def wrap(self, obj, string_conversions=None):
         from .properties import type_to_property
         wrapper = type_to_property(self.item_type) if self.item_type else None
-        return self.container_class(obj, wrapper=wrapper)
+        assert string_conversions is not None
+        return self.container_class(
+            obj, wrapper=wrapper, string_conversions=string_conversions)
 
     def unwrap(self, obj):
         if not isinstance(obj, self._type):
@@ -164,7 +166,7 @@ class JsonContainerProperty(JsonProperty):
         if isinstance(obj, self.container_class):
             return obj, obj._obj
         else:
-            wrapped = self.wrap(self._type())
+            wrapped = self.wrap(self._type(), string_conversions=())
             self._update(wrapped, obj)
             return self.unwrap(wrapped)
 
@@ -173,13 +175,23 @@ class JsonContainerProperty(JsonProperty):
 
 
 class DefaultProperty(JsonProperty):
+
+    def __init__(self, **kwargs):
+        self.string_conversions = kwargs.pop('string_conversions', None)
+        super(DefaultProperty, self).__init__(**kwargs)
+
     def wrap(self, obj):
         from . import convert
-        value = convert.value_to_python(obj)
+        value = convert.value_to_python(
+            obj, string_conversions=self.string_conversions)
         property_ = convert.value_to_property(value)
 
         if property_:
-            return property_.wrap(obj)
+            return property_.wrap(
+                obj,
+                **({'string_conversions': self.string_conversions}
+                   if isinstance(property_, JsonContainerProperty) else {})
+            )
 
     def unwrap(self, obj):
         from . import convert
@@ -257,12 +269,17 @@ def check_type(obj, item_type, message):
 
 
 class JsonArray(list):
-    def __init__(self, _obj=None, wrapper=None):
+    def __init__(self, _obj=None, wrapper=None, string_conversions=None):
         super(JsonArray, self).__init__()
-
         self._obj = check_type(_obj, list,
                                'JsonArray must wrap a list or None')
-        self._wrapper = wrapper or DefaultProperty()
+
+        assert string_conversions is not None
+        self._string_conversions = string_conversions
+        self._wrapper = (
+            wrapper or
+            DefaultProperty(string_conversions=self._string_conversions)
+        )
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
 
@@ -367,11 +384,15 @@ class SimpleDict(dict):
 
 class JsonDict(SimpleDict):
 
-    def __init__(self, _obj=None, wrapper=None):
+    def __init__(self, _obj=None, wrapper=None, string_conversions=None):
         super(JsonDict, self).__init__()
         self._obj = check_type(_obj, dict, 'JsonDict must wrap a dict or None')
-        self._wrapper = wrapper or DefaultProperty()
-
+        assert string_conversions is not None
+        self._string_conversions = string_conversions
+        self._wrapper = (
+            wrapper or
+            DefaultProperty(string_conversions=self._string_conversions)
+        )
         for key, value in self._obj.items():
             self[key] = self.__wrap(key, value)
 
@@ -404,13 +425,17 @@ class JsonDict(SimpleDict):
 
 
 class JsonSet(set):
-    def __init__(self, _obj=None, wrapper=None):
+    def __init__(self, _obj=None, wrapper=None, string_conversions=None):
         super(JsonSet, self).__init__()
         if isinstance(_obj, set):
             _obj = list(_obj)
         self._obj = check_type(_obj, list, 'JsonSet must wrap a list or None')
-        self._wrapper = wrapper or DefaultProperty()
-
+        assert string_conversions is not None
+        self._string_conversions = string_conversions
+        self._wrapper = (
+            wrapper or
+            DefaultProperty(string_conversions=self._string_conversions)
+        )
         for item in self._obj:
             super(JsonSet, self).add(self._wrapper.wrap(item))
 
@@ -499,14 +524,15 @@ class JsonSet(set):
 
 
 class JsonObjectMeta(type):
-    # There's a pretty fundamental cyclic dependency between this metaclass
-    # and knowledge of all available property types (in properties module).
-    # The current solution is to monkey patch this metaclass
-    # with a reference to the properties module
-    _convert = None
-
     def __new__(mcs, name, bases, dct):
-        _c = mcs._convert
+        # There's a pretty fundamental cyclic dependency between this metaclass
+        # and knowledge of all available property types (in properties module).
+        # The current solution is to monkey patch this metaclass
+        # with a reference to the properties module
+        try:
+            from . import convert as _c
+        except ImportError:
+            _c = None
         properties = {}
         properties_by_name = {}
         for key, value in dct.items():
@@ -556,8 +582,13 @@ class JsonObjectBase(object):
     _properties_by_attr = None
     _properties_by_key = None
 
-    def __init__(self, _obj=None, **kwargs):
+    _string_conversions = ()
+
+    def __init__(self, _obj=None, _string_conversions=None, **kwargs):
         setattr(self, '_$', _JsonObjectPrivateInstanceVariables())
+
+        if _string_conversions is not None:
+            self._string_conversions = _string_conversions
 
         self._obj = check_type(_obj, dict,
                                'JsonObject must wrap a dict or None')
@@ -613,8 +644,8 @@ class JsonObjectBase(object):
         return getattr(self, '_$').dynamic_properties
 
     @classmethod
-    def wrap(cls, obj):
-        self = cls(obj)
+    def wrap(cls, obj, string_conversions=None):
+        self = cls(obj, _string_conversions=string_conversions)
         return self
 
     def validate(self, required=True):
@@ -629,7 +660,7 @@ class JsonObjectBase(object):
         try:
             return self._properties_by_key[key]
         except KeyError:
-            return DefaultProperty()
+            return DefaultProperty(string_conversions=self._string_conversions)
 
     def __wrap(self, key, value):
         property_ = self.__get_property(key)
@@ -637,7 +668,11 @@ class JsonObjectBase(object):
         if value is None:
             return None
 
-        return property_.wrap(value)
+        return property_.wrap(
+            value,
+            **({'string_conversions': self._string_conversions}
+               if isinstance(property_, JsonContainerProperty) else {})
+        )
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
@@ -755,15 +790,6 @@ class _LimitedDictInterfaceMixin(object):
 
     def __len__(self):
         return len(self._wrapped)
-
-
-class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
-
-    def __getstate__(self):
-        return self.to_json()
-
-    def __setstate__(self, dct):
-        self.__init__(dct)
 
 
 def get_dynamic_properties(obj):
