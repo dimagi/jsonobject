@@ -5,14 +5,14 @@ import datetime
 import time
 import decimal
 from .base import (
-    JsonProperty,
-    AssertTypeProperty,
     AbstractDateProperty,
-    JsonContainerProperty,
+    AssertTypeProperty,
     JsonArray,
+    JsonContainerProperty,
     JsonDict,
+    JsonObjectBase,
+    JsonProperty,
     JsonSet,
-    JsonObject,
 )
 
 
@@ -123,8 +123,8 @@ class ObjectProperty(JsonContainerProperty):
 
     default = lambda self: self.item_type()
 
-    def wrap(self, obj):
-        return self.item_type.wrap(obj)
+    def wrap(self, obj, string_conversions=None):
+        return self.item_type.wrap(obj, string_conversions=string_conversions)
 
     def unwrap(self, obj):
         assert isinstance(obj, self.item_type), \
@@ -161,7 +161,7 @@ class SetProperty(JsonContainerProperty):
 
 def type_to_property(item_type, *args, **kwargs):
     from .convert import MAP_TYPES_PROPERTIES
-    if issubclass(item_type, JsonObject):
+    if issubclass(item_type, JsonObjectBase):
         return ObjectProperty(item_type, *args, **kwargs)
     elif item_type in MAP_TYPES_PROPERTIES:
         return MAP_TYPES_PROPERTIES[item_type](*args, **kwargs)
