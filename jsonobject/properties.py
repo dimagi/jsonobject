@@ -124,7 +124,7 @@ class ObjectProperty(JsonContainerProperty):
     default = lambda self: self.item_type()
 
     def wrap(self, obj, string_conversions=None):
-        return self.item_type.wrap(obj, string_conversions=string_conversions)
+        return self.item_type.wrap(obj)
 
     def unwrap(self, obj):
         assert isinstance(obj, self.item_type), \

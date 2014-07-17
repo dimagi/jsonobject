@@ -153,7 +153,10 @@ class JsonContainerProperty(JsonProperty):
     def wrap(self, obj, string_conversions=None):
         from .properties import type_to_property
         wrapper = type_to_property(self.item_type) if self.item_type else None
-        assert string_conversions is not None
+        assert (
+            getattr(self.container_class, '_string_conversions', None) is not None
+            or (string_conversions is not None)
+        ), self.container_class
         return self.container_class(
             obj, wrapper=wrapper, string_conversions=string_conversions)
 
@@ -181,17 +184,21 @@ class DefaultProperty(JsonProperty):
         super(DefaultProperty, self).__init__(**kwargs)
 
     def wrap(self, obj):
+        assert self.string_conversions is not None
         from . import convert
         value = convert.value_to_python(
             obj, string_conversions=self.string_conversions)
         property_ = convert.value_to_property(value)
 
         if property_:
-            return property_.wrap(
-                obj,
-                **({'string_conversions': self.string_conversions}
-                   if isinstance(property_, JsonContainerProperty) else {})
-            )
+            try:
+                return property_.wrap(
+                    obj,
+                    **({'string_conversions': self.string_conversions}
+                       if isinstance(property_, JsonContainerProperty) else {})
+                )
+            except TypeError:
+                return property_.wrap(obj)
 
     def unwrap(self, obj):
         from . import convert
@@ -553,6 +560,8 @@ class JsonObjectMeta(type):
                 'You can only have one property named {0}'.format(
                     property_.name)
             properties_by_name[property_.name] = property_
+            if isinstance(property_, DefaultProperty):
+                property_.string_conversions = cls._string_conversions
 
         for base in bases:
             if getattr(base, '_properties_by_attr', None):
@@ -644,8 +653,8 @@ class JsonObjectBase(object):
         return getattr(self, '_$').dynamic_properties
 
     @classmethod
-    def wrap(cls, obj, string_conversions=None):
-        self = cls(obj, _string_conversions=string_conversions)
+    def wrap(cls, obj):
+        self = cls(obj)
         return self
 
     def validate(self, required=True):
@@ -668,11 +677,17 @@ class JsonObjectBase(object):
         if value is None:
             return None
 
-        return property_.wrap(
-            value,
-            **({'string_conversions': self._string_conversions}
-               if isinstance(property_, JsonContainerProperty) else {})
-        )
+        if isinstance(property_, JsonArray):
+            assert isinstance(property_, JsonContainerProperty)
+
+        try:
+            return property_.wrap(
+                value,
+                **({'string_conversions': self._string_conversions}
+                   if isinstance(property_, JsonContainerProperty) else {})
+            )
+        except TypeError:
+            return property_.wrap(value)
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
