@@ -547,16 +547,30 @@ class PropertyTestCase(unittest2.TestCase):
     def test_exclude_if_none(self):
         class Foo(JsonObject):
             _id = StringProperty(exclude_if_none=True)
+            _attachments = DictProperty(exclude_if_none=True, default=None)
             name = StringProperty()
 
         foo = Foo()
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
         foo = Foo(_id='xxx')
-        self.assertEqual(dict(foo), {'name': None, '_id': 'xxx'})
+        self.assertEqual(dict(foo), {'name': None, '_id': 'xxx',
+                                     '_attachments': None})
+        self.assertEqual(foo.to_json(), {'name': None, '_id': 'xxx'})
         foo._id = None
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
+
+        foo._attachments = {}
+        self.assertEqual(foo.to_json(), {'name': None})
+        foo._attachments = {'hi': 'there'}
+        self.assertEqual(foo.to_json(), {'name': None,
+                                         '_attachments': {'hi': 'there'}})
+        foo._attachments = {}
+        self.assertEqual(foo.to_json(), {'name': None})
+        foo._attachments['hi'] = 'there'
+        self.assertEqual(foo.to_json(), {'name': None,
+                                         '_attachments': {'hi': 'there'}})
 
     def test_descriptor(self):
         class Desc(object):
