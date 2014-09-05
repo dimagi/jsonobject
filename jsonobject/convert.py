@@ -22,24 +22,6 @@ re_datetime = re.compile(
 re_decimal = re.compile('^(\d+)\.(\d+)$')
 
 
-ALLOWED_PROPERTY_TYPES = set([
-    basestring,
-    str,
-    unicode,
-    bool,
-    int,
-    long,
-    float,
-    datetime.datetime,
-    datetime.date,
-    datetime.time,
-    decimal.Decimal,
-    dict,
-    list,
-    set,
-    type(None)
-])
-
 MAP_TYPES_PROPERTIES = {
     decimal.Decimal: properties.DecimalProperty,
     datetime.datetime: properties.DateTimeProperty,

@@ -126,18 +126,19 @@ class JsonContainerProperty(JsonProperty):
         super(JsonContainerProperty, self).__init__(**kwargs)
 
     def set_item_type(self, item_type):
-        from .convert import ALLOWED_PROPERTY_TYPES
+        from .convert import MAP_TYPES_PROPERTIES
+        allowed_types = set(MAP_TYPES_PROPERTIES.keys())
         if hasattr(item_type, '_type'):
             item_type = item_type._type
         if isinstance(item_type, tuple):
             # this is for the case where item_type = (int, long)
             item_type = item_type[0]
         self._item_type = item_type
-        if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
+        if item_type and item_type not in allowed_types \
                 and not issubclass(item_type, JsonObjectBase):
             raise ValueError("item_type {0!r} not in {1!r}".format(
                 item_type,
-                ALLOWED_PROPERTY_TYPES,
+                allowed_types,
             ))
 
     @property
