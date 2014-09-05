@@ -29,7 +29,6 @@ MAP_TYPES_PROPERTIES = {
     datetime.time: properties.TimeProperty,
     str: properties.StringProperty,
     unicode: properties.StringProperty,
-    basestring: properties.StringProperty,
     bool: properties.BooleanProperty,
     int: properties.IntegerProperty,
     long: properties.IntegerProperty,

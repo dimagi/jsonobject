@@ -17,7 +17,7 @@ from .base import (
 
 
 class StringProperty(AssertTypeProperty):
-    _type = basestring
+    _type = (unicode, str)
 
     def selective_coerce(self, obj):
         if isinstance(obj, str):
