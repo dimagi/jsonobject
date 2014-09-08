@@ -614,6 +614,18 @@ class TypeConfig(object):
                                 else self._string_conversions)
         )
 
+    def update(self, properties=None, string_conversions=None):
+        _properties = self._properties.copy()
+        _string_conversions = self.string_conversions[:]
+        if properties:
+            _properties.update(properties)
+        if string_conversions:
+            _string_conversions.extend(string_conversions)
+        return TypeConfig(
+            properties=_properties,
+            string_conversions=_string_conversions,
+        )
+
     def _get_string_conversions(self):
         result = []
         for pattern, conversion in self._string_conversions.items():
@@ -675,17 +687,19 @@ class JsonObjectMeta(type):
         cls._properties_by_key = properties_by_name
         return cls
 
-    def __configure(cls, properties=None, string_conversions=None):
+    def __configure(cls, properties=None, string_conversions=None,
+                    update_properties=None):
         super_settings = get_settings(super(cls, cls))
-        set_settings(
-            cls,
-            super_settings._replace(
-                type_config=super_settings.type_config.replace(
-                    properties=properties,
-                    string_conversions=string_conversions,
-                )
-            )
-        )
+        assert len(filter(None, (properties, update_properties))) <= 1
+        type_config = super_settings.type_config
+        if update_properties is not None:
+            type_config = type_config.update(properties=update_properties)
+        elif properties is not None:
+            type_config = type_config.replace(properties=properties)
+        if string_conversions is not None:
+            type_config = type_config.replace(
+                string_conversions=string_conversions)
+        set_settings(cls, super_settings._replace(type_config=type_config))
         return cls
 
 
