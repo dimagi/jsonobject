@@ -636,6 +636,8 @@ class TypeConfig(object):
             result.append((pattern, conversion))
         return result
 
+META_ATTRS = ('properties', 'string_conversions', 'update_properties')
+
 
 class JsonObjectMeta(type):
 
@@ -652,7 +654,7 @@ class JsonObjectMeta(type):
 
         cls.__configure(**{key: value
                            for key, value in cls.Meta.__dict__.items()
-                           if not key.startswith('_')})
+                           if key in META_ATTRS})
         cls_settings = get_settings(cls)
 
         properties = {}
