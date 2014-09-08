@@ -32,7 +32,8 @@ class StringConversionsTest(unittest2.TestCase):
 
     def test_no_conversions(self):
         class Foo(JsonObject):
-            _string_conversions = ()
+            class Meta(object):
+                string_conversions = ()
 
         foo = Foo.wrap(self.EXAMPLES)
         for key, value in self.EXAMPLES.items():
@@ -45,8 +46,10 @@ class StringConversionsTest(unittest2.TestCase):
             pass
 
         class Foo(JsonObject):
-            _string_conversions = ()
             bar = ObjectProperty(Bar)
+
+            class Meta(object):
+                string_conversions = ()
 
         foo = Foo.wrap({
             # don't convert
@@ -60,7 +63,9 @@ class StringConversionsTest(unittest2.TestCase):
 
     def test_nested_2(self):
         class Bar(JsonObject):
-            _string_conversions = ()
+
+            class Meta(object):
+                string_conversions = ()
 
         class Foo(JsonObject):
             # default string conversions
