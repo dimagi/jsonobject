@@ -673,11 +673,6 @@ class JsonObjectMeta(type):
         pass
 
     def __new__(mcs, name, bases, dct):
-        # There's a pretty fundamental cyclic dependency between this metaclass
-        # and knowledge of all available property types (in properties module).
-        # The current solution is to monkey patch this metaclass
-        # with a reference to the properties module
-
         cls = type.__new__(mcs, name, bases, dct)
 
         cls.__configure(**{key: value
