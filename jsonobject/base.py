@@ -680,7 +680,7 @@ class JsonObjectMeta(type):
         pass
 
     def __new__(mcs, name, bases, dct):
-        cls = type.__new__(mcs, name, bases, dct)
+        cls = super(JsonObjectMeta, mcs).__new__(mcs, name, bases, dct)
 
         cls.__configure(**{key: value
                            for key, value in cls.Meta.__dict__.items()
