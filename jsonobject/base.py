@@ -595,6 +595,34 @@ def set_settings(cls, settings):
 
 
 class TypeConfig(object):
+    """
+    This class allows the user to configure dynamic
+    type handlers and string conversions for their JsonObject.
+
+    properties is a map from python types to JsonProperty subclasses
+    string_conversions is a list or tuple of (regex, python type)-tuples
+
+    This class is used to store the configuration but is not part of the API.
+    To configure:
+
+        class Foo(JsonObject):
+            # property definitions go here
+            # ...
+
+            class Meta(object):
+                update_properties = {
+                    datetime.datetime: MySpecialDateTimeProperty
+                }
+
+    If you now do
+
+        foo = Foo()
+        foo.timestamp = datetime.datetime(1988, 7, 7, 11, 8, 0)
+
+    timestamp will be governed by a MySpecialDateTimeProperty
+    instead of the default.
+
+    """
     def __init__(self, properties=None, string_conversions=None):
         self._properties = properties if properties is not None else {}
 
