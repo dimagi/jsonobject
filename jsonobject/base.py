@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from collections import namedtuple, OrderedDict
 import copy
 import inspect
 from .exceptions import (
@@ -11,10 +12,11 @@ from .exceptions import (
 class JsonProperty(object):
 
     default = None
+    type_config = None
 
     def __init__(self, default=Ellipsis, name=None, choices=None,
                  required=False, exclude_if_none=False, validators=None,
-                 verbose_name=None):
+                 verbose_name=None, type_config=None):
         validators = validators or ()
         self.name = name
         if default is Ellipsis:
@@ -40,9 +42,12 @@ class JsonProperty(object):
         else:
             self.custom_validator = validators
         self.verbose_name = verbose_name
+        if type_config:
+            self.type_config = type_config
 
-    def init_property(self, default_name):
+    def init_property(self, default_name, type_config):
         self.name = self.name or default_name
+        self.type_config = self.type_config or type_config
 
     def wrap(self, obj):
         raise NotImplementedError()
@@ -119,46 +124,61 @@ class JsonContainerProperty(JsonProperty):
     container_class = None
 
     def __init__(self, item_type=None, **kwargs):
-        if inspect.isfunction(item_type):
-            self._item_type_deferred = item_type
-        else:
-            self.set_item_type(item_type)
+        self._item_type_deferred = item_type
         super(JsonContainerProperty, self).__init__(**kwargs)
 
+    def init_property(self, **kwargs):
+        super(JsonContainerProperty, self).init_property(**kwargs)
+        if not inspect.isfunction(self._item_type_deferred):
+            # trigger validation
+            self.item_type
+
     def set_item_type(self, item_type):
-        from .convert import ALLOWED_PROPERTY_TYPES
         if hasattr(item_type, '_type'):
             item_type = item_type._type
         if isinstance(item_type, tuple):
             # this is for the case where item_type = (int, long)
             item_type = item_type[0]
-        self._item_type = item_type
-        if item_type and item_type not in tuple(ALLOWED_PROPERTY_TYPES) \
-                and not issubclass(item_type, JsonObjectBase):
+        allowed_types = set(self.type_config.properties.keys())
+        if isinstance(item_type, JsonObjectMeta) \
+                or not item_type or item_type in allowed_types:
+            self._item_type = item_type
+        else:
             raise ValueError("item_type {0!r} not in {1!r}".format(
                 item_type,
-                ALLOWED_PROPERTY_TYPES,
+                allowed_types,
             ))
 
     @property
     def item_type(self):
         if hasattr(self, '_item_type_deferred'):
-            self.set_item_type(self._item_type_deferred())
+            if inspect.isfunction(self._item_type_deferred):
+                self.set_item_type(self._item_type_deferred())
+            else:
+                self.set_item_type(self._item_type_deferred)
             del self._item_type_deferred
         return self._item_type
 
     def empty(self, value):
         return not value
 
-    def wrap(self, obj, string_conversions=None):
-        from .properties import type_to_property
-        wrapper = type_to_property(self.item_type) if self.item_type else None
-        assert (
-            getattr(self.container_class, '_string_conversions', None) is not None
-            or (string_conversions is not None)
-        ), self.container_class
-        return self.container_class(
-            obj, wrapper=wrapper, string_conversions=string_conversions)
+    def wrap(self, obj):
+        wrapper = self.type_to_property(self.item_type) if self.item_type else None
+        return self.container_class(obj, wrapper=wrapper,
+                                    type_config=self.type_config)
+
+    def type_to_property(self, item_type):
+        map_types_properties = self.type_config.properties
+        from .properties import ObjectProperty
+        if issubclass(item_type, JsonObjectBase):
+            return ObjectProperty(item_type, type_config=self.type_config)
+        elif item_type in map_types_properties:
+            return map_types_properties[item_type](type_config=self.type_config)
+        else:
+            for key, value in map_types_properties.items():
+                if issubclass(item_type, key):
+                    return value(type_config=self.type_config)
+            raise TypeError('Type {0} not recognized'.format(item_type))
 
     def unwrap(self, obj):
         if not isinstance(obj, self._type):
@@ -169,7 +189,7 @@ class JsonContainerProperty(JsonProperty):
         if isinstance(obj, self.container_class):
             return obj, obj._obj
         else:
-            wrapped = self.wrap(self._type(), string_conversions=())
+            wrapped = self.wrap(self._type())
             self._update(wrapped, obj)
             return self.unwrap(wrapped)
 
@@ -179,34 +199,64 @@ class JsonContainerProperty(JsonProperty):
 
 class DefaultProperty(JsonProperty):
 
-    def __init__(self, **kwargs):
-        self.string_conversions = kwargs.pop('string_conversions', None)
-        super(DefaultProperty, self).__init__(**kwargs)
-
     def wrap(self, obj):
-        assert self.string_conversions is not None
-        from . import convert
-        value = convert.value_to_python(
-            obj, string_conversions=self.string_conversions)
-        property_ = convert.value_to_property(value)
+        assert self.type_config.string_conversions is not None
+        value = self.value_to_python(obj)
+        property_ = self.value_to_property(value)
 
         if property_:
-            try:
-                return property_.wrap(
-                    obj,
-                    **({'string_conversions': self.string_conversions}
-                       if isinstance(property_, JsonContainerProperty) else {})
-                )
-            except TypeError:
-                return property_.wrap(obj)
+            return property_.wrap(obj)
 
     def unwrap(self, obj):
-        from . import convert
-        property_ = convert.value_to_property(obj)
+        property_ = self.value_to_property(obj)
         if property_:
             return property_.unwrap(obj)
         else:
             return obj, None
+
+    def value_to_property(self, value):
+        map_types_properties = self.type_config.properties
+        if value is None:
+            return None
+        elif type(value) in map_types_properties:
+            return map_types_properties[type(value)](
+                type_config=self.type_config)
+        else:
+            for value_type, prop_class in map_types_properties.items():
+                if isinstance(value, value_type):
+                    return prop_class(type_config=self.type_config)
+            else:
+                raise BadValueError(
+                    'value {0!r} not in allowed types: {1!r}'.format(
+                        value, map_types_properties.keys())
+                )
+
+    def value_to_python(self, value):
+        """
+        convert encoded string values to the proper python type
+
+        ex:
+        >>> DefaultProperty().value_to_python('2013-10-09T10:05:51Z')
+        datetime.datetime(2013, 10, 9, 10, 5, 51)
+
+        other values will be passed through unmodified
+        Note: containers' items are NOT recursively converted
+
+        """
+        if isinstance(value, basestring):
+            convert = None
+            for pattern, _convert in self.type_config.string_conversions:
+                if pattern.match(value):
+                    convert = _convert
+                    break
+
+            if convert is not None:
+                try:
+                    #sometimes regex fail so return value
+                    value = convert(value)
+                except Exception:
+                    pass
+        return value
 
 
 class AssertTypeProperty(JsonProperty):
@@ -276,16 +326,16 @@ def check_type(obj, item_type, message):
 
 
 class JsonArray(list):
-    def __init__(self, _obj=None, wrapper=None, string_conversions=None):
+    def __init__(self, _obj=None, wrapper=None, type_config=None):
         super(JsonArray, self).__init__()
         self._obj = check_type(_obj, list,
                                'JsonArray must wrap a list or None')
 
-        assert string_conversions is not None
-        self._string_conversions = string_conversions
+        assert type_config is not None
+        self._type_config = type_config
         self._wrapper = (
             wrapper or
-            DefaultProperty(string_conversions=self._string_conversions)
+            DefaultProperty(type_config=self._type_config)
         )
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
@@ -391,14 +441,14 @@ class SimpleDict(dict):
 
 class JsonDict(SimpleDict):
 
-    def __init__(self, _obj=None, wrapper=None, string_conversions=None):
+    def __init__(self, _obj=None, wrapper=None, type_config=None):
         super(JsonDict, self).__init__()
         self._obj = check_type(_obj, dict, 'JsonDict must wrap a dict or None')
-        assert string_conversions is not None
-        self._string_conversions = string_conversions
+        assert type_config is not None
+        self._type_config = type_config
         self._wrapper = (
             wrapper or
-            DefaultProperty(string_conversions=self._string_conversions)
+            DefaultProperty(type_config=self._type_config)
         )
         for key, value in self._obj.items():
             self[key] = self.__wrap(key, value)
@@ -432,16 +482,16 @@ class JsonDict(SimpleDict):
 
 
 class JsonSet(set):
-    def __init__(self, _obj=None, wrapper=None, string_conversions=None):
+    def __init__(self, _obj=None, wrapper=None, type_config=None):
         super(JsonSet, self).__init__()
         if isinstance(_obj, set):
             _obj = list(_obj)
         self._obj = check_type(_obj, list, 'JsonSet must wrap a list or None')
-        assert string_conversions is not None
-        self._string_conversions = string_conversions
+        assert type_config is not None
+        self._type_config = type_config
         self._wrapper = (
             wrapper or
-            DefaultProperty(string_conversions=self._string_conversions)
+            DefaultProperty(type_config=self._type_config)
         )
         for item in self._obj:
             super(JsonSet, self).add(self._wrapper.wrap(item))
@@ -530,16 +580,113 @@ class JsonSet(set):
             self ^= set(wrapped_list)
 
 
+JsonObjectClassSettings = namedtuple('JsonObjectClassSettings', ['type_config'])
+
+CLASS_SETTINGS_ATTR = '_$_class_settings'
+
+
+def get_settings(cls):
+    return getattr(cls, CLASS_SETTINGS_ATTR,
+                   JsonObjectClassSettings(type_config=TypeConfig()))
+
+
+def set_settings(cls, settings):
+    setattr(cls, CLASS_SETTINGS_ATTR, settings)
+
+
+class TypeConfig(object):
+    """
+    This class allows the user to configure dynamic
+    type handlers and string conversions for their JsonObject.
+
+    properties is a map from python types to JsonProperty subclasses
+    string_conversions is a list or tuple of (regex, python type)-tuples
+
+    This class is used to store the configuration but is not part of the API.
+    To configure:
+
+        class Foo(JsonObject):
+            # property definitions go here
+            # ...
+
+            class Meta(object):
+                update_properties = {
+                    datetime.datetime: MySpecialDateTimeProperty
+                }
+
+    If you now do
+
+        foo = Foo()
+        foo.timestamp = datetime.datetime(1988, 7, 7, 11, 8, 0)
+
+    timestamp will be governed by a MySpecialDateTimeProperty
+    instead of the default.
+
+    """
+    def __init__(self, properties=None, string_conversions=None):
+        self._properties = properties if properties is not None else {}
+
+        self._string_conversions = (
+            OrderedDict(string_conversions) if string_conversions is not None
+            else OrderedDict()
+        )
+        # cache this
+        self.string_conversions = self._get_string_conversions()
+        self.properties = self._properties
+
+    def replace(self, properties=None, string_conversions=None):
+        return TypeConfig(
+            properties=(properties if properties is not None
+                        else self._properties),
+            string_conversions=(string_conversions if string_conversions is not None
+                                else self._string_conversions)
+        )
+
+    def updated(self, properties=None, string_conversions=None):
+        """
+        update properties and string_conversions with the paramenters
+        keeping all non-mentioned items the same as before
+        returns a new TypeConfig with these changes
+        (does not modify original)
+
+        """
+        _properties = self._properties.copy()
+        _string_conversions = self.string_conversions[:]
+        if properties:
+            _properties.update(properties)
+        if string_conversions:
+            _string_conversions.extend(string_conversions)
+        return TypeConfig(
+            properties=_properties,
+            string_conversions=_string_conversions,
+        )
+
+    def _get_string_conversions(self):
+        result = []
+        for pattern, conversion in self._string_conversions.items():
+            conversion = (
+                conversion if conversion not in self._properties
+                else self._properties[conversion](type_config=self).to_python
+            )
+            result.append((pattern, conversion))
+        return result
+
+META_ATTRS = ('properties', 'string_conversions', 'update_properties')
+
+
 class JsonObjectMeta(type):
+
+    class Meta(object):
+        pass
+
     def __new__(mcs, name, bases, dct):
-        # There's a pretty fundamental cyclic dependency between this metaclass
-        # and knowledge of all available property types (in properties module).
-        # The current solution is to monkey patch this metaclass
-        # with a reference to the properties module
-        try:
-            from . import convert as _c
-        except ImportError:
-            _c = None
+        cls = type.__new__(mcs, name, bases, dct)
+
+        cls.__configure(**{key: value
+                           for key, value in cls.Meta.__dict__.items()
+                           if key in META_ATTRS})
+        cls_settings = get_settings(cls)
+
         properties = {}
         properties_by_name = {}
         for key, value in dct.items():
@@ -547,21 +694,19 @@ class JsonObjectMeta(type):
                 properties[key] = value
             elif key.startswith('_'):
                 continue
-            elif _c and type(value) in _c.MAP_TYPES_PROPERTIES:
-                property_ = _c.MAP_TYPES_PROPERTIES[type(value)](default=value)
+            elif type(value) in cls_settings.type_config.properties:
+                property_ = cls_settings.type_config.properties[type(value)](default=value)
                 properties[key] = dct[key] = property_
-
-        cls = type.__new__(mcs, name, bases, dct)
+                setattr(cls, key, property_)
 
         for key, property_ in properties.items():
-            property_.init_property(default_name=key)
+            property_.init_property(default_name=key,
+                                    type_config=cls_settings.type_config)
             assert property_.name is not None, property_
             assert property_.name not in properties_by_name, \
                 'You can only have one property named {0}'.format(
                     property_.name)
             properties_by_name[property_.name] = property_
-            if isinstance(property_, DefaultProperty):
-                property_.string_conversions = cls._string_conversions
 
         for base in bases:
             if getattr(base, '_properties_by_attr', None):
@@ -572,6 +717,22 @@ class JsonObjectMeta(type):
 
         cls._properties_by_attr = properties
         cls._properties_by_key = properties_by_name
+        return cls
+
+    def __configure(cls, properties=None, string_conversions=None,
+                    update_properties=None):
+        super_settings = get_settings(super(cls, cls))
+        assert not properties or not update_properties, \
+            "{} {}".format(properties, update_properties)
+        type_config = super_settings.type_config
+        if update_properties is not None:
+            type_config = type_config.updated(properties=update_properties)
+        elif properties is not None:
+            type_config = type_config.replace(properties=properties)
+        if string_conversions is not None:
+            type_config = type_config.replace(
+                string_conversions=string_conversions)
+        set_settings(cls, super_settings._replace(type_config=type_config))
         return cls
 
 
@@ -593,11 +754,8 @@ class JsonObjectBase(object):
 
     _string_conversions = ()
 
-    def __init__(self, _obj=None, _string_conversions=None, **kwargs):
+    def __init__(self, _obj=None, **kwargs):
         setattr(self, '_$', _JsonObjectPrivateInstanceVariables())
-
-        if _string_conversions is not None:
-            self._string_conversions = _string_conversions
 
         self._obj = check_type(_obj, dict,
                                'JsonObject must wrap a dict or None')
@@ -669,7 +827,7 @@ class JsonObjectBase(object):
         try:
             return self._properties_by_key[key]
         except KeyError:
-            return DefaultProperty(string_conversions=self._string_conversions)
+            return DefaultProperty(type_config=get_settings(self).type_config)
 
     def __wrap(self, key, value):
         property_ = self.__get_property(key)
@@ -680,14 +838,7 @@ class JsonObjectBase(object):
         if isinstance(property_, JsonArray):
             assert isinstance(property_, JsonContainerProperty)
 
-        try:
-            return property_.wrap(
-                value,
-                **({'string_conversions': self._string_conversions}
-                   if isinstance(property_, JsonContainerProperty) else {})
-            )
-        except TypeError:
-            return property_.wrap(value)
+        return property_.wrap(value)
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)

@@ -10,14 +10,13 @@ from .base import (
     JsonArray,
     JsonContainerProperty,
     JsonDict,
-    JsonObjectBase,
     JsonProperty,
     JsonSet,
 )
 
 
 class StringProperty(AssertTypeProperty):
-    _type = basestring
+    _type = (unicode, str)
 
     def selective_coerce(self, obj):
         if isinstance(obj, str):
@@ -157,16 +156,3 @@ class SetProperty(JsonContainerProperty):
 
     def _update(self, container, extension):
         container.update(extension)
-
-
-def type_to_property(item_type, *args, **kwargs):
-    from .convert import MAP_TYPES_PROPERTIES
-    if issubclass(item_type, JsonObjectBase):
-        return ObjectProperty(item_type, *args, **kwargs)
-    elif item_type in MAP_TYPES_PROPERTIES:
-        return MAP_TYPES_PROPERTIES[item_type](*args, **kwargs)
-    else:
-        for key, value in MAP_TYPES_PROPERTIES.items():
-            if issubclass(item_type, key):
-                return value(*args, **kwargs)
-        raise TypeError('Type {0} not recognized'.format(item_type))

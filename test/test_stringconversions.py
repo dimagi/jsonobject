@@ -1,7 +1,9 @@
 from decimal import Decimal
 import datetime
-from jsonobject import JsonObject, ObjectProperty
+from jsonobject.exceptions import BadValueError
+from jsonobject import JsonObject, ObjectProperty, DateTimeProperty
 import unittest2
+from jsonobject.base import get_settings
 
 
 class StringConversionsTest(unittest2.TestCase):
@@ -9,6 +11,7 @@ class StringConversionsTest(unittest2.TestCase):
     EXAMPLES = {
         'decimal': '1.2',
         'date': '2014-02-04',
+        'datetime': '2014-01-03T01:02:03Z',
         'dict': {
             'decimal': '1.4',
         },
@@ -21,6 +24,7 @@ class StringConversionsTest(unittest2.TestCase):
             'decimal': Decimal('1.4'),
         },
         'list': [Decimal('1.0'), datetime.date(2000, 01, 01)],
+        'datetime': datetime.datetime(2014, 1, 3, 1, 2, 3)
     }
 
     def test_default_conversions(self):
@@ -32,7 +36,8 @@ class StringConversionsTest(unittest2.TestCase):
 
     def test_no_conversions(self):
         class Foo(JsonObject):
-            _string_conversions = ()
+            class Meta(object):
+                string_conversions = ()
 
         foo = Foo.wrap(self.EXAMPLES)
         for key, value in self.EXAMPLES.items():
@@ -45,8 +50,10 @@ class StringConversionsTest(unittest2.TestCase):
             pass
 
         class Foo(JsonObject):
-            _string_conversions = ()
             bar = ObjectProperty(Bar)
+
+            class Meta(object):
+                string_conversions = ()
 
         foo = Foo.wrap({
             # don't convert
@@ -60,7 +67,9 @@ class StringConversionsTest(unittest2.TestCase):
 
     def test_nested_2(self):
         class Bar(JsonObject):
-            _string_conversions = ()
+
+            class Meta(object):
+                string_conversions = ()
 
         class Foo(JsonObject):
             # default string conversions
@@ -75,3 +84,33 @@ class StringConversionsTest(unittest2.TestCase):
         self.assertNotEqual(foo.decimal, '1.0')
         self.assertEqual(foo.decimal, Decimal('1.0'))
         self.assertEqual(foo.bar.decimal, '2.4')
+
+    def test_update_properties(self):
+        class Foo(JsonObject):
+
+            class Meta(object):
+                update_properties = {datetime.datetime: ExactDateTimeProperty}
+
+        self.assertEqual(
+            get_settings(Foo).type_config.properties[datetime.datetime],
+            ExactDateTimeProperty
+        )
+        with self.assertRaisesRegexp(BadValueError,
+                                     'is not a datetime-formatted string'):
+            Foo.wrap(self.EXAMPLES)
+        examples = self.EXAMPLES.copy()
+        examples['datetime'] = '2014-01-03T01:02:03.012345Z'
+        examples_converted = self.EXAMPLES_CONVERTED.copy()
+        examples_converted['datetime'] = datetime.datetime(
+            2014, 1, 3, 1, 2, 3, 12345)
+        foo = Foo.wrap(examples)
+        for key, value in examples_converted.items():
+            self.assertEqual(getattr(foo, key), value)
+
+
+class ExactDateTimeProperty(DateTimeProperty):
+    def __init__(self, **kwargs):
+        if 'exact' in kwargs:
+            assert kwargs['exact'] is True
+        kwargs['exact'] = True
+        super(ExactDateTimeProperty, self).__init__(**kwargs)

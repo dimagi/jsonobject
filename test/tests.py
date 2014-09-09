@@ -376,6 +376,13 @@ class JsonObjectTestCase(unittest2.TestCase):
         d.l2 = [longint]
         self.assertEqual(d.l2, [longint])
 
+    def test_string_list_property(self):
+
+        class Foo(JsonObject):
+            string_list = ListProperty(StringProperty)
+
+        foo = Foo({'string_list': ['a', 'b', 'c']})
+        self.assertEqual(foo.string_list, ['a', 'b', 'c'])
 
 class LazyValidationTest(unittest2.TestCase):
 
