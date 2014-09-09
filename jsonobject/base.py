@@ -642,7 +642,14 @@ class TypeConfig(object):
                                 else self._string_conversions)
         )
 
-    def update(self, properties=None, string_conversions=None):
+    def updated(self, properties=None, string_conversions=None):
+        """
+        update properties and string_conversions with the paramenters
+        keeping all non-mentioned items the same as before
+        returns a new TypeConfig with these changes
+        (does not modify original)
+
+        """
         _properties = self._properties.copy()
         _string_conversions = self.string_conversions[:]
         if properties:
@@ -719,7 +726,7 @@ class JsonObjectMeta(type):
             "{} {}".format(properties, update_properties)
         type_config = super_settings.type_config
         if update_properties is not None:
-            type_config = type_config.update(properties=update_properties)
+            type_config = type_config.updated(properties=update_properties)
         elif properties is not None:
             type_config = type_config.replace(properties=properties)
         if string_conversions is not None:
