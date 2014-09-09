@@ -4,15 +4,13 @@ from __future__ import absolute_import
 import datetime
 import time
 import decimal
-from .base import (
+from .base_properties import (
     AbstractDateProperty,
     AssertTypeProperty,
-    JsonArray,
     JsonContainerProperty,
-    JsonDict,
     JsonProperty,
-    JsonSet,
 )
+from .containers import JsonArray, JsonDict, JsonSet
 
 
 class StringProperty(AssertTypeProperty):

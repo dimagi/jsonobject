@@ -1,5 +1,6 @@
 from __future__ import absolute_import
-from .base import JsonObjectMeta, JsonArray
+from .base import JsonObjectMeta
+from .containers import JsonArray
 from .properties import *
 from .api import JsonObject
 
