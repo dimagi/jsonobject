@@ -715,7 +715,8 @@ class JsonObjectMeta(type):
     def __configure(cls, properties=None, string_conversions=None,
                     update_properties=None):
         super_settings = get_settings(super(cls, cls))
-        assert len(filter(None, (properties, update_properties))) <= 1
+        assert not properties or not update_properties, \
+            "{} {}".format(properties, update_properties)
         type_config = super_settings.type_config
         if update_properties is not None:
             type_config = type_config.update(properties=update_properties)
