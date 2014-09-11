@@ -43,6 +43,12 @@ class TypeConfig(object):
                 update_properties = {
                     datetime.datetime: MySpecialDateTimeProperty
                 }
+                # this is already set by default
+                # but you can override with your own modifications
+                string_conversions = ((date_re, datetime.date),
+                                      (datetime_re, datetime.datetime),
+                                      (time_re, datetime.time),
+                                      (decimal_re, decimal.Decimal))
 
     If you now do
 
