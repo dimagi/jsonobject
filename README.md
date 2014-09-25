@@ -350,6 +350,80 @@ Otherwise its behavior is very much like `ListProperty`'s.
 
 If not specified, it will be set to an empty dict.
 
+## Property options
+
+Certain parameters may be passed in to any property.
+
+For example, `required` is one such parameter in the example below:
+
+```python
+
+class User(JsonObject):
+    username = StringProperty(required=True)
+
+```
+
+Here is a complete list of properties:
+
+- `default`
+
+  Specifies a default value for the property
+
+- `name`
+
+  The name of the property within the JSON representation\*.
+  This defaults to the name of the python property, but you can override it
+  if you wish. This can be useful, for example, to get around conflicting
+  with python keywords:
+  ```python
+  >>> class Route(JsonObject):
+  ...     from_ = StringProperty(name='from')
+  ...     to = StringProperty()  # name='to' by default
+  >>> Route(from_='me', to='you').to_json()
+  {'from': u'me', 'to': u'you'}
+  ```
+  Notice how an underscore is present in the python property name ('from_'),
+  but absent in the JSON property name ('from').
+
+
+  <small>
+  \*If you're wondering how `StringProperty`'s `name` parameter
+  could possibly default to `to` in the example above,
+  when it doesn't have access to the `Route` class's properties at init time,
+  you're completely right.
+  The behavior described is implemented in `JsonObject`'s `__metaclass__`,
+  which *does* have access to the `Route` class's properties.
+  </small>
+
+- `choices`
+
+  A list of allowed values for the property.
+  (Unless otherwise specified, `None` is also an allowed value.)
+
+- `required`
+
+  Defaults to `False`.
+  For scalar properties `requires` means that the value `None` may not be used.
+  For container properties it means they may not be empty
+  or take the value `None`.
+
+- `exclude_if_none`
+
+  Defaults to `False`. When set to true, this property will be excluded
+  from the JSON output when its value is falsey.
+  (Note that currently this is at odds with the parameter's name,
+  since the condition is that it is falsey, not that it is `None`).
+
+- `validators`
+
+  A single validator function or list of validator functions.
+  Each validator function should raise an exception on invalid input
+  and do nothing otherwise.
+
+- `verbose_name`
+
+  This property does nothing and was added to match couchdbkit's API.
+
 
 ## Performance Comparison with Couchdbkit
 
