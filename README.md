@@ -350,6 +350,14 @@ Otherwise its behavior is very much like `ListProperty`'s.
 
 If not specified, it will be set to an empty dict.
 
+### Other
+
+#### `jsonobject.DefaultProperty()`
+
+This flexibly wraps any valid JSON, including all scalar and container types,
+dynamically detecting the value's type and treating it
+with the corresponding property.
+
 ## Property options
 
 Certain parameters may be passed in to any property.
