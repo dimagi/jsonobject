@@ -12,29 +12,16 @@ from .base_properties import (
 )
 from .containers import JsonArray, JsonDict, JsonSet
 from six import integer_types
-import types
-try:
-    unicode = unicode
-except NameError:
-    # 'unicode' is undefined, must be Python 3
-    str = str
-    unicode = str
-    bytes = bytes
-    basestring = (str,bytes)
-else:
-    # 'unicode' exists, must be Python 2
-    str = str
-    unicode = unicode
-    bytes = str
-    basestring = basestring
+from six import text_type
+
 
 class StringProperty(AssertTypeProperty):
 
-    _type = (unicode, str)
+    _type = (text_type, str)
 
     def selective_coerce(self, obj):
         if isinstance(obj, str):
-            obj = unicode(obj)
+            obj = text_type(obj)
         return obj
 
 
@@ -65,9 +52,9 @@ class DecimalProperty(JsonProperty):
             obj = decimal.Decimal(obj)
         elif isinstance(obj, float):
             # python 2.6 doesn't allow a float to Decimal
-            obj = decimal.Decimal(unicode(obj))
+            obj = decimal.Decimal(text_type(obj))
         assert isinstance(obj, decimal.Decimal)
-        return obj, unicode(obj)
+        return obj, text_type(obj)
 
 
 class DateProperty(AbstractDateProperty):
