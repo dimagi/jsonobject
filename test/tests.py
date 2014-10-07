@@ -9,7 +9,7 @@ from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
-from six import integer_types, string_types, text_type
+from six import integer_types, text_type
 
 class Features(JsonObject):
     """
