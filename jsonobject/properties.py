@@ -11,9 +11,25 @@ from .base_properties import (
     JsonProperty,
 )
 from .containers import JsonArray, JsonDict, JsonSet
-
+from six import integer_types
+import types
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
 
 class StringProperty(AssertTypeProperty):
+
     _type = (unicode, str)
 
     def selective_coerce(self, obj):
@@ -27,14 +43,14 @@ class BooleanProperty(AssertTypeProperty):
 
 
 class IntegerProperty(AssertTypeProperty):
-    _type = (int, long)
+    _type = integer_types
 
 
 class FloatProperty(AssertTypeProperty):
     _type = float
 
     def selective_coerce(self, obj):
-        if isinstance(obj, (int, long)):
+        if isinstance(obj, integer_types):
             obj = float(obj)
         return obj
 
@@ -45,7 +61,7 @@ class DecimalProperty(JsonProperty):
         return decimal.Decimal(obj)
 
     def unwrap(self, obj):
-        if isinstance(obj, (int, long)):
+        if isinstance(obj, integer_types):
             obj = decimal.Decimal(obj)
         elif isinstance(obj, float):
             # python 2.6 doesn't allow a float to Decimal
