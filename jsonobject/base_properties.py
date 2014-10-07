@@ -1,21 +1,7 @@
 from __future__ import absolute_import
 import inspect
 from .exceptions import BadValueError
-import types
-try:
-    unicode = unicode
-except NameError:
-    # 'unicode' is undefined, must be Python 3
-    str = str
-    unicode = str
-    bytes = bytes
-    basestring = (str,bytes)
-else:
-    # 'unicode' exists, must be Python 2
-    str = str
-    unicode = unicode
-    bytes = str
-    basestring = basestring
+from six import string_types
 class JsonProperty(object):
 
     default = None
@@ -252,7 +238,7 @@ class DefaultProperty(JsonProperty):
         Note: containers' items are NOT recursively converted
 
         """
-        if isinstance(value, basestring):
+        if isinstance(value, string_types):
             convert = None
             for pattern, _convert in self.type_config.string_conversions:
                 if pattern.match(value):
@@ -301,7 +287,7 @@ class AbstractDateProperty(JsonProperty):
 
     def wrap(self, obj):
         try:
-            if not isinstance(obj, basestring):
+            if not isinstance(obj, string_types):
                 raise ValueError()
             return self._wrap(obj)
         except ValueError:

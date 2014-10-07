@@ -8,7 +8,7 @@ from .exceptions import (
 )
 from .base_properties import JsonProperty, DefaultProperty
 from .utils import check_type
-import six
+from six import iteritems, with_metaclass
 
 
 JsonObjectClassSettings = namedtuple('JsonObjectClassSettings', ['type_config'])
@@ -179,7 +179,7 @@ class _JsonObjectPrivateInstanceVariables(object):
         self.dynamic_properties = dynamic_properties or {}
 
 
-class JsonObjectBase(six.with_metaclass(JsonObjectMeta, object)):
+class JsonObjectBase(with_metaclass(JsonObjectMeta, object)):
 
     _allow_dynamic_properties = True
     _validate_required_lazily = False
@@ -375,7 +375,7 @@ class _LimitedDictInterfaceMixin(object):
         return self._wrapped.items()
 
     def iteritems(self):
-        return six.iteritems(self._wrapped)
+        return iteritems(self._wrapped)
 
     def __contains__(self, item):
         return item in self._wrapped

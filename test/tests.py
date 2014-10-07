@@ -9,22 +9,7 @@ from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
-from six import integer_types
-import types
-try:
-    unicode = unicode
-except NameError:
-    # 'unicode' is undefined, must be Python 3
-    str = str
-    unicode = str
-    bytes = bytes
-    basestring = (str,bytes)
-else:
-    # 'unicode' exists, must be Python 2
-    str = str
-    unicode = unicode
-    bytes = str
-    basestring = basestring
+from six import integer_types, string_types, text_type
 
 class Features(JsonObject):
     """
@@ -53,7 +38,7 @@ class Person(Document):
     last_name = StringProperty()
     features = ObjectProperty(Features)
     favorite_numbers = ListProperty(int)
-    tags = ListProperty(unicode)
+    tags = ListProperty(text_type)
 
     @property
     def full_name(self):
@@ -103,7 +88,7 @@ class JsonObjectTestCase(unittest.TestCase):
         data = self._danny_data()
         danny = FamilyMember.wrap(data)
         self.assertEqual(danny.doc_type, 'FamilyMember')
-        self.assertIsInstance(danny.doc_type, unicode)
+        self.assertIsInstance(danny.doc_type, text_type)
         self.assertEqual(danny.first_name, 'Danny')
         self.assertEqual(danny.last_name, 'Roberts')
         self.assertEqual(danny.brothers[0].full_name, 'Alex Roberts')
@@ -156,7 +141,7 @@ class JsonObjectTestCase(unittest.TestCase):
             with self.assertRaises(error_type) as cm:
                 Person.wrap({'full_name': 'Danny Roberts'})
             self.assertEqual(
-                unicode(cm.exception),
+                text_type(cm.exception),
                 "can't set attribute corresponding to "
                 "'full_name' on a <class 'test.tests.Person'> "
                 "while wrapping {'full_name': 'Danny Roberts'}"
@@ -527,7 +512,7 @@ class PropertyTestCase(unittest.TestCase):
         self.assertEqual(foo.to_json()['decimal'], '4')
 
         foo.decimal = 5.25
-        self.assertEqual(foo.decimal, decimal.Decimal(unicode(5.25)))
+        self.assertEqual(foo.decimal, decimal.Decimal(text_type(5.25)))
         self.assertEqual(foo.to_json()['decimal'], '5.25')
 
     def test_dict(self):
@@ -703,7 +688,7 @@ class User(JsonObject):
     name = StringProperty()
     active = BooleanProperty(default=False, required=True)
     date_joined = DateTimeProperty()
-    tags = ListProperty(unicode)
+    tags = ListProperty(text_type)
 
 
 class TestExactDateTime(unittest.TestCase):
