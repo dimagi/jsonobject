@@ -3,10 +3,24 @@ from .base import JsonObjectBase, _LimitedDictInterfaceMixin
 
 import decimal
 import datetime
-
+from six import integer_types
 from . import properties
 import re
-
+import types
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
 
 re_date = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
 re_time = re.compile(
@@ -36,7 +50,7 @@ class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
             unicode: properties.StringProperty,
             bool: properties.BooleanProperty,
             int: properties.IntegerProperty,
-            long: properties.IntegerProperty,
+            integer_types: properties.IntegerProperty,
             float: properties.FloatProperty,
             list: properties.ListProperty,
             dict: properties.DictProperty,

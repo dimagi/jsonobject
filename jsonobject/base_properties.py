@@ -1,8 +1,21 @@
 from __future__ import absolute_import
 import inspect
 from .exceptions import BadValueError
-
-
+import types
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
 class JsonProperty(object):
 
     default = None
@@ -86,7 +99,7 @@ class JsonProperty(object):
         """
         assert self.default() is None
         self.default = method
-        self.name = self.name or method.func_name
+        self.name = self.name or method.__name__
         return self
 
     def exclude(self, value):
