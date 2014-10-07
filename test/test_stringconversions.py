@@ -2,11 +2,14 @@ from decimal import Decimal
 import datetime
 from jsonobject.exceptions import BadValueError
 from jsonobject import JsonObject, ObjectProperty, DateTimeProperty
-import unittest2
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 from jsonobject.base import get_settings
 
 
-class StringConversionsTest(unittest2.TestCase):
+class StringConversionsTest(unittest.TestCase):
 
     EXAMPLES = {
         'decimal': '1.2',
