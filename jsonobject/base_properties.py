@@ -2,6 +2,8 @@ from __future__ import absolute_import
 import inspect
 from .exceptions import BadValueError
 from six import string_types
+
+
 class JsonProperty(object):
 
     default = None
