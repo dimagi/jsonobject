@@ -1,23 +1,9 @@
 import functools
 from jsonobject import *
-import types
-try:
-    unicode = unicode
-except NameError:
-    # 'unicode' is undefined, must be Python 3
-    str = str
-    unicode = str
-    bytes = bytes
-    basestring = (str,bytes)
-else:
-    # 'unicode' exists, must be Python 2
-    str = str
-    unicode = unicode
-    bytes = str
-    basestring = basestring
+from six import text_type
 SchemaProperty = ObjectProperty
 SchemaListProperty = ListProperty
-StringListProperty = functools.partial(ListProperty, unicode)
+StringListProperty = functools.partial(ListProperty, text_type)
 SchemaDictProperty = DictProperty
 
 

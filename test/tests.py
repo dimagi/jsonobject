@@ -11,6 +11,7 @@ from jsonobject.exceptions import (
 )
 from six import integer_types, text_type
 
+
 class Features(JsonObject):
     """
     Make sure doc string isn't treated as a property called __doc__!
