@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from .exceptions import BadValueError
 
 
-
 def check_type(obj, item_type, message):
     if obj is None:
         return item_type()
@@ -24,5 +23,5 @@ class SimpleDict(dict):
                     self[key] = value
 
     def clear(self):
-        for key in list(self.keys()):
+        for key in list(self):
             del self[key]
