@@ -1,11 +1,14 @@
 from __future__ import absolute_import
 import json
 import os
-from unittest2 import TestCase
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 from .couchdbkit.application import Application
 
 
-class CouchdbkitTestCase(TestCase):
+class CouchdbkitTestCase(unittest.TestCase):
     def _test(self, name):
         with open(os.path.join('test', 'couchdbkit', 'data', '{0}.json'.format(name))) as f:
             Application.wrap(json.load(f))

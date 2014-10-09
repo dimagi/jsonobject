@@ -38,6 +38,7 @@ class FormActionCondition(DocumentSchema):
     question = StringProperty()
     answer = StringProperty()
 
+
 class FormAction(DocumentSchema):
     condition = SchemaProperty(FormActionCondition)
 
@@ -45,8 +46,10 @@ class FormAction(DocumentSchema):
 class UpdateCaseAction(FormAction):
     update = DictProperty()
 
+
 class PreloadAction(FormAction):
     preload = DictProperty()
+
 
 class UpdateReferralAction(FormAction):
     followup_date = StringProperty()

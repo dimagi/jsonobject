@@ -23,5 +23,5 @@ class SimpleDict(dict):
                     self[key] = value
 
     def clear(self):
-        for key in self.keys():
+        for key in list(self):
             del self[key]

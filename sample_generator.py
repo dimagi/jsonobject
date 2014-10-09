@@ -1,4 +1,5 @@
 import random
+from six.moves import map
 
 
 def generate_object_type(jo=None):
@@ -7,7 +8,7 @@ def generate_object_type(jo=None):
     or couchdbkit_shim for comparison with couchdbkit
     """
     if jo is None:
-        import jsonobject as jo
+        from . import jsonobject as jo
     WORDS = 'dog cat elephant river candle stripe pin plum'.split()
     leaf_types = {
         jo.StringProperty: unicode,
@@ -39,7 +40,7 @@ def generate_object_type(jo=None):
 
     def generate_object_type(words=None):
         class_name = generate_class_name(words)
-        n_properties = random.choice(range(5))
+        n_properties = random.choice(list(range(5)))
         dct = {}
         for _ in range(n_properties):
             words = get_phrase()
