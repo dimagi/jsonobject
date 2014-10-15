@@ -5,7 +5,7 @@ with open('README.md') as readme_file:
 
 setup(
     name='jsonobject',
-    version='0.6.0b2',
+    version='0.6.0',
     author='Danny Roberts',
     author_email='droberts@dimagi.com',
     description='A library for dealing with JSON as python objects',
