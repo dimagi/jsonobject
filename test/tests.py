@@ -684,6 +684,22 @@ class DynamicConversionTestCase(unittest.TestCase):
         self.assertEqual(foo.to_json(), {'my_list': ['bar']})
 
 
+class TestListProperty(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        class Foo(JsonObject):
+            list = ListProperty(int)
+
+        cls.Foo = Foo
+
+    def test_sort(self):
+        foo = self.Foo(list=[6, 9, 2, 4, 8])
+        foo.list.sort()
+        self.assertEqual(foo.list, [2, 4, 6, 8, 9])
+        self.assertEqual(foo.to_json()['list'], [2, 4, 6, 8, 9])
+
+
 class User(JsonObject):
     username = StringProperty()
     name = StringProperty()

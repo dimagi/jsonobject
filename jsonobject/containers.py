@@ -57,7 +57,7 @@ class JsonArray(list):
         return super(JsonArray, self).pop(index)
 
     def sort(self, cmp=None, key=None, reverse=False):
-        zipped = zip(self, self._obj)
+        zipped = list(zip(self, self._obj))
         if key:
             new_key = lambda pair: key(pair[0])
             zipped.sort(key=new_key, reverse=reverse)
