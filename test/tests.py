@@ -615,7 +615,7 @@ class DynamicConversionTestCase(unittest.TestCase):
     class Foo(JsonObject):
         pass
     string_date = '2012-01-01'
-    date_date = datetime.date(2012, 0o1, 0o1)
+    date_date = datetime.date(2012, 1, 1)
 
     def _test_dynamic_conversion(self, foo):
         string_date = self.string_date
