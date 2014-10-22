@@ -707,6 +707,27 @@ class TestExactDateTime(unittest2.TestCase):
         self.assertEqual(len(date_obj.to_json()['date']), 27)
 
 
+class IntegerTest(unittest2.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        class Foo(JsonObject):
+            my_int = IntegerProperty(default=30)
+        cls.Foo = Foo
+
+    def test_default(self):
+        self.assertEqual(self.Foo().my_int, 30)
+
+    def test_init_zero(self):
+        self.assertEqual(self.Foo(my_int=0).my_int, 0)
+        self.assertEqual(self.Foo.wrap({'my_int': 0}).my_int, 0)
+
+    def test_set_zero(self):
+        foo = self.Foo()
+        foo.my_int = 0
+        self.assertEqual(foo.my_int, 0)
+        self.assertEqual(foo.to_json()['my_int'], 0)
+
+
 class TestReadmeExamples(unittest2.TestCase):
     def test(self):
         import datetime
