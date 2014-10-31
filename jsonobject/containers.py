@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from copy import deepcopy
 from .base_properties import DefaultProperty
 from .utils import check_type, SimpleDict
 
@@ -100,6 +101,9 @@ class JsonArray(list):
         for _ in range(j - i):
             self.pop(i)
 
+    def __deepcopy__(self, memo):
+        return deepcopy(self._obj, memo)
+
 
 class JsonDict(SimpleDict):
 
@@ -141,6 +145,9 @@ class JsonDict(SimpleDict):
         if isinstance(key, int):
             key = unicode(key)
         return super(JsonDict, self).__getitem__(key)
+
+    def __deepcopy__(self, memo):
+        return deepcopy(self._obj, memo)
 
 
 class JsonSet(set):
@@ -241,4 +248,5 @@ class JsonSet(set):
         for wrapped_list in args:
             self ^= set(wrapped_list)
 
-
+    def __deepcopy__(self, memo):
+        return set(deepcopy(self._obj, memo))

@@ -1,4 +1,5 @@
-from copy import deepcopy
+import copy
+from jsonobject import SetProperty
 import unittest2
 from jsonobject import *
 from jsonobject.exceptions import (
@@ -191,7 +192,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             }
         }
 
-        p = JunkAB(deepcopy(json_end))
+        p = JunkAB(copy.deepcopy(json_end))
         self.assertEqual(p.to_json(), json_end)
         p.a_property.append(4)
         self.assertEqual(p.to_json(), {'a': [1, 2, 3, 4], 'b': json_end['b']})
@@ -726,6 +727,36 @@ class IntegerTest(unittest2.TestCase):
         foo.my_int = 0
         self.assertEqual(foo.my_int, 0)
         self.assertEqual(foo.to_json()['my_int'], 0)
+
+
+class CopyTest(unittest2.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        class Obj(JsonObject):
+            dict = DictProperty()
+            list = ListProperty()
+            set = SetProperty()
+
+        cls.obj = Obj(dict={"key": "value"}, list=['1', '2'], set={'1', '2'})
+
+    def test_deepcopy_dict(self):
+        self.assertEqual(copy.deepcopy(self.obj.dict), self.obj.dict)
+
+    def test_copy_dict(self):
+        self.assertEqual(copy.copy(self.obj.dict), self.obj.dict)
+
+    def test_deepcopy_list(self):
+        self.assertEqual(copy.deepcopy(self.obj.list), self.obj.list)
+
+    def test_copy_list(self):
+        self.assertEqual(copy.copy(self.obj.list), self.obj.list)
+
+    def test_deepcopy_set(self):
+        self.assertEqual(copy.deepcopy(self.obj.set), self.obj.set)
+
+    def test_copy_set(self):
+        self.assertEqual(copy.copy(self.obj.set), self.obj.set)
 
 
 class TestReadmeExamples(unittest2.TestCase):
