@@ -15,15 +15,16 @@ class JsonArray(list):
             wrapper or
             DefaultProperty(type_config=self._type_config)
         )
+
         for item in self._obj:
-            super(JsonArray, self).append(self._wrapper.wrap(item))
+            super(JsonArray, self).append(self._wrapper.validate_and_wrap(item))
 
     def validate(self, required=True):
         for obj in self:
             self._wrapper.validate(obj, required=required)
 
     def append(self, wrapped):
-        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        wrapped, unwrapped = self._wrapper.validate_and_unwrap(wrapped)
         self._obj.append(unwrapped)
         super(JsonArray, self).append(wrapped)
 
@@ -34,7 +35,7 @@ class JsonArray(list):
     def extend(self, wrapped_list):
         if wrapped_list:
             wrapped_list, unwrapped_list = zip(
-                *map(self._wrapper.unwrap, wrapped_list)
+                *map(self._wrapper.validate_and_unwrap, wrapped_list)
             )
         else:
             unwrapped_list = []
@@ -42,7 +43,7 @@ class JsonArray(list):
         super(JsonArray, self).extend(wrapped_list)
 
     def insert(self, index, wrapped):
-        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        wrapped, unwrapped = self._wrapper.validate_and_unwrap(wrapped)
         self._obj.insert(index, unwrapped)
         super(JsonArray, self).insert(index, wrapped)
 
@@ -120,10 +121,10 @@ class JsonDict(SimpleDict):
             self._wrapper.validate(obj, required=required)
 
     def __wrap(self, key, unwrapped):
-        return self._wrapper.wrap(unwrapped)
+        return self._wrapper.validate_and_wrap(unwrapped)
 
     def __unwrap(self, key, wrapped):
-        return self._wrapper.unwrap(wrapped)
+        return self._wrapper.validate_and_unwrap(wrapped)
 
     def __setitem__(self, key, value):
         if isinstance(key, int):
@@ -156,20 +157,20 @@ class JsonSet(set):
             DefaultProperty(type_config=self._type_config)
         )
         for item in self._obj:
-            super(JsonSet, self).add(self._wrapper.wrap(item))
+            super(JsonSet, self).add(self._wrapper.validate_and_wrap(item))
 
     def validate(self, required=True):
         for obj in self:
             self._wrapper.validate(obj, required=required)
 
     def add(self, wrapped):
-        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        wrapped, unwrapped = self._wrapper.validate_and_unwrap(wrapped)
         if wrapped not in self:
             self._obj.append(unwrapped)
             super(JsonSet, self).add(wrapped)
 
     def remove(self, wrapped):
-        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        wrapped, unwrapped = self._wrapper.validate_and_unwrap(wrapped)
         if wrapped in self:
             self._obj.remove(unwrapped)
             super(JsonSet, self).remove(wrapped)
@@ -188,7 +189,7 @@ class JsonSet(set):
             break
         else:
             raise KeyError()
-        wrapped_, unwrapped = self._wrapper.unwrap(wrapped)
+        wrapped_, unwrapped = self._wrapper.validate_and_unwrap(wrapped)
         assert wrapped is wrapped_
         self.remove(unwrapped)
         return wrapped

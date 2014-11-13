@@ -88,6 +88,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertIsInstance(danny.doc_type, unicode)
         self.assertEqual(danny.first_name, 'Danny')
         self.assertEqual(danny.last_name, 'Roberts')
+        print danny.brothers[0]
         self.assertEqual(danny.brothers[0].full_name, 'Alex Roberts')
         self.assertEqual(danny.brothers[1].full_name, 'Nicky Roberts')
         self.assertEqual(danny.features.hair, 'brown')
@@ -143,6 +144,7 @@ class JsonObjectTestCase(unittest2.TestCase):
                 "'full_name' on a <class 'test.tests.Person'> "
                 "while wrapping {'full_name': 'Danny Roberts'}"
             )
+
     def test_pickle(self):
         import pickle
         f1 = FamilyMember.wrap(self._danny_data())
@@ -524,7 +526,7 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(features.to_json(), {
             'feature_map': {
                 'lala': {'hair': None, 'eyes': None},
-                'foo': {'hair': None, 'eyes': None},
+                'foo': None,
             },
         })
         with self.assertRaises(BadValueError):
@@ -534,7 +536,7 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(features.to_json(), {
             'feature_map': {
                 'lala': {'hair': None, 'eyes': None},
-                'foo': {'hair': None, 'eyes': None},
+                'foo': None,
                 'hoho': {'hair': None, 'eyes': 'brown'},
             },
         })
@@ -726,6 +728,32 @@ class IntegerTest(unittest2.TestCase):
         foo.my_int = 0
         self.assertEqual(foo.my_int, 0)
         self.assertEqual(foo.to_json()['my_int'], 0)
+
+
+class PropertyInsideContainerTest(unittest2.TestCase):
+
+    def test_default(self):
+        class Foo(JsonObject):
+            container = ListProperty(int)
+
+        # assert does not error
+        Foo(container=[None])
+
+    def test_property(self):
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty())
+
+        # assert does not error
+        Foo(container=[None])
+
+    def test_required_property(self):
+        i = IntegerProperty(required=True)
+
+        class Foo(JsonObject):
+            container = ListProperty(i)
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
 
 
 class TestReadmeExamples(unittest2.TestCase):

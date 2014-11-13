@@ -43,6 +43,23 @@ class JsonProperty(object):
         self.name = self.name or default_name
         self.type_config = self.type_config or type_config
 
+    def validate_and_wrap(self, value):
+        if value is None:
+            return None
+
+        return self.wrap(value)
+
+    def validate_and_unwrap(self, value, validate_required_lazily=False):
+        self.validate(
+            value,
+            required=not validate_required_lazily,
+            recursive=False,
+        )
+
+        if value is None:
+            return None, None
+        return self.unwrap(value)
+
     def wrap(self, obj):
         raise NotImplementedError()
 
@@ -119,6 +136,7 @@ class JsonContainerProperty(JsonProperty):
 
     def __init__(self, item_type=None, **kwargs):
         self._item_type_deferred = item_type
+        self._property = None
         super(JsonContainerProperty, self).__init__(**kwargs)
 
     def init_property(self, **kwargs):
@@ -129,6 +147,8 @@ class JsonContainerProperty(JsonProperty):
 
     def set_item_type(self, item_type):
         from jsonobject.base import JsonObjectMeta
+        if isinstance(item_type, JsonProperty):
+            self._property = item_type
         if hasattr(item_type, '_type'):
             item_type = item_type._type
         if isinstance(item_type, tuple):
@@ -138,6 +158,8 @@ class JsonContainerProperty(JsonProperty):
         if isinstance(item_type, JsonObjectMeta) \
                 or not item_type or item_type in allowed_types:
             self._item_type = item_type
+            if item_type and not self._property:
+                self._property = self.type_to_property(item_type)
         else:
             raise ValueError("item_type {0!r} not in {1!r}".format(
                 item_type,
@@ -158,8 +180,7 @@ class JsonContainerProperty(JsonProperty):
         return not value
 
     def wrap(self, obj):
-        wrapper = self.type_to_property(self.item_type) if self.item_type else None
-        return self.container_class(obj, wrapper=wrapper,
+        return self.container_class(obj, wrapper=self._property,
                                     type_config=self.type_config)
 
     def type_to_property(self, item_type):

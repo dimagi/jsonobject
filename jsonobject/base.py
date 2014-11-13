@@ -267,29 +267,13 @@ class JsonObjectBase(object):
 
     def __wrap(self, key, value):
         property_ = self.__get_property(key)
-
-        if value is None:
-            return None
-
-        return property_.wrap(value)
+        return property_.validate_and_wrap(value)
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
-        try:
-            property_.validate(
-                value,
-                required=not self._validate_required_lazily,
-                recursive=False,
-            )
-        except TypeError:
-            property_.validate(
-                value,
-                required=not self._validate_required_lazily,
-            )
-        if value is None:
-            return None, None
-
-        return property_.unwrap(value)
+        return property_.validate_and_unwrap(
+            value,
+            validate_required_lazily=self._validate_required_lazily)
 
     def __setitem__(self, key, value):
         wrapped, unwrapped = self.__unwrap(key, value)
