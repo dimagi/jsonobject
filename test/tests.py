@@ -143,6 +143,7 @@ class JsonObjectTestCase(unittest2.TestCase):
                 "'full_name' on a <class 'test.tests.Person'> "
                 "while wrapping {'full_name': 'Danny Roberts'}"
             )
+
     def test_pickle(self):
         import pickle
         f1 = FamilyMember.wrap(self._danny_data())
@@ -384,6 +385,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         foo = Foo({'string_list': ['a', 'b', 'c']})
         self.assertEqual(foo.string_list, ['a', 'b', 'c'])
 
+
 class LazyValidationTest(unittest2.TestCase):
 
     def _validate_raises(self, foo):
@@ -516,8 +518,40 @@ class PropertyTestCase(unittest2.TestCase):
         mapping = {'one': 1, 'two': 2}
         o = ObjectWithDictProperty(mapping=mapping)
         self.assertEqual(o.mapping, mapping)
+        self.assertEqual(o.to_json()['mapping'], mapping)
+
+    def test_dict_update(self):
+        mapping = {'one': 1, 'two': 2}
+        o = ObjectWithDictProperty(mapping=mapping)
         o.mapping.update({'three': 3}, four=4)
         self.assertEqual(o.mapping, {'one': 1, 'two': 2, 'three': 3, 'four': 4})
+        self.assertEqual(o.to_json()['mapping'], {'one': 1, 'two': 2, 'three': 3, 'four': 4})
+
+    def test_dict_pop(self):
+        mapping = {'one': 1, 'two': 2}
+        o = ObjectWithDictProperty(mapping=mapping)
+        val = o.mapping.pop('two')
+        self.assertEqual(val, 2)
+        self.assertEqual(o.mapping, {'one': 1})
+        self.assertEqual(o.to_json()['mapping'], {'one': 1})
+
+    def test_dict_setdefault(self):
+        mapping = {'one': 1, 'two': 2}
+        o = ObjectWithDictProperty(mapping=mapping)
+        val = o.mapping.setdefault('three', 3)
+        self.assertEqual(val, 3)
+        self.assertEqual(o.mapping, {'one': 1, 'two': 2, 'three': 3})
+        self.assertEqual(o.to_json()['mapping'], {'one': 1, 'two': 2, 'three': 3})
+
+    def test_dict_popitem(self):
+        mapping = {'one': 1, 'two': 2}
+        o = ObjectWithDictProperty(mapping=mapping)
+        old_dict = o.mapping.copy()
+        val = o.mapping.popitem()
+        self.assertTrue(val[0] in old_dict)
+        self.assertTrue(val[1] == old_dict[val[0]])
+        self.assertTrue(val[0] not in o.mapping)
+        self.assertTrue(val[0] not in o.to_json()['mapping'])
 
     def test_typed_dict(self):
         features = FeatureMap({'feature_map': {'lala': {}, 'foo': None}})

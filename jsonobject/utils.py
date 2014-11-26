@@ -25,3 +25,32 @@ class SimpleDict(dict):
     def clear(self):
         for key in self.keys():
             del self[key]
+
+    def pop(self, key, *args):
+        if len(args) > 1:
+            raise TypeError('pop expected at most 2 arguments, got 3')
+        try:
+            val = self[key]
+            del self[key]
+            return val
+        except KeyError:
+            try:
+                return args[0]
+            except IndexError:
+                raise KeyError(key)
+
+    def popitem(self):
+        try:
+            arbitrary_key = self.keys()[0]
+        except IndexError:
+            raise KeyError('popitem(): dictionary is empty')
+        val = self[arbitrary_key]
+        del self[arbitrary_key]
+        return (arbitrary_key, val)
+
+    def setdefault(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            self[key] = default
+            return default
