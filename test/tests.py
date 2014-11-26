@@ -516,8 +516,23 @@ class PropertyTestCase(unittest2.TestCase):
         mapping = {'one': 1, 'two': 2}
         o = ObjectWithDictProperty(mapping=mapping)
         self.assertEqual(o.mapping, mapping)
+
         o.mapping.update({'three': 3}, four=4)
         self.assertEqual(o.mapping, {'one': 1, 'two': 2, 'three': 3, 'four': 4})
+
+        val = o.mapping.pop('four')
+        self.assertEqual(val, 4)
+        self.assertEqual(o.mapping, {'one': 1, 'two': 2, 'three': 3})
+
+        val = o.mapping.setdefault('four', 4)
+        self.assertEqual(val, 4)
+        self.assertEqual(o.mapping, {'one': 1, 'two': 2, 'three': 3, 'four': 4})
+
+        old_dict = o.mapping.copy()
+        val = o.mapping.popitem()
+        self.assertTrue(val[0] in old_dict)
+        self.assertTrue(val[1] == old_dict[val[0]])
+        self.assertTrue(val[0] not in o.mapping)
 
     def test_typed_dict(self):
         features = FeatureMap({'feature_map': {'lala': {}, 'foo': None}})
