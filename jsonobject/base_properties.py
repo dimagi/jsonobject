@@ -28,13 +28,7 @@ class JsonProperty(object):
                 self.choice_keys.append(choice)
         self.required = required
         self.exclude_if_none = exclude_if_none
-        if hasattr(validators, '__iter__'):
-            def _validator(value):
-                for validator in validators:
-                    validator(value)
-            self.custom_validator = _validator
-        else:
-            self.custom_validator = validators
+        self._validators = validators
         self.verbose_name = verbose_name
         if type_config:
             self.type_config = type_config
@@ -103,13 +97,21 @@ class JsonProperty(object):
             )
 
         if not self.empty(value):
-            self.custom_validator(value)
+            self._custom_validate(value)
         elif required and self.required:
             raise BadValueError(
                 'Property {0} is required.'.format(self.name)
             )
         if recursive and hasattr(value, 'validate'):
             value.validate(required=required)
+
+    def _custom_validate(self, value):
+        if self._validators:
+            if hasattr(self._validators, '__iter__'):
+                for validator in self._validators:
+                    validator(value)
+            else:
+                self._validators(value)
 
 
 class JsonContainerProperty(JsonProperty):
