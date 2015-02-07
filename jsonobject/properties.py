@@ -118,14 +118,15 @@ class TimeProperty(AbstractDateProperty):
 
 class ObjectProperty(JsonContainerProperty):
 
-    default = lambda self: self.item_type()
+    default = lambda self: self.item_type()()
 
     def wrap(self, obj, string_conversions=None):
-        return self.item_type.wrap(obj)
+        return self.item_type(obj).wrap(obj)
 
     def unwrap(self, obj):
-        assert isinstance(obj, self.item_type), \
-            '{0} is not an instance of {1}'.format(obj, self.item_type)
+        item_type = self.item_type(obj)
+        assert isinstance(obj, item_type), \
+            '{0} is not an instance of {1}'.format(obj, item_type)
         return obj, obj._obj
 
 

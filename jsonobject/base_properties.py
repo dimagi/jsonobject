@@ -127,7 +127,7 @@ class JsonContainerProperty(JsonProperty):
         super(JsonContainerProperty, self).init_property(**kwargs)
         if not inspect.isfunction(self._item_type_deferred):
             # trigger validation
-            self.item_type
+            self.item_type()
 
     def set_item_type(self, item_type):
         from jsonobject.base import JsonObjectMeta
@@ -146,21 +146,24 @@ class JsonContainerProperty(JsonProperty):
                 allowed_types,
             ))
 
-    @property
-    def item_type(self):
+    def item_type(self, obj=None):
         if hasattr(self, '_item_type_deferred'):
-            if inspect.isfunction(self._item_type_deferred):
-                self.set_item_type(self._item_type_deferred())
+            if inspect.isfunction(self._item_type_deferred) or inspect.ismethod(self._item_type_deferred):
+                if inspect.getargspec(self._item_type_deferred).args:
+                    return self._item_type_deferred(obj)
+                else:
+                    self.set_item_type(self._item_type_deferred())
             else:
                 self.set_item_type(self._item_type_deferred)
-            del self._item_type_deferred
+                del self._item_type_deferred
         return self._item_type
 
     def empty(self, value):
         return not value
 
     def wrap(self, obj):
-        wrapper = self.type_to_property(self.item_type) if self.item_type else None
+        item_type = self.item_type(obj)
+        wrapper = self.type_to_property(item_type) if item_type else None
         return self.container_class(obj, wrapper=wrapper,
                                     type_config=self.type_config)
 

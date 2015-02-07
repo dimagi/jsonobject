@@ -780,3 +780,58 @@ class TestReadmeExamples(unittest2.TestCase):
                 'tags': ['generic', 'anonymous']
             }
         )
+
+
+class TestDynamicType(unittest2.TestCase):
+    def test(self):
+        class B(JsonObject):
+            type = StringProperty(default='B')
+
+        class C(JsonObject):
+            type = StringProperty(default='C')
+
+        type_map = {
+            'B': B,
+            'C': C
+        }
+        def factory(obj=None):
+            if obj is None:
+                return B
+            if 'type' not in obj:
+                raise TypeError("missing 'type' specifier in object source")
+            else:
+                type_ = type_map.get(obj['type'])
+                if not type_:
+                    raise TypeError("unknown object type '%s'" % obj['type'])
+                return type_
+
+        class A(JsonObject):
+            sub = ObjectProperty(factory)
+
+        json = {'sub': {'type': 'B'}}
+        a = A.wrap(json)
+        self.assertIsInstance(a.sub, B)
+        self.assertEqual(json, a.to_json())
+
+        json['sub']['type'] = 'C'
+        a = A.wrap(json)
+        self.assertIsInstance(a.sub, C)
+        self.assertEqual(json, a.to_json())
+
+        a = A()
+        a.sub = B()
+        self.assertIsInstance(a.sub, B)
+        a.sub = C()
+        self.assertIsInstance(a.sub, C)
+
+        a = A(sub=C())
+        self.assertIsInstance(a.sub, C)
+
+        json['sub'] = {'type': 'unknown'}
+        with self.assertRaisesRegex(TypeError, "unknown object type 'unknown'"):
+            A.wrap(json)
+
+        json['sub'] = {}
+        with self.assertRaisesRegex(TypeError, "missing 'type'.*"):
+            A.wrap(json)
+
