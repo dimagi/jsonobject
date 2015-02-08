@@ -148,14 +148,15 @@ class JsonContainerProperty(JsonProperty):
 
     def item_type(self, obj=None):
         if hasattr(self, '_item_type_deferred'):
-            if inspect.isfunction(self._item_type_deferred) or inspect.ismethod(self._item_type_deferred):
-                if inspect.getargspec(self._item_type_deferred).args:
-                    return self._item_type_deferred(obj)
-                else:
-                    self.set_item_type(self._item_type_deferred())
+            from jsonobject.factory import TypeFactory
+            if isinstance(self._item_type_deferred, TypeFactory):
+                return self._item_type_deferred.get_type_for_object(obj)
+
+            if inspect.isfunction(self._item_type_deferred):
+                self.set_item_type(self._item_type_deferred())
             else:
                 self.set_item_type(self._item_type_deferred)
-                del self._item_type_deferred
+            del self._item_type_deferred
         return self._item_type
 
     def empty(self, value):

@@ -6,6 +6,7 @@ from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
+from jsonobject.factory import TypeFactory, TypeProperty
 
 
 class Features(JsonObject):
@@ -782,56 +783,69 @@ class TestReadmeExamples(unittest2.TestCase):
         )
 
 
-class TestDynamicType(unittest2.TestCase):
-    def test(self):
-        class B(JsonObject):
-            type = StringProperty(default='B')
+factory = TypeFactory('animal_name')
 
-        class C(JsonObject):
-            type = StringProperty(default='C')
 
-        type_map = {
-            'B': B,
-            'C': C
-        }
-        def factory(obj=None):
-            if obj is None:
-                return B
-            if 'type' not in obj:
-                raise TypeError("missing 'type' specifier in object source")
-            else:
-                type_ = type_map.get(obj['type'])
-                if not type_:
-                    raise TypeError("unknown object type '%s'" % obj['type'])
-                return type_
+@factory.register_type(is_default=True)
+class Penguin(JsonObject):
+    animal_name = TypeProperty('penguin')
 
-        class A(JsonObject):
-            sub = ObjectProperty(factory)
 
-        json = {'sub': {'type': 'B'}}
-        a = A.wrap(json)
-        self.assertIsInstance(a.sub, B)
-        self.assertEqual(json, a.to_json())
+@factory.register_type()
+class Tiger(JsonObject):
+    animal_name = TypeProperty('tiger')
 
-        json['sub']['type'] = 'C'
-        a = A.wrap(json)
-        self.assertIsInstance(a.sub, C)
-        self.assertEqual(json, a.to_json())
 
-        a = A()
-        a.sub = B()
-        self.assertIsInstance(a.sub, B)
-        a.sub = C()
-        self.assertIsInstance(a.sub, C)
+class ZooPen(JsonObject):
+    animal = ObjectProperty(factory)
 
-        a = A(sub=C())
-        self.assertIsInstance(a.sub, C)
 
-        json['sub'] = {'type': 'unknown'}
-        with self.assertRaisesRegex(TypeError, "unknown object type 'unknown'"):
-            A.wrap(json)
+class TypeFactoryTest(unittest2.TestCase):
+    def test_register_duplicate(self):
+        with self.assertRaisesRegex(TypeError, '.*already registered.*'):
+            @factory.register_type()
+            class AnotherPenguin(JsonObject):
+                animal_name = TypeProperty('penguin')
 
-        json['sub'] = {}
-        with self.assertRaisesRegex(TypeError, "missing 'type'.*"):
-            A.wrap(json)
+    def test_register_multiple_defaults(self):
+        with self.assertRaisesRegex(TypeError, '.*multiple default types.*'):
+            @factory.register_type(is_default=True)
+            class BlackMamba(JsonObject):
+                animal_name = TypeProperty('black_mamba')
 
+    def test_missing_type_identifier(self):
+        with self.assertRaisesRegex(TypeError, 'Missing identifier.*'):
+            @factory.register_type()
+            class Insect(JsonObject):
+                pass
+
+    def test_default_type(self):
+        con = ZooPen()
+        self.assertIsInstance(con.animal, factory.default_type)
+
+    def test_dynamic_property(self):
+        con = ZooPen(animal=Penguin())
+        self.assertIsInstance(con.animal, Penguin)
+        con.animal = Tiger()
+        self.assertIsInstance(con.animal, Tiger)
+
+    def test_wrapping(self):
+        source = {'animal': {'animal_name': 'penguin'}}
+        con = ZooPen(source)
+        self.assertIsInstance(con.animal, Penguin)
+        self.assertEqual(con.to_json(), source)
+
+        source = {'animal': {'animal_name': 'tiger'}}
+        con = ZooPen(source)
+        self.assertIsInstance(con.animal, Tiger)
+        self.assertEqual(con.to_json(), source)
+
+    def test_wrap_unknown_type(self):
+        with self.assertRaisesRegex(TypeError, 'Unknown object type.*'):
+            ZooPen({
+                'animal': {'animal_name': 'other'}
+            })
+
+    def test_missing_type_identifier(self):
+        with self.assertRaisesRegex(TypeError, 'Missing identifier field.*'):
+            ZooPen({'animal': {}})
