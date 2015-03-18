@@ -439,6 +439,17 @@ class LazyValidationTest(unittest2.TestCase):
         foo.bars[0].string = 'hi'
         self._validate_not_raises(foo)
 
+    def test_list_update_by_index(self):
+        class Foo(JsonObject):
+            bar = ListProperty()
+
+        foo = Foo()
+        foo.bar.append(1)
+        self.assertEqual(foo.bar, foo.to_json()['bar'])
+        foo.bar[0] = 2
+        self.assertEqual(foo.bar, foo.to_json()['bar'])
+        self.assertEqual(2, foo.to_json()['bar'][0])
+
     def test_dict(self):
         class Bar(JsonObject):
             _validate_required_lazily = True
