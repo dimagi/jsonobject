@@ -31,6 +31,10 @@ class JsonArray(list):
         super(JsonArray, self).__delitem__(i)
         del self._obj[i]
 
+    def __setitem__(self, index, wrapped):
+        self._obj[index] = wrapped
+        super(JsonArray, self).__setitem__(index, wrapped)
+
     def extend(self, wrapped_list):
         if wrapped_list:
             wrapped_list, unwrapped_list = zip(
