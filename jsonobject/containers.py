@@ -31,9 +31,10 @@ class JsonArray(list):
         super(JsonArray, self).__delitem__(i)
         del self._obj[i]
 
-    def __setitem__(self, index, wrapped):
-        self._obj[index] = wrapped
-        super(JsonArray, self).__setitem__(index, wrapped)
+    def __setitem__(self, i, wrapped):
+        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        self._obj[i] = unwrapped
+        super(JsonArray, self).__setitem__(i, wrapped)
 
     def extend(self, wrapped_list):
         if wrapped_list:
@@ -244,5 +245,3 @@ class JsonSet(set):
     def symmetric_difference_update(self, *args):
         for wrapped_list in args:
             self ^= set(wrapped_list)
-
-
