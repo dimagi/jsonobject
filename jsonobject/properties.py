@@ -1,6 +1,7 @@
 # DateTimeProperty, DateProperty, and TimeProperty
 # include code copied from couchdbkit
 from __future__ import absolute_import
+import sys
 import datetime
 import time
 import decimal
@@ -11,6 +12,11 @@ from .base_properties import (
     JsonProperty,
 )
 from .containers import JsonArray, JsonDict, JsonSet
+
+
+if sys.version > '3':
+    unicode = str
+    long = int
 
 
 class StringProperty(AssertTypeProperty):

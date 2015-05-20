@@ -1,6 +1,15 @@
 from __future__ import absolute_import
+import six
 import inspect
 from .exceptions import BadValueError
+
+function_name = None
+if six.PY3:
+    def function_name(f):
+        return f.__name__
+else:
+    def function_name(f):
+        return f.func_name
 
 
 class JsonProperty(object):
@@ -80,7 +89,7 @@ class JsonProperty(object):
         """
         assert self.default() is None
         self.default = method
-        self.name = self.name or method.func_name
+        self.name = self.name or function_name(method)
         return self
 
     def exclude(self, value):
@@ -241,7 +250,7 @@ class DefaultProperty(JsonProperty):
         Note: containers' items are NOT recursively converted
 
         """
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             convert = None
             for pattern, _convert in self.type_config.string_conversions:
                 if pattern.match(value):
@@ -290,7 +299,7 @@ class AbstractDateProperty(JsonProperty):
 
     def wrap(self, obj):
         try:
-            if not isinstance(obj, basestring):
+            if not isinstance(obj, six.string_types):
                 raise ValueError()
             return self._wrap(obj)
         except ValueError:

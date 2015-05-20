@@ -1,6 +1,7 @@
 from setuptools import setup
+import io
 
-with open('README.md') as readme_file:
+with io.open('README.md', 'rt', encoding="utf-8") as readme_file:
     long_description = readme_file.read()
 
 setup(
@@ -12,7 +13,7 @@ setup(
     long_description=long_description,
     url='https://github.com/dannyroberts/jsonobject',
     packages=['jsonobject'],
-    install_requires=[],
+    install_requires=['six'],
     tests_require=['unittest2'],
     test_suite='test',
 )

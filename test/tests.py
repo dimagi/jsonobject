@@ -1,3 +1,4 @@
+import six
 from copy import deepcopy
 import unittest2
 from jsonobject import *
@@ -6,6 +7,11 @@ from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
+
+
+if six.PY3:
+    long = int
+    unicode = str
 
 
 class Features(JsonObject):
@@ -108,7 +114,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         with self.assertRaises(AssertionError):
             danny.brothers = brothers
 
-        brothers = map(FamilyMember.wrap, brothers)
+        brothers = list(map(FamilyMember.wrap, brothers))
         danny.brothers = brothers
 
         self.assertEqual(danny.brothers, brothers)
@@ -532,11 +538,11 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json()['decimal'], '2.0')
 
         foo.decimal = 3
-        self.assertEqual(foo.decimal, decimal.Decimal(3L))
+        self.assertEqual(foo.decimal, decimal.Decimal(long(3)))
         self.assertEqual(foo.to_json()['decimal'], '3')
 
-        foo.decimal = 4L
-        self.assertEqual(foo.decimal, decimal.Decimal(4L))
+        foo.decimal = long(4)
+        self.assertEqual(foo.decimal, decimal.Decimal(long(4)))
         self.assertEqual(foo.to_json()['decimal'], '4')
 
         foo.decimal = 5.25
@@ -674,7 +680,7 @@ class DynamicConversionTestCase(unittest2.TestCase):
     class Foo(JsonObject):
         pass
     string_date = '2012-01-01'
-    date_date = datetime.date(2012, 01, 01)
+    date_date = datetime.date(2012, 1, 1)
 
     def _test_dynamic_conversion(self, foo):
         string_date = self.string_date

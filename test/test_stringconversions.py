@@ -23,7 +23,7 @@ class StringConversionsTest(unittest2.TestCase):
         'dict': {
             'decimal': Decimal('1.4'),
         },
-        'list': [Decimal('1.0'), datetime.date(2000, 01, 01)],
+        'list': [Decimal('1.0'), datetime.date(2000, 1, 1)],
         'datetime': datetime.datetime(2014, 1, 3, 1, 2, 3)
     }
 
