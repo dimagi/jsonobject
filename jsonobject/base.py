@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from collections import namedtuple, OrderedDict
 import copy
+import six
 import inspect
 from .exceptions import (
     DeleteNotAllowed,
@@ -178,9 +179,8 @@ class _JsonObjectPrivateInstanceVariables(object):
         self.dynamic_properties = dynamic_properties or {}
 
 
+@six.add_metaclass(JsonObjectMeta)
 class JsonObjectBase(object):
-
-    __metaclass__ = JsonObjectMeta
 
     _allow_dynamic_properties = True
     _validate_required_lazily = False

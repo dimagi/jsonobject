@@ -1,5 +1,12 @@
 import functools
+import six
 from jsonobject import *
+
+
+if six.PY3:
+    long = int
+    unicode = str
+
 
 SchemaProperty = ObjectProperty
 SchemaListProperty = ListProperty

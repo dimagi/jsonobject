@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from .base import JsonObjectBase, _LimitedDictInterfaceMixin
 
+import six
 import decimal
 import datetime
 
@@ -17,6 +18,9 @@ re_datetime = re.compile(
     r'([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$'
 )
 re_decimal = re.compile('^(\d+)\.(\d+)$')
+if six.PY3:
+    unicode = str
+    long = int
 
 
 class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
