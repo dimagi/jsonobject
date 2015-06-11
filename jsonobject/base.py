@@ -215,7 +215,7 @@ class JsonObjectBase(object):
                 setattr(self, attr, value)
             except AttributeError:
                 raise WrappingAttributeError(
-                    "can't set attribute {attr!r} "
+                    "can't set attribute {key!r} "
                     "on a {cls} while wrapping {data!r}".format(
                         cls=self.__class__,
                         key=attr,
