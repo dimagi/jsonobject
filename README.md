@@ -1,6 +1,6 @@
 # jsonobject
 
-[![Build Status](https://travis-ci.org/dannyroberts/jsonobject.png)](https://travis-ci.org/dannyroberts/jsonobject)
+[![Build Status](https://travis-ci.org/dimagi/jsonobject.png)](https://travis-ci.org/dimagi/jsonobject)
 
 A python library for handling deeply nested JSON objects
 as well-schema'd python objects.
