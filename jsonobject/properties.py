@@ -10,6 +10,7 @@ from .base_properties import (
     AssertTypeProperty,
     JsonContainerProperty,
     JsonProperty,
+    DefaultProperty,
 )
 from .containers import JsonArray, JsonDict, JsonSet
 
