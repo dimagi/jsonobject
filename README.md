@@ -422,6 +422,11 @@ Here is a complete list of properties:
   (Note that currently this is at odds with the parameter's name,
   since the condition is that it is falsey, not that it is `None`).
 
+- `exclude_if_empty`
+
+  Defaults to `False`. When set to true, this property will be excluded
+  from the JSON output when its value is None.
+
 - `validators`
 
   A single validator function or list of validator functions.
