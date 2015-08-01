@@ -11,15 +11,14 @@ else:
     def function_name(f):
         return f.func_name
 
-
 class JsonProperty(object):
 
     default = None
     type_config = None
 
     def __init__(self, default=Ellipsis, name=None, choices=None,
-                 required=False, exclude_if_none=False, validators=None,
-                 verbose_name=None, type_config=None):
+                 required=False, exclude_if_none=False, exclude_if_empty=False,
+                 validators=None, verbose_name=None, type_config=None):
         validators = validators or ()
         self.name = name
         if default is Ellipsis:
@@ -36,7 +35,10 @@ class JsonProperty(object):
                     choice, _ = choice
                 self.choice_keys.append(choice)
         self.required = required
+
+        self.exclude_if_empty = exclude_if_empty
         self.exclude_if_none = exclude_if_none
+
         self._validators = validators
         self.verbose_name = verbose_name
         if type_config:
@@ -93,7 +95,11 @@ class JsonProperty(object):
         return self
 
     def exclude(self, value):
-        return self.exclude_if_none and not value
+        if self.exclude_if_none:
+            return not value
+        if self.exclude_if_empty:
+            return self.empty(value)
+        return False
 
     def empty(self, value):
         return value is None
