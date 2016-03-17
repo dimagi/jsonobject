@@ -18,7 +18,7 @@ class JsonProperty(object):
     type_config = None
 
     def __init__(self, default=Ellipsis, name=None, choices=None,
-                 required=False, exclude_if_none=False, validators=None,
+                 required=False, exclude_if_none=True, validators=None,
                  verbose_name=None, type_config=None):
         validators = validators or ()
         self.name = name
@@ -93,7 +93,7 @@ class JsonProperty(object):
         return self
 
     def exclude(self, value):
-        return self.exclude_if_none and not value
+        return self.exclude_if_none and value is None
 
     def empty(self, value):
         return value is None
