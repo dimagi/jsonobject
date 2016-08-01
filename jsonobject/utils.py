@@ -6,7 +6,7 @@ def check_type(obj, item_type, message):
     if obj is None:
         return item_type()
     elif not isinstance(obj, item_type):
-        raise BadValueError(message)
+        raise BadValueError('{}. Found object of type: {}'.format(message, type(obj)))
     else:
         return obj
 
