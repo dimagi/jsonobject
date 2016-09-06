@@ -9,7 +9,7 @@ It is supposed to be a simpler, more standalone, and faster version
 of the `DocumentSchema` portion of `couchdbkit`.
 If you would like to use a fork of `couchdbkit`
 that is backed by `jsonobject` and works seamlessly as a swap-in replacement
-for the main library, check out [jsonobject-couchdbkit](https://pypi.python.org/pypi/jsonobject-couchdbkit/0.6.5.5)
+for the main library, check out [jsonobject-couchdbkit](https://pypi.python.org/pypi/jsonobject-couchdbkit)
 which can be installed directly with pip.
 
 It is being used heavily in https://github.com/dimagi/commcare-hq,
