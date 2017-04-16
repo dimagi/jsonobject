@@ -7,6 +7,7 @@ from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
+from jsonobject.factory import TypeFactory, TypeProperty
 
 
 if six.PY3:
@@ -815,3 +816,71 @@ class TestReadmeExamples(unittest2.TestCase):
                 'tags': ['generic', 'anonymous']
             }
         )
+
+
+factory = TypeFactory('animal_name')
+
+
+@factory.register_type(is_default=True)
+class Penguin(JsonObject):
+    animal_name = TypeProperty('penguin')
+
+
+@factory.register_type()
+class Tiger(JsonObject):
+    animal_name = TypeProperty('tiger')
+
+
+class ZooPen(JsonObject):
+    animal = ObjectProperty(factory)
+
+
+class TypeFactoryTest(unittest2.TestCase):
+    def test_register_duplicate(self):
+        with self.assertRaisesRegex(TypeError, '.*already registered.*'):
+            @factory.register_type()
+            class AnotherPenguin(JsonObject):
+                animal_name = TypeProperty('penguin')
+
+    def test_register_multiple_defaults(self):
+        with self.assertRaisesRegex(TypeError, '.*multiple default types.*'):
+            @factory.register_type(is_default=True)
+            class BlackMamba(JsonObject):
+                animal_name = TypeProperty('black_mamba')
+
+    def test_missing_type_identifier(self):
+        with self.assertRaisesRegex(TypeError, 'Missing identifier.*'):
+            @factory.register_type()
+            class Insect(JsonObject):
+                pass
+
+    def test_default_type(self):
+        con = ZooPen()
+        self.assertIsInstance(con.animal, factory.default_type)
+
+    def test_dynamic_property(self):
+        con = ZooPen(animal=Penguin())
+        self.assertIsInstance(con.animal, Penguin)
+        con.animal = Tiger()
+        self.assertIsInstance(con.animal, Tiger)
+
+    def test_wrapping(self):
+        source = {'animal': {'animal_name': 'penguin'}}
+        con = ZooPen(source)
+        self.assertIsInstance(con.animal, Penguin)
+        self.assertEqual(con.to_json(), source)
+
+        source = {'animal': {'animal_name': 'tiger'}}
+        con = ZooPen(source)
+        self.assertIsInstance(con.animal, Tiger)
+        self.assertEqual(con.to_json(), source)
+
+    def test_wrap_unknown_type(self):
+        with self.assertRaisesRegex(TypeError, 'Unknown object type.*'):
+            ZooPen({
+                'animal': {'animal_name': 'other'}
+            })
+
+    def test_missing_type_identifier(self):
+        with self.assertRaisesRegex(TypeError, 'Missing identifier field.*'):
+            ZooPen({'animal': {}})
