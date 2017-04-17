@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from collections import OrderedDict
 from .exceptions import BadValueError
 
 
@@ -11,7 +12,7 @@ def check_type(obj, item_type, message):
         return obj
 
 
-class SimpleDict(dict):
+class SimpleDict(OrderedDict):
     """
     Re-implements destructive methods of dict
     to use only setitem and getitem and delitem

@@ -120,6 +120,9 @@ class JsonDict(SimpleDict):
         for key, value in self._obj.items():
             self[key] = self.__wrap(key, value)
 
+    def copy(self):
+        return self.__class__(self._obj, self._wrapper, self._type_config)
+
     def validate(self, required=True):
         for obj in self.values():
             self._wrapper.validate(obj, required=required)
