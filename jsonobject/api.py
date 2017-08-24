@@ -30,6 +30,13 @@ class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
     def __setstate__(self, dct):
         self.__init__(dct)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, JsonObject):
+            raise TypeError(
+                "Expected an argument of type JsonObject, got: {}".format(type(other))
+            )
+        return sorted(self.items()) == sorted(other.items())
+
     class Meta(object):
         properties = {
             decimal.Decimal: properties.DecimalProperty,
