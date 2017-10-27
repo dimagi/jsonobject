@@ -14,7 +14,7 @@ we also maintain a fork of `couchdbkit`, [jsonobject-couchdbkit](https://pypi.py
 that is backed by `jsonobject` and works seamlessly as a swap-in replacement
 for the main library.
 
-It is used heavily in https://github.com/dimagi/commcare-hq,
+It is used heavily in [CommCare HQ](https://www.commcarehq.org/) ([source](https://github.com/dimagi/commcare-hq)),
 and the API is largely stable,
 but more advanced features may change in the future.
 
