@@ -5,7 +5,7 @@
 jsonobject is a python library for handling deeply nested JSON objects
 as well-schema'd python objects.
 
-jsonobject is made by [Dimagi](https://www.dimagi.com/), where we build, use and contribute to OSS in our mission to reduce inequity in the world.
+jsonobject is made by [Dimagi](https://www.dimagi.com/), where we build, use, and contribute to OSS in our mission to reduce inequity in the world.
 
 It is used heavily in https://github.com/dimagi/commcare-hq,
 and the API is largely stable,
