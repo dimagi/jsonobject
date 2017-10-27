@@ -7,16 +7,16 @@ as well-schema'd python objects.
 
 jsonobject is made by [Dimagi](https://www.dimagi.com/), where we build, use, and contribute to OSS in our mission to reduce inequity in the world.
 
-It is used heavily in https://github.com/dimagi/commcare-hq,
-and the API is largely stable,
-but more advanced features may change in the future.
-
 jsonobject is inspired by and largely API compatible with
 the `Document`/`DocumentSchema` portion of `couchdbkit`.
 Because jsonobject is not only simpler and standalone, but also faster,
 we also maintain a fork of `couchdbkit`, [jsonobject-couchdbkit](https://pypi.python.org/pypi/jsonobject-couchdbkit),
 that is backed by `jsonobject` and works seamlessly as a swap-in replacement
 for the main library.
+
+It is used heavily in https://github.com/dimagi/commcare-hq,
+and the API is largely stable,
+but more advanced features may change in the future.
 
 ## Getting Started
 
