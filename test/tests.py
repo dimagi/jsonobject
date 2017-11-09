@@ -634,6 +634,20 @@ class PropertyTestCase(unittest2.TestCase):
         self.assertEqual(foo.to_json(), {'name': None})
         self.assertEqual(foo._id, None)
 
+    def test_exclude_if_empty(self):
+        class Foo(JsonObject):
+            points = IntegerProperty(exclude_if_empty=True)
+            name = StringProperty()
+
+        foo = Foo()
+        self.assertEqual(foo.to_json(), {'name': None})
+        self.assertEqual(foo.points, None)
+        foo = Foo(points=0)
+        self.assertEqual(dict(foo), {'name': None, 'points': 0})
+        foo.points = None
+        self.assertEqual(foo.to_json(), {'name': None})
+        self.assertEqual(foo.points, None)
+
     def test_descriptor(self):
         class Desc(object):
             def __get__(self, instance, owner):
@@ -669,7 +683,7 @@ class PropertyTestCase(unittest2.TestCase):
         class Foo(JsonObject):
             pass
         foo = Foo()
-        
+
         with self.assertRaises(AttributeError):
             foo.hello
 
