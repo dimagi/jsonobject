@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import six
 import inspect
-from .exceptions import BadValueError
+from jsonobject.exceptions import BadValueError
 
 function_name = None
 if six.PY3:

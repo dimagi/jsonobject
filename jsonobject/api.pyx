@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from .base import JsonObjectBase, _LimitedDictInterfaceMixin
+from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
 
 import six
 import decimal
