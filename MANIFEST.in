@@ -1,1 +1,3 @@
 include README.md
+include jsonobject/*.pyx
+include jsonobject/*.c
