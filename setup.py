@@ -4,7 +4,7 @@ import io
 from setuptools.extension import Extension
 
 try:
-    # Only use Cython it's installed in the environment, otherwise use the provided C
+    # Only use Cython if it's installed in the environment, otherwise use the provided C
     import Cython
     USE_CYTHON = True
 except ImportError:
