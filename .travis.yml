@@ -4,4 +4,6 @@ python:
   - 3.5
   - 3.6
 install: "pip install ."
-script: "python setup.py test"
+script:
+  - "python setup.py test"
+  - "test_cython_files.sh"
