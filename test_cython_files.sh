@@ -3,6 +3,7 @@
 find jsonobject -iname '*.c' -delete
 find jsonobject -iname '*.so' -delete
 
+pip install cython
 python setup.py build_ext --inplace
 
 git update-index -q --refresh
