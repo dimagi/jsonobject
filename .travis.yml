@@ -6,4 +6,4 @@ python:
 install: "pip install ."
 script:
   - "python setup.py test"
-  - "test_cython_files.sh"
+  - "./test_cython_files.sh"
