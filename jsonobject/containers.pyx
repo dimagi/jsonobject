@@ -1,6 +1,6 @@
 from __future__ import absolute_import
-from .base_properties import DefaultProperty
-from .utils import check_type, SimpleDict
+from jsonobject.base_properties import DefaultProperty
+from jsonobject.utils import check_type, SimpleDict
 
 
 class JsonArray(list):

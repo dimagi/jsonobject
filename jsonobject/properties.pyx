@@ -5,14 +5,14 @@ import sys
 import datetime
 import time
 import decimal
-from .base_properties import (
+from jsonobject.base_properties import (
     AbstractDateProperty,
     AssertTypeProperty,
     JsonContainerProperty,
     JsonProperty,
     DefaultProperty,
 )
-from .containers import JsonArray, JsonDict, JsonSet
+from jsonobject.containers import JsonArray, JsonDict, JsonSet
 
 
 if sys.version > '3':

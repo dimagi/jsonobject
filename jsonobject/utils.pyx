@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from .exceptions import BadValueError
+from jsonobject.exceptions import BadValueError
 
 
 def check_type(obj, item_type, message):

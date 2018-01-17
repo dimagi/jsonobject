@@ -3,12 +3,12 @@ from collections import namedtuple, OrderedDict
 import copy
 import six
 import inspect
-from .exceptions import (
+from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
-from .base_properties import JsonProperty, DefaultProperty
-from .utils import check_type
+from jsonobject.base_properties import JsonProperty, DefaultProperty
+from jsonobject.utils import check_type
 
 
 JsonObjectClassSettings = namedtuple('JsonObjectClassSettings', ['type_config'])

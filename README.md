@@ -453,3 +453,7 @@ Ran 4 tests in 0.153s
 
 OK
 ```
+
+## Recreating C source files
+
+For any changes in the pyx files, the cooresponding C files should be recompiled with `python setup.py build_ext --inplace`
