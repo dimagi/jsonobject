@@ -30,7 +30,7 @@ with io.open('README.md', 'rt', encoding="utf-8") as readme_file:
 
 setup(
     name='jsonobject',
-    version='0.8.0a2',
+    version='0.8.0',
     author='Danny Roberts',
     author_email='droberts@dimagi.com',
     description='A library for dealing with JSON as python objects',
