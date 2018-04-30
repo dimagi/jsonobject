@@ -37,7 +37,7 @@ setup(
     long_description=long_description,
     url='https://github.com/dannyroberts/jsonobject',
     packages=['jsonobject'],
-    setup_requires=['cython'],
+    setup_requires=['cython==0.27.3'],
     install_requires=['six'],
     tests_require=['unittest2'],
     ext_modules=extensions,
