@@ -414,6 +414,38 @@ class JsonObjectTestCase(unittest2.TestCase):
             foo.cities_by_state_by_country['USA']['MA'].off_spec = 'bar'
 
 
+class PropertyInsideContainerTest(unittest2.TestCase):
+
+    def test_default_is_required(self):
+        class Foo(JsonObject):
+            container = ListProperty(int)
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
+
+    def test_property_class_required(self):
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty)
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
+
+    def test_property(self):
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty())
+
+        # assert does not error
+        Foo(container=[None])
+
+    def test_required_property(self):
+
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty(required=True))
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
+
+
 class LazyValidationTest(unittest2.TestCase):
 
     def _validate_raises(self, foo):

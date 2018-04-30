@@ -186,11 +186,11 @@ class JsonContainerProperty(JsonProperty):
         elif issubclass(item_type, JsonObjectBase):
             return ObjectProperty(item_type, type_config=self.type_config)
         elif item_type in map_types_properties:
-            return map_types_properties[item_type](type_config=self.type_config)
+            return map_types_properties[item_type](type_config=self.type_config, required=True)
         else:
             for key, value in map_types_properties.items():
                 if issubclass(item_type, key):
-                    return value(type_config=self.type_config)
+                    return value(type_config=self.type_config, required=True)
             raise TypeError('Type {0} not recognized'.format(item_type))
 
     def unwrap(self, obj):
@@ -276,7 +276,9 @@ class AssertTypeProperty(JsonProperty):
     _type = None
 
     def assert_type(self, obj):
-        if not isinstance(obj, self._type):
+        if obj is None:
+            return
+        elif not isinstance(obj, self._type):
             raise BadValueError(
                 '{0!r} not of type {1!r}'.format(obj, self._type)
             )
