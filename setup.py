@@ -45,7 +45,7 @@ setup(
     author_email='droberts@dimagi.com',
     description='A library for dealing with JSON as python objects',
     long_description=long_description,
-    url='https://github.com/dannyroberts/jsonobject',
+    url='https://github.com/dimagi/jsonobject',
     packages=['jsonobject'],
     setup_requires=CYTHON_REQUIRES,
     install_requires=['six'],
