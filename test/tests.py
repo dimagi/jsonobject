@@ -389,7 +389,29 @@ class JsonObjectTestCase(unittest2.TestCase):
             string_list = ListProperty(StringProperty)
 
         foo = Foo({'string_list': ['a', 'b', 'c']})
-        self.assertEqual(foo.string_list, ['a', 'b', 'c'])
+        self.assertEqual(foo.string_list, ['a', 'b' , 'c'])
+
+    def test_typed_dict_of_dict(self):
+
+        class City(JsonObject):
+            _allow_dynamic_properties = False
+            name = StringProperty()
+
+        class Foo(JsonObject):
+            _allow_dynamic_properties = False
+            cities_by_state_by_country = DictProperty(DictProperty(City))
+
+        # testing an internal assumption; can remove if internals change
+        self.assertEqual(Foo.cities_by_state_by_country.item_type.item_type, City)
+
+        city = City.wrap({'name': 'Boston'})
+        with self.assertRaises(AttributeError):
+            city.off_spec = 'bar'
+
+        foo = Foo.wrap({'cities_by_state_by_country': {'USA': {'MA': {'name': 'Boston'}}}})
+        self.assertIsInstance(foo.cities_by_state_by_country['USA']['MA'], City)
+        with self.assertRaises(AttributeError):
+            foo.cities_by_state_by_country['USA']['MA'].off_spec = 'bar'
 
 
 class LazyValidationTest(unittest2.TestCase):

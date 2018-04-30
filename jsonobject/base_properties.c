@@ -1364,7 +1364,7 @@ static const char __pyx_k_JsonContainerProperty_type_to_pr[] = "JsonContainerPro
 static const char __pyx_k_JsonProperty___init___locals_lam[] = "JsonProperty.__init__.<locals>.<lambda>";
 static const char __pyx_k_jsonobject_jsonobject_base_prope[] = "jsonobject.jsonobject.base_properties";
 static const char __pyx_k_value_0_r_not_in_allowed_types_1[] = "value {0!r} not in allowed types: {1!r}";
-static const char __pyx_k_DefaultProperty_value_to_python_2[] = "DefaultProperty.value_to_python (line 241)";
+static const char __pyx_k_DefaultProperty_value_to_python_2[] = "DefaultProperty.value_to_python (line 247)";
 static PyObject *__pyx_kp_s_0_r_is_not_a_1_formatted_string;
 static PyObject *__pyx_kp_s_0_r_is_not_a_1_object;
 static PyObject *__pyx_kp_s_0_r_is_not_an_instance_of_1_r;
@@ -5303,7 +5303,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  * 
  *     def set_item_type(self, item_type):             # <<<<<<<<<<<<<<
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):
+ *         if isinstance(item_type, JsonProperty):
  */
 
 /* Python wrapper */
@@ -5380,7 +5380,8 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
   int __pyx_t_7;
-  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
   __Pyx_RefNannySetupContext("set_item_type", 0);
   __Pyx_INCREF(__pyx_v_item_type);
 
@@ -5388,8 +5389,8 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  * 
  *     def set_item_type(self, item_type):
  *         from jsonobject.base import JsonObjectMeta             # <<<<<<<<<<<<<<
- *         if hasattr(item_type, '_type'):
- *             item_type = item_type._type
+ *         if isinstance(item_type, JsonProperty):
+ *             if item_type.type_config is None:
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5409,80 +5410,142 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   /* "jsonobject/jsonobject/base_properties.pyx":143
  *     def set_item_type(self, item_type):
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):             # <<<<<<<<<<<<<<
- *             item_type = item_type._type
- *         if isinstance(item_type, tuple):
+ *         if isinstance(item_type, JsonProperty):             # <<<<<<<<<<<<<<
+ *             if item_type.type_config is None:
+ *                 item_type.type_config = self.type_config
  */
-  __pyx_t_3 = __Pyx_HasAttr(__pyx_v_item_type, __pyx_n_s_type); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyObject_IsInstance(__pyx_v_item_type, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 143, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
     /* "jsonobject/jsonobject/base_properties.pyx":144
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):
- *             item_type = item_type._type             # <<<<<<<<<<<<<<
- *         if isinstance(item_type, tuple):
- *             # this is for the case where item_type = (int, long)
+ *         if isinstance(item_type, JsonProperty):
+ *             if item_type.type_config is None:             # <<<<<<<<<<<<<<
+ *                 item_type.type_config = self.type_config
+ *         else:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_item_type, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_item_type, __pyx_n_s_type_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF_SET(__pyx_v_item_type, __pyx_t_2);
-    __pyx_t_2 = 0;
+    __pyx_t_4 = (__pyx_t_2 == Py_None);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_3 = (__pyx_t_4 != 0);
+    if (__pyx_t_3) {
+
+      /* "jsonobject/jsonobject/base_properties.pyx":145
+ *         if isinstance(item_type, JsonProperty):
+ *             if item_type.type_config is None:
+ *                 item_type.type_config = self.type_config             # <<<<<<<<<<<<<<
+ *         else:
+ *             if hasattr(item_type, '_type'):
+ */
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      if (__Pyx_PyObject_SetAttrStr(__pyx_v_item_type, __pyx_n_s_type_config, __pyx_t_2) < 0) __PYX_ERR(0, 145, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+      /* "jsonobject/jsonobject/base_properties.pyx":144
+ *         from jsonobject.base import JsonObjectMeta
+ *         if isinstance(item_type, JsonProperty):
+ *             if item_type.type_config is None:             # <<<<<<<<<<<<<<
+ *                 item_type.type_config = self.type_config
+ *         else:
+ */
+    }
 
     /* "jsonobject/jsonobject/base_properties.pyx":143
  *     def set_item_type(self, item_type):
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):             # <<<<<<<<<<<<<<
- *             item_type = item_type._type
- *         if isinstance(item_type, tuple):
+ *         if isinstance(item_type, JsonProperty):             # <<<<<<<<<<<<<<
+ *             if item_type.type_config is None:
+ *                 item_type.type_config = self.type_config
  */
+    goto __pyx_L3;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":145
- *         if hasattr(item_type, '_type'):
- *             item_type = item_type._type
- *         if isinstance(item_type, tuple):             # <<<<<<<<<<<<<<
- *             # this is for the case where item_type = (int, long)
- *             item_type = item_type[0]
+  /* "jsonobject/jsonobject/base_properties.pyx":147
+ *                 item_type.type_config = self.type_config
+ *         else:
+ *             if hasattr(item_type, '_type'):             # <<<<<<<<<<<<<<
+ *                 item_type = item_type._type
+ *             if isinstance(item_type, tuple):
  */
-  __pyx_t_4 = PyTuple_Check(__pyx_v_item_type); 
-  __pyx_t_3 = (__pyx_t_4 != 0);
-  if (__pyx_t_3) {
+  /*else*/ {
+    __pyx_t_3 = __Pyx_HasAttr(__pyx_v_item_type, __pyx_n_s_type); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 147, __pyx_L1_error)
+    __pyx_t_4 = (__pyx_t_3 != 0);
+    if (__pyx_t_4) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":147
- *         if isinstance(item_type, tuple):
- *             # this is for the case where item_type = (int, long)
- *             item_type = item_type[0]             # <<<<<<<<<<<<<<
+      /* "jsonobject/jsonobject/base_properties.pyx":148
+ *         else:
+ *             if hasattr(item_type, '_type'):
+ *                 item_type = item_type._type             # <<<<<<<<<<<<<<
+ *             if isinstance(item_type, tuple):
+ *                 # this is for the case where item_type = (int, long)
+ */
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_item_type, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF_SET(__pyx_v_item_type, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "jsonobject/jsonobject/base_properties.pyx":147
+ *                 item_type.type_config = self.type_config
+ *         else:
+ *             if hasattr(item_type, '_type'):             # <<<<<<<<<<<<<<
+ *                 item_type = item_type._type
+ *             if isinstance(item_type, tuple):
+ */
+    }
+
+    /* "jsonobject/jsonobject/base_properties.pyx":149
+ *             if hasattr(item_type, '_type'):
+ *                 item_type = item_type._type
+ *             if isinstance(item_type, tuple):             # <<<<<<<<<<<<<<
+ *                 # this is for the case where item_type = (int, long)
+ *                 item_type = item_type[0]
+ */
+    __pyx_t_4 = PyTuple_Check(__pyx_v_item_type); 
+    __pyx_t_3 = (__pyx_t_4 != 0);
+    if (__pyx_t_3) {
+
+      /* "jsonobject/jsonobject/base_properties.pyx":151
+ *             if isinstance(item_type, tuple):
+ *                 # this is for the case where item_type = (int, long)
+ *                 item_type = item_type[0]             # <<<<<<<<<<<<<<
  *         allowed_types = set(self.type_config.properties.keys())
- *         if isinstance(item_type, JsonObjectMeta) \
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_item_type, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF_SET(__pyx_v_item_type, __pyx_t_2);
-    __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_item_type, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF_SET(__pyx_v_item_type, __pyx_t_2);
+      __pyx_t_2 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":145
- *         if hasattr(item_type, '_type'):
- *             item_type = item_type._type
- *         if isinstance(item_type, tuple):             # <<<<<<<<<<<<<<
- *             # this is for the case where item_type = (int, long)
- *             item_type = item_type[0]
+      /* "jsonobject/jsonobject/base_properties.pyx":149
+ *             if hasattr(item_type, '_type'):
+ *                 item_type = item_type._type
+ *             if isinstance(item_type, tuple):             # <<<<<<<<<<<<<<
+ *                 # this is for the case where item_type = (int, long)
+ *                 item_type = item_type[0]
  */
+    }
   }
+  __pyx_L3:;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":148
- *             # this is for the case where item_type = (int, long)
- *             item_type = item_type[0]
+  /* "jsonobject/jsonobject/base_properties.pyx":152
+ *                 # this is for the case where item_type = (int, long)
+ *                 item_type = item_type[0]
  *         allowed_types = set(self.type_config.properties.keys())             # <<<<<<<<<<<<<<
- *         if isinstance(item_type, JsonObjectMeta) \
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \
  *                 or not item_type or item_type in allowed_types:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_keys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_keys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -5496,82 +5559,98 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 152, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 152, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_allowed_types = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":149
- *             item_type = item_type[0]
+  /* "jsonobject/jsonobject/base_properties.pyx":153
+ *                 item_type = item_type[0]
  *         allowed_types = set(self.type_config.properties.keys())
- *         if isinstance(item_type, JsonObjectMeta) \             # <<<<<<<<<<<<<<
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \             # <<<<<<<<<<<<<<
  *                 or not item_type or item_type in allowed_types:
  *             self._item_type = item_type
  */
-  __pyx_t_4 = PyObject_IsInstance(__pyx_v_item_type, __pyx_v_JsonObjectMeta); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_v_JsonObjectMeta);
+  __pyx_t_1 = __pyx_v_JsonObjectMeta;
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = PyObject_IsInstance(__pyx_v_item_type, __pyx_t_1); 
+  __pyx_t_7 = (__pyx_t_6 != 0);
+  if (!__pyx_t_7) {
+  } else {
+    __pyx_t_4 = __pyx_t_7;
+    goto __pyx_L10_bool_binop_done;
+  }
+  __pyx_t_7 = PyObject_IsInstance(__pyx_v_item_type, __pyx_t_2); 
+  __pyx_t_6 = (__pyx_t_7 != 0);
+  __pyx_t_4 = __pyx_t_6;
+  __pyx_L10_bool_binop_done:;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_6 = (__pyx_t_4 != 0);
   if (!__pyx_t_6) {
   } else {
     __pyx_t_3 = __pyx_t_6;
-    goto __pyx_L6_bool_binop_done;
+    goto __pyx_L8_bool_binop_done;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":150
+  /* "jsonobject/jsonobject/base_properties.pyx":154
  *         allowed_types = set(self.type_config.properties.keys())
- *         if isinstance(item_type, JsonObjectMeta) \
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \
  *                 or not item_type or item_type in allowed_types:             # <<<<<<<<<<<<<<
  *             self._item_type = item_type
  *         else:
  */
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_item_type); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_item_type); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 154, __pyx_L1_error)
   __pyx_t_4 = ((!__pyx_t_6) != 0);
   if (!__pyx_t_4) {
   } else {
     __pyx_t_3 = __pyx_t_4;
-    goto __pyx_L6_bool_binop_done;
+    goto __pyx_L8_bool_binop_done;
   }
-  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_v_item_type, __pyx_v_allowed_types, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_v_item_type, __pyx_v_allowed_types, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 154, __pyx_L1_error)
   __pyx_t_6 = (__pyx_t_4 != 0);
   __pyx_t_3 = __pyx_t_6;
-  __pyx_L6_bool_binop_done:;
+  __pyx_L8_bool_binop_done:;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":149
- *             item_type = item_type[0]
+  /* "jsonobject/jsonobject/base_properties.pyx":153
+ *                 item_type = item_type[0]
  *         allowed_types = set(self.type_config.properties.keys())
- *         if isinstance(item_type, JsonObjectMeta) \             # <<<<<<<<<<<<<<
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \             # <<<<<<<<<<<<<<
  *                 or not item_type or item_type in allowed_types:
  *             self._item_type = item_type
  */
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":151
- *         if isinstance(item_type, JsonObjectMeta) \
+    /* "jsonobject/jsonobject/base_properties.pyx":155
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \
  *                 or not item_type or item_type in allowed_types:
  *             self._item_type = item_type             # <<<<<<<<<<<<<<
  *         else:
  *             raise ValueError("item_type {0!r} not in {1!r}".format(
  */
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_item_type_2, __pyx_v_item_type) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_item_type_2, __pyx_v_item_type) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/base_properties.pyx":149
- *             item_type = item_type[0]
+    /* "jsonobject/jsonobject/base_properties.pyx":153
+ *                 item_type = item_type[0]
  *         allowed_types = set(self.type_config.properties.keys())
- *         if isinstance(item_type, JsonObjectMeta) \             # <<<<<<<<<<<<<<
+ *         if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \             # <<<<<<<<<<<<<<
  *                 or not item_type or item_type in allowed_types:
  *             self._item_type = item_type
  */
-    goto __pyx_L5;
+    goto __pyx_L7;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":153
+  /* "jsonobject/jsonobject/base_properties.pyx":157
  *             self._item_type = item_type
  *         else:
  *             raise ValueError("item_type {0!r} not in {1!r}".format(             # <<<<<<<<<<<<<<
@@ -5579,10 +5658,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *                 allowed_types,
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_item_type_0_r_not_in_1_r, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_item_type_0_r_not_in_1_r, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
 
-    /* "jsonobject/jsonobject/base_properties.pyx":155
+    /* "jsonobject/jsonobject/base_properties.pyx":159
  *             raise ValueError("item_type {0!r} not in {1!r}".format(
  *                 item_type,
  *                 allowed_types,             # <<<<<<<<<<<<<<
@@ -5590,7 +5669,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  * 
  */
     __pyx_t_5 = NULL;
-    __pyx_t_7 = 0;
+    __pyx_t_8 = 0;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
       __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
       if (likely(__pyx_t_5)) {
@@ -5598,13 +5677,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_2, function);
-        __pyx_t_7 = 1;
+        __pyx_t_8 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_item_type, __pyx_v_allowed_types};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -5612,56 +5691,56 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_item_type, __pyx_v_allowed_types};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 153, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
+      __pyx_t_9 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 157, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_5) {
-        __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_5); __pyx_t_5 = NULL;
+        __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_5); __pyx_t_5 = NULL;
       }
       __Pyx_INCREF(__pyx_v_item_type);
       __Pyx_GIVEREF(__pyx_v_item_type);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_item_type);
+      PyTuple_SET_ITEM(__pyx_t_9, 0+__pyx_t_8, __pyx_v_item_type);
       __Pyx_INCREF(__pyx_v_allowed_types);
       __Pyx_GIVEREF(__pyx_v_allowed_types);
-      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_v_allowed_types);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+      PyTuple_SET_ITEM(__pyx_t_9, 1+__pyx_t_8, __pyx_v_allowed_types);
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":153
+    /* "jsonobject/jsonobject/base_properties.pyx":157
  *             self._item_type = item_type
  *         else:
  *             raise ValueError("item_type {0!r} not in {1!r}".format(             # <<<<<<<<<<<<<<
  *                 item_type,
  *                 allowed_types,
  */
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 153, __pyx_L1_error)
+    __PYX_ERR(0, 157, __pyx_L1_error)
   }
-  __pyx_L5:;
+  __pyx_L7:;
 
   /* "jsonobject/jsonobject/base_properties.pyx":141
  *             self.item_type
  * 
  *     def set_item_type(self, item_type):             # <<<<<<<<<<<<<<
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):
+ *         if isinstance(item_type, JsonProperty):
  */
 
   /* function exit code */
@@ -5671,7 +5750,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.JsonContainerProperty.set_item_type", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -5683,7 +5762,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":159
+/* "jsonobject/jsonobject/base_properties.pyx":163
  * 
  *     @property
  *     def item_type(self):             # <<<<<<<<<<<<<<
@@ -5717,30 +5796,30 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("item_type", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":160
+  /* "jsonobject/jsonobject/base_properties.pyx":164
  *     @property
  *     def item_type(self):
  *         if hasattr(self, '_item_type_deferred'):             # <<<<<<<<<<<<<<
  *             if inspect.isfunction(self._item_type_deferred):
  *                 self.set_item_type(self._item_type_deferred())
  */
-  __pyx_t_1 = __Pyx_HasAttr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_HasAttr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 164, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":161
+    /* "jsonobject/jsonobject/base_properties.pyx":165
  *     def item_type(self):
  *         if hasattr(self, '_item_type_deferred'):
  *             if inspect.isfunction(self._item_type_deferred):             # <<<<<<<<<<<<<<
  *                 self.set_item_type(self._item_type_deferred())
  *             else:
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_inspect); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_inspect); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_isfunction); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_isfunction); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -5753,14 +5832,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_4};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -5769,39 +5848,39 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_4};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 161, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_4);
         PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_4);
         __pyx_t_4 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
-      /* "jsonobject/jsonobject/base_properties.pyx":162
+      /* "jsonobject/jsonobject/base_properties.pyx":166
  *         if hasattr(self, '_item_type_deferred'):
  *             if inspect.isfunction(self._item_type_deferred):
  *                 self.set_item_type(self._item_type_deferred())             # <<<<<<<<<<<<<<
  *             else:
  *                 self.set_item_type(self._item_type_deferred)
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_set_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_set_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_6 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -5814,10 +5893,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         }
       }
       if (__pyx_t_6) {
-        __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 162, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 166, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else {
-        __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 162, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 166, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -5832,14 +5911,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_7};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -5848,20 +5927,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_7};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 162, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 166, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_GIVEREF(__pyx_t_7);
           PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_7);
           __pyx_t_7 = 0;
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -5869,7 +5948,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "jsonobject/jsonobject/base_properties.pyx":161
+      /* "jsonobject/jsonobject/base_properties.pyx":165
  *     def item_type(self):
  *         if hasattr(self, '_item_type_deferred'):
  *             if inspect.isfunction(self._item_type_deferred):             # <<<<<<<<<<<<<<
@@ -5879,7 +5958,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       goto __pyx_L4;
     }
 
-    /* "jsonobject/jsonobject/base_properties.pyx":164
+    /* "jsonobject/jsonobject/base_properties.pyx":168
  *                 self.set_item_type(self._item_type_deferred())
  *             else:
  *                 self.set_item_type(self._item_type_deferred)             # <<<<<<<<<<<<<<
@@ -5887,9 +5966,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *         return self._item_type
  */
     /*else*/ {
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_set_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_set_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 168, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 164, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 168, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_7 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -5902,14 +5981,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         }
       }
       if (!__pyx_t_7) {
-        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_6};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -5918,20 +5997,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_6};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         } else
         #endif
         {
-          __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
+          __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 168, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_7); __pyx_t_7 = NULL;
           __Pyx_GIVEREF(__pyx_t_6);
           PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_6);
           __pyx_t_6 = 0;
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         }
@@ -5941,16 +6020,16 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     }
     __pyx_L4:;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":165
+    /* "jsonobject/jsonobject/base_properties.pyx":169
  *             else:
  *                 self.set_item_type(self._item_type_deferred)
  *             del self._item_type_deferred             # <<<<<<<<<<<<<<
  *         return self._item_type
  * 
  */
-    if (__Pyx_PyObject_DelAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
+    if (__Pyx_PyObject_DelAttrStr(__pyx_v_self, __pyx_n_s_item_type_deferred) < 0) __PYX_ERR(0, 169, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/base_properties.pyx":160
+    /* "jsonobject/jsonobject/base_properties.pyx":164
  *     @property
  *     def item_type(self):
  *         if hasattr(self, '_item_type_deferred'):             # <<<<<<<<<<<<<<
@@ -5959,7 +6038,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":166
+  /* "jsonobject/jsonobject/base_properties.pyx":170
  *                 self.set_item_type(self._item_type_deferred)
  *             del self._item_type_deferred
  *         return self._item_type             # <<<<<<<<<<<<<<
@@ -5967,13 +6046,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *     def empty(self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":159
+  /* "jsonobject/jsonobject/base_properties.pyx":163
  * 
  *     @property
  *     def item_type(self):             # <<<<<<<<<<<<<<
@@ -5996,7 +6075,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":168
+/* "jsonobject/jsonobject/base_properties.pyx":172
  *         return self._item_type
  * 
  *     def empty(self, value):             # <<<<<<<<<<<<<<
@@ -6036,11 +6115,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("empty", 1, 2, 2, 1); __PYX_ERR(0, 168, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("empty", 1, 2, 2, 1); __PYX_ERR(0, 172, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "empty") < 0)) __PYX_ERR(0, 168, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "empty") < 0)) __PYX_ERR(0, 172, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6053,7 +6132,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("empty", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 168, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("empty", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 172, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.JsonContainerProperty.empty", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6073,7 +6152,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("empty", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":169
+  /* "jsonobject/jsonobject/base_properties.pyx":173
  * 
  *     def empty(self, value):
  *         return not value             # <<<<<<<<<<<<<<
@@ -6081,14 +6160,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *     def wrap(self, obj):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 169, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyBool_FromLong((!__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBool_FromLong((!__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":168
+  /* "jsonobject/jsonobject/base_properties.pyx":172
  *         return self._item_type
  * 
  *     def empty(self, value):             # <<<<<<<<<<<<<<
@@ -6107,7 +6186,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":171
+/* "jsonobject/jsonobject/base_properties.pyx":175
  *         return not value
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -6147,11 +6226,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 175, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 171, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 175, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6164,7 +6243,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 171, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 175, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.JsonContainerProperty.wrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6190,21 +6269,21 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("wrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":172
+  /* "jsonobject/jsonobject/base_properties.pyx":176
  * 
  *     def wrap(self, obj):
  *         wrapper = self.type_to_property(self.item_type) if self.item_type else None             # <<<<<<<<<<<<<<
  *         return self.container_class(obj, wrapper=wrapper,
  *                                     type_config=self.type_config)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_to_property); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 172, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_to_property); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 172, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -6217,14 +6296,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -6233,20 +6312,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 172, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 176, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 172, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
@@ -6261,7 +6340,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   __pyx_v_wrapper = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":173
+  /* "jsonobject/jsonobject/base_properties.pyx":177
  *     def wrap(self, obj):
  *         wrapper = self.type_to_property(self.item_type) if self.item_type else None
  *         return self.container_class(obj, wrapper=wrapper,             # <<<<<<<<<<<<<<
@@ -6269,37 +6348,37 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_container_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_container_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_obj);
   __Pyx_GIVEREF(__pyx_v_obj);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_obj);
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_wrapper, __pyx_v_wrapper) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_wrapper, __pyx_v_wrapper) < 0) __PYX_ERR(0, 177, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":174
+  /* "jsonobject/jsonobject/base_properties.pyx":178
  *         wrapper = self.type_to_property(self.item_type) if self.item_type else None
  *         return self.container_class(obj, wrapper=wrapper,
  *                                     type_config=self.type_config)             # <<<<<<<<<<<<<<
  * 
  *     def type_to_property(self, item_type):
  */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 178, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_type_config, __pyx_t_7) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_type_config, __pyx_t_7) < 0) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":173
+  /* "jsonobject/jsonobject/base_properties.pyx":177
  *     def wrap(self, obj):
  *         wrapper = self.type_to_property(self.item_type) if self.item_type else None
  *         return self.container_class(obj, wrapper=wrapper,             # <<<<<<<<<<<<<<
  *                                     type_config=self.type_config)
  * 
  */
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6308,7 +6387,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":171
+  /* "jsonobject/jsonobject/base_properties.pyx":175
  *         return not value
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -6333,7 +6412,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":176
+/* "jsonobject/jsonobject/base_properties.pyx":180
  *                                     type_config=self.type_config)
  * 
  *     def type_to_property(self, item_type):             # <<<<<<<<<<<<<<
@@ -6373,11 +6452,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_item_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("type_to_property", 1, 2, 2, 1); __PYX_ERR(0, 176, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("type_to_property", 1, 2, 2, 1); __PYX_ERR(0, 180, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "type_to_property") < 0)) __PYX_ERR(0, 176, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "type_to_property") < 0)) __PYX_ERR(0, 180, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6390,7 +6469,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("type_to_property", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 176, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("type_to_property", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 180, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.JsonContainerProperty.type_to_property", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6423,96 +6502,131 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *(*__pyx_t_10)(PyObject *);
   __Pyx_RefNannySetupContext("type_to_property", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":177
+  /* "jsonobject/jsonobject/base_properties.pyx":181
  * 
  *     def type_to_property(self, item_type):
  *         map_types_properties = self.type_config.properties             # <<<<<<<<<<<<<<
  *         from .properties import ObjectProperty
  *         from .base import JsonObjectBase
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 181, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_map_types_properties = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":178
+  /* "jsonobject/jsonobject/base_properties.pyx":182
  *     def type_to_property(self, item_type):
  *         map_types_properties = self.type_config.properties
  *         from .properties import ObjectProperty             # <<<<<<<<<<<<<<
  *         from .base import JsonObjectBase
- *         if issubclass(item_type, JsonObjectBase):
+ *         if isinstance(item_type, JsonProperty):
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 178, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_ObjectProperty);
   __Pyx_GIVEREF(__pyx_n_s_ObjectProperty);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_ObjectProperty);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_properties, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 178, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_properties, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_ObjectProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 178, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_ObjectProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_t_2);
   __pyx_v_ObjectProperty = __pyx_t_2;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":179
+  /* "jsonobject/jsonobject/base_properties.pyx":183
  *         map_types_properties = self.type_config.properties
  *         from .properties import ObjectProperty
  *         from .base import JsonObjectBase             # <<<<<<<<<<<<<<
- *         if issubclass(item_type, JsonObjectBase):
- *             return ObjectProperty(item_type, type_config=self.type_config)
+ *         if isinstance(item_type, JsonProperty):
+ *             return item_type
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_JsonObjectBase);
   __Pyx_GIVEREF(__pyx_n_s_JsonObjectBase);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_JsonObjectBase);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_base, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_base, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonObjectBase); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonObjectBase); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_t_1);
   __pyx_v_JsonObjectBase = __pyx_t_1;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":180
+  /* "jsonobject/jsonobject/base_properties.pyx":184
  *         from .properties import ObjectProperty
  *         from .base import JsonObjectBase
- *         if issubclass(item_type, JsonObjectBase):             # <<<<<<<<<<<<<<
- *             return ObjectProperty(item_type, type_config=self.type_config)
- *         elif item_type in map_types_properties:
+ *         if isinstance(item_type, JsonProperty):             # <<<<<<<<<<<<<<
+ *             return item_type
+ *         elif issubclass(item_type, JsonObjectBase):
  */
-  __pyx_t_3 = PyObject_IsSubclass(__pyx_v_item_type, __pyx_v_JsonObjectBase); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyObject_IsInstance(__pyx_v_item_type, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 184, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":181
+    /* "jsonobject/jsonobject/base_properties.pyx":185
  *         from .base import JsonObjectBase
- *         if issubclass(item_type, JsonObjectBase):
+ *         if isinstance(item_type, JsonProperty):
+ *             return item_type             # <<<<<<<<<<<<<<
+ *         elif issubclass(item_type, JsonObjectBase):
+ *             return ObjectProperty(item_type, type_config=self.type_config)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_v_item_type);
+    __pyx_r = __pyx_v_item_type;
+    goto __pyx_L0;
+
+    /* "jsonobject/jsonobject/base_properties.pyx":184
+ *         from .properties import ObjectProperty
+ *         from .base import JsonObjectBase
+ *         if isinstance(item_type, JsonProperty):             # <<<<<<<<<<<<<<
+ *             return item_type
+ *         elif issubclass(item_type, JsonObjectBase):
+ */
+  }
+
+  /* "jsonobject/jsonobject/base_properties.pyx":186
+ *         if isinstance(item_type, JsonProperty):
+ *             return item_type
+ *         elif issubclass(item_type, JsonObjectBase):             # <<<<<<<<<<<<<<
+ *             return ObjectProperty(item_type, type_config=self.type_config)
+ *         elif item_type in map_types_properties:
+ */
+  __pyx_t_4 = PyObject_IsSubclass(__pyx_v_item_type, __pyx_v_JsonObjectBase); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_3 = (__pyx_t_4 != 0);
+  if (__pyx_t_3) {
+
+    /* "jsonobject/jsonobject/base_properties.pyx":187
+ *             return item_type
+ *         elif issubclass(item_type, JsonObjectBase):
  *             return ObjectProperty(item_type, type_config=self.type_config)             # <<<<<<<<<<<<<<
  *         elif item_type in map_types_properties:
  *             return map_types_properties[item_type](type_config=self.type_config)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_item_type);
     __Pyx_GIVEREF(__pyx_v_item_type);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_item_type);
-    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_type_config, __pyx_t_5) < 0) __PYX_ERR(0, 181, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_type_config, __pyx_t_5) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_v_ObjectProperty, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_v_ObjectProperty, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6520,27 +6634,27 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     __pyx_t_5 = 0;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":180
- *         from .properties import ObjectProperty
- *         from .base import JsonObjectBase
- *         if issubclass(item_type, JsonObjectBase):             # <<<<<<<<<<<<<<
+    /* "jsonobject/jsonobject/base_properties.pyx":186
+ *         if isinstance(item_type, JsonProperty):
+ *             return item_type
+ *         elif issubclass(item_type, JsonObjectBase):             # <<<<<<<<<<<<<<
  *             return ObjectProperty(item_type, type_config=self.type_config)
  *         elif item_type in map_types_properties:
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":182
- *         if issubclass(item_type, JsonObjectBase):
+  /* "jsonobject/jsonobject/base_properties.pyx":188
+ *         elif issubclass(item_type, JsonObjectBase):
  *             return ObjectProperty(item_type, type_config=self.type_config)
  *         elif item_type in map_types_properties:             # <<<<<<<<<<<<<<
  *             return map_types_properties[item_type](type_config=self.type_config)
  *         else:
  */
-  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_v_item_type, __pyx_v_map_types_properties, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 182, __pyx_L1_error)
-  __pyx_t_3 = (__pyx_t_4 != 0);
-  if (__pyx_t_3) {
+  __pyx_t_3 = (__Pyx_PySequence_ContainsTF(__pyx_v_item_type, __pyx_v_map_types_properties, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_4 = (__pyx_t_3 != 0);
+  if (__pyx_t_4) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":183
+    /* "jsonobject/jsonobject/base_properties.pyx":189
  *             return ObjectProperty(item_type, type_config=self.type_config)
  *         elif item_type in map_types_properties:
  *             return map_types_properties[item_type](type_config=self.type_config)             # <<<<<<<<<<<<<<
@@ -6548,15 +6662,15 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *             for key, value in map_types_properties.items():
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_5 = PyObject_GetItem(__pyx_v_map_types_properties, __pyx_v_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 183, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(__pyx_v_map_types_properties, __pyx_v_item_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_type_config, __pyx_t_2) < 0) __PYX_ERR(0, 183, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_type_config, __pyx_t_2) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6564,8 +6678,8 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":182
- *         if issubclass(item_type, JsonObjectBase):
+    /* "jsonobject/jsonobject/base_properties.pyx":188
+ *         elif issubclass(item_type, JsonObjectBase):
  *             return ObjectProperty(item_type, type_config=self.type_config)
  *         elif item_type in map_types_properties:             # <<<<<<<<<<<<<<
  *             return map_types_properties[item_type](type_config=self.type_config)
@@ -6573,7 +6687,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":185
+  /* "jsonobject/jsonobject/base_properties.pyx":191
  *             return map_types_properties[item_type](type_config=self.type_config)
  *         else:
  *             for key, value in map_types_properties.items():             # <<<<<<<<<<<<<<
@@ -6581,7 +6695,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *                     return value(type_config=self.type_config)
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_map_types_properties, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_map_types_properties, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -6594,10 +6708,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (__pyx_t_5) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else {
-      __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6605,9 +6719,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 191, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     for (;;) {
@@ -6615,17 +6729,17 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 185, __pyx_L1_error)
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 191, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 185, __pyx_L1_error)
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 191, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         }
@@ -6635,7 +6749,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 185, __pyx_L1_error)
+            else __PYX_ERR(0, 191, __pyx_L1_error)
           }
           break;
         }
@@ -6651,7 +6765,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 185, __pyx_L1_error)
+          __PYX_ERR(0, 191, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -6664,15 +6778,15 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_8);
         #else
-        __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 185, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 191, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 185, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 191, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_9 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 185, __pyx_L1_error)
+        __pyx_t_9 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 191, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
@@ -6680,7 +6794,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         __Pyx_GOTREF(__pyx_t_5);
         index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L6_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_8);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 185, __pyx_L1_error)
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 191, __pyx_L1_error)
         __pyx_t_10 = NULL;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         goto __pyx_L7_unpacking_done;
@@ -6688,7 +6802,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __pyx_t_10 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 185, __pyx_L1_error)
+        __PYX_ERR(0, 191, __pyx_L1_error)
         __pyx_L7_unpacking_done:;
       }
       __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_5);
@@ -6696,18 +6810,18 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       __Pyx_XDECREF_SET(__pyx_v_value, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "jsonobject/jsonobject/base_properties.pyx":186
+      /* "jsonobject/jsonobject/base_properties.pyx":192
  *         else:
  *             for key, value in map_types_properties.items():
  *                 if issubclass(item_type, key):             # <<<<<<<<<<<<<<
  *                     return value(type_config=self.type_config)
  *             raise TypeError('Type {0} not recognized'.format(item_type))
  */
-      __pyx_t_3 = PyObject_IsSubclass(__pyx_v_item_type, __pyx_v_key); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 186, __pyx_L1_error)
-      __pyx_t_4 = (__pyx_t_3 != 0);
-      if (__pyx_t_4) {
+      __pyx_t_4 = PyObject_IsSubclass(__pyx_v_item_type, __pyx_v_key); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 192, __pyx_L1_error)
+      __pyx_t_3 = (__pyx_t_4 != 0);
+      if (__pyx_t_3) {
 
-        /* "jsonobject/jsonobject/base_properties.pyx":187
+        /* "jsonobject/jsonobject/base_properties.pyx":193
  *             for key, value in map_types_properties.items():
  *                 if issubclass(item_type, key):
  *                     return value(type_config=self.type_config)             # <<<<<<<<<<<<<<
@@ -6715,13 +6829,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  * 
  */
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 187, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_type_config, __pyx_t_8) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_type_config, __pyx_t_8) < 0) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_v_value, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 187, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_v_value, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_8;
@@ -6729,7 +6843,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
 
-        /* "jsonobject/jsonobject/base_properties.pyx":186
+        /* "jsonobject/jsonobject/base_properties.pyx":192
  *         else:
  *             for key, value in map_types_properties.items():
  *                 if issubclass(item_type, key):             # <<<<<<<<<<<<<<
@@ -6738,7 +6852,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  */
       }
 
-      /* "jsonobject/jsonobject/base_properties.pyx":185
+      /* "jsonobject/jsonobject/base_properties.pyx":191
  *             return map_types_properties[item_type](type_config=self.type_config)
  *         else:
  *             for key, value in map_types_properties.items():             # <<<<<<<<<<<<<<
@@ -6748,14 +6862,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":188
+    /* "jsonobject/jsonobject/base_properties.pyx":194
  *                 if issubclass(item_type, key):
  *                     return value(type_config=self.type_config)
  *             raise TypeError('Type {0} not recognized'.format(item_type))             # <<<<<<<<<<<<<<
  * 
  *     def unwrap(self, obj):
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Type_0_not_recognized, __pyx_n_s_format); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Type_0_not_recognized, __pyx_n_s_format); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_2 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
@@ -6768,13 +6882,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (!__pyx_t_2) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_item_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_item_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_item_type};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
@@ -6782,38 +6896,38 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_item_type};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 188, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2); __pyx_t_2 = NULL;
         __Pyx_INCREF(__pyx_v_item_type);
         __Pyx_GIVEREF(__pyx_v_item_type);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_item_type);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 188, __pyx_L1_error)
+    __PYX_ERR(0, 194, __pyx_L1_error)
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":176
+  /* "jsonobject/jsonobject/base_properties.pyx":180
  *                                     type_config=self.type_config)
  * 
  *     def type_to_property(self, item_type):             # <<<<<<<<<<<<<<
@@ -6841,7 +6955,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":190
+/* "jsonobject/jsonobject/base_properties.pyx":196
  *             raise TypeError('Type {0} not recognized'.format(item_type))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -6881,11 +6995,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 190, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 196, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 190, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 196, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6898,7 +7012,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 190, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 196, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.JsonContainerProperty.unwrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6927,50 +7041,50 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("unwrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":191
+  /* "jsonobject/jsonobject/base_properties.pyx":197
  * 
  *     def unwrap(self, obj):
  *         if not isinstance(obj, self._type):             # <<<<<<<<<<<<<<
  *             raise BadValueError(
  *                 '{0!r} is not an instance of {1!r}'.format(
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_2 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((!(__pyx_t_2 != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":192
+    /* "jsonobject/jsonobject/base_properties.pyx":198
  *     def unwrap(self, obj):
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(             # <<<<<<<<<<<<<<
  *                 '{0!r} is not an instance of {1!r}'.format(
  *                     obj, self._type.__name__)
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
 
-    /* "jsonobject/jsonobject/base_properties.pyx":193
+    /* "jsonobject/jsonobject/base_properties.pyx":199
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(
  *                 '{0!r} is not an instance of {1!r}'.format(             # <<<<<<<<<<<<<<
  *                     obj, self._type.__name__)
  *             )
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_is_not_an_instance_of_1_r, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_is_not_an_instance_of_1_r, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
 
-    /* "jsonobject/jsonobject/base_properties.pyx":194
+    /* "jsonobject/jsonobject/base_properties.pyx":200
  *             raise BadValueError(
  *                 '{0!r} is not an instance of {1!r}'.format(
  *                     obj, self._type.__name__)             # <<<<<<<<<<<<<<
  *             )
  *         if isinstance(obj, self.container_class):
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_7 = NULL;
@@ -6988,7 +7102,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_obj, __pyx_t_8};
-      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -6997,14 +7111,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_obj, __pyx_t_8};
-      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_7) {
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -7015,7 +7129,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       __Pyx_GIVEREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_8);
       __pyx_t_8 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
@@ -7031,14 +7145,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -7047,20 +7161,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 198, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
@@ -7068,9 +7182,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 192, __pyx_L1_error)
+    __PYX_ERR(0, 198, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/base_properties.pyx":191
+    /* "jsonobject/jsonobject/base_properties.pyx":197
  * 
  *     def unwrap(self, obj):
  *         if not isinstance(obj, self._type):             # <<<<<<<<<<<<<<
@@ -7079,21 +7193,21 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":196
+  /* "jsonobject/jsonobject/base_properties.pyx":202
  *                     obj, self._type.__name__)
  *             )
  *         if isinstance(obj, self.container_class):             # <<<<<<<<<<<<<<
  *             return obj, obj._obj
  *         else:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_container_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_container_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_3 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_2 = (__pyx_t_3 != 0);
   if (__pyx_t_2) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":197
+    /* "jsonobject/jsonobject/base_properties.pyx":203
  *             )
  *         if isinstance(obj, self.container_class):
  *             return obj, obj._obj             # <<<<<<<<<<<<<<
@@ -7101,9 +7215,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *             wrapped = self.wrap(self._type())
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_obj, __pyx_n_s_obj_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_obj, __pyx_n_s_obj_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_v_obj);
     __Pyx_GIVEREF(__pyx_v_obj);
@@ -7115,7 +7229,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":196
+    /* "jsonobject/jsonobject/base_properties.pyx":202
  *                     obj, self._type.__name__)
  *             )
  *         if isinstance(obj, self.container_class):             # <<<<<<<<<<<<<<
@@ -7124,7 +7238,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":199
+  /* "jsonobject/jsonobject/base_properties.pyx":205
  *             return obj, obj._obj
  *         else:
  *             wrapped = self.wrap(self._type())             # <<<<<<<<<<<<<<
@@ -7132,9 +7246,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *             return self.unwrap(wrapped)
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 199, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -7147,10 +7261,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (__pyx_t_6) {
-      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 199, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else {
-      __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 199, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 205, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -7165,14 +7279,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_10); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_10); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_10};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
@@ -7181,20 +7295,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_10};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 199, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 205, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
         __Pyx_GIVEREF(__pyx_t_10);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_10);
         __pyx_t_10 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -7203,14 +7317,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     __pyx_v_wrapped = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":200
+    /* "jsonobject/jsonobject/base_properties.pyx":206
  *         else:
  *             wrapped = self.wrap(self._type())
  *             self._update(wrapped, obj)             # <<<<<<<<<<<<<<
  *             return self.unwrap(wrapped)
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_6 = NULL;
     __pyx_t_9 = 0;
@@ -7227,7 +7341,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_wrapped, __pyx_v_obj};
-      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else
@@ -7235,13 +7349,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_wrapped, __pyx_v_obj};
-      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_6) {
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -7252,14 +7366,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_v_obj);
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":201
+    /* "jsonobject/jsonobject/base_properties.pyx":207
  *             wrapped = self.wrap(self._type())
  *             self._update(wrapped, obj)
  *             return self.unwrap(wrapped)             # <<<<<<<<<<<<<<
@@ -7267,7 +7381,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
  *     def _update(self, container, extension):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_unwrap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_unwrap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_10 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -7280,13 +7394,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       }
     }
     if (!__pyx_t_10) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_wrapped); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_wrapped); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_v_wrapped};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
@@ -7294,19 +7408,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_v_wrapped};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 201, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_10); __pyx_t_10 = NULL;
         __Pyx_INCREF(__pyx_v_wrapped);
         __Pyx_GIVEREF(__pyx_v_wrapped);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_wrapped);
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -7317,7 +7431,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
     goto __pyx_L0;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":190
+  /* "jsonobject/jsonobject/base_properties.pyx":196
  *             raise TypeError('Type {0} not recognized'.format(item_type))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -7343,7 +7457,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":203
+/* "jsonobject/jsonobject/base_properties.pyx":209
  *             return self.unwrap(wrapped)
  * 
  *     def _update(self, container, extension):             # <<<<<<<<<<<<<<
@@ -7386,17 +7500,17 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_container)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_update", 1, 3, 3, 1); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_update", 1, 3, 3, 1); __PYX_ERR(0, 209, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_extension)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_update", 1, 3, 3, 2); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_update", 1, 3, 3, 2); __PYX_ERR(0, 209, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_update") < 0)) __PYX_ERR(0, 203, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_update") < 0)) __PYX_ERR(0, 209, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -7411,7 +7525,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_21JsonCont
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_update", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 203, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_update", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 209, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.JsonContainerProperty._update", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7430,20 +7544,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("_update", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":204
+  /* "jsonobject/jsonobject/base_properties.pyx":210
  * 
  *     def _update(self, container, extension):
  *         raise NotImplementedError()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 204, __pyx_L1_error)
+  __PYX_ERR(0, 210, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":203
+  /* "jsonobject/jsonobject/base_properties.pyx":209
  *             return self.unwrap(wrapped)
  * 
  *     def _update(self, container, extension):             # <<<<<<<<<<<<<<
@@ -7461,7 +7575,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_21JsonCont
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":209
+/* "jsonobject/jsonobject/base_properties.pyx":215
  * class DefaultProperty(JsonProperty):
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -7501,11 +7615,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 209, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 215, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 209, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 215, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7518,7 +7632,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 209, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 215, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.DefaultProperty.wrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7543,7 +7657,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("wrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":210
+  /* "jsonobject/jsonobject/base_properties.pyx":216
  * 
  *     def wrap(self, obj):
  *         assert self.type_config.string_conversions is not None             # <<<<<<<<<<<<<<
@@ -7552,28 +7666,28 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_string_conversions); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_string_conversions); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_3 = (__pyx_t_2 != Py_None);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (unlikely(!(__pyx_t_3 != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 210, __pyx_L1_error)
+      __PYX_ERR(0, 216, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "jsonobject/jsonobject/base_properties.pyx":211
+  /* "jsonobject/jsonobject/base_properties.pyx":217
  *     def wrap(self, obj):
  *         assert self.type_config.string_conversions is not None
  *         value = self.value_to_python(obj)             # <<<<<<<<<<<<<<
  *         property_ = self.value_to_property(value)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value_to_python); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value_to_python); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -7586,13 +7700,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_obj); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_obj); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else
@@ -7600,19 +7714,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 211, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_obj);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -7621,14 +7735,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   __pyx_v_value = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":212
+  /* "jsonobject/jsonobject/base_properties.pyx":218
  *         assert self.type_config.string_conversions is not None
  *         value = self.value_to_python(obj)
  *         property_ = self.value_to_property(value)             # <<<<<<<<<<<<<<
  * 
  *         if property_:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value_to_property); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value_to_property); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -7641,13 +7755,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_value};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else
@@ -7655,19 +7769,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_value};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_INCREF(__pyx_v_value);
       __Pyx_GIVEREF(__pyx_v_value);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_value);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -7676,17 +7790,17 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   __pyx_v_property_ = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":214
+  /* "jsonobject/jsonobject/base_properties.pyx":220
  *         property_ = self.value_to_property(value)
  * 
  *         if property_:             # <<<<<<<<<<<<<<
  *             return property_.wrap(obj)
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_property_); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_property_); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 220, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":215
+    /* "jsonobject/jsonobject/base_properties.pyx":221
  * 
  *         if property_:
  *             return property_.wrap(obj)             # <<<<<<<<<<<<<<
@@ -7694,7 +7808,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  *     def unwrap(self, obj):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_property_, __pyx_n_s_wrap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_property_, __pyx_n_s_wrap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -7707,13 +7821,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       }
     }
     if (!__pyx_t_4) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_obj); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_obj); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else
@@ -7721,19 +7835,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 215, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 221, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_obj);
         __Pyx_GIVEREF(__pyx_v_obj);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_obj);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
@@ -7743,7 +7857,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":214
+    /* "jsonobject/jsonobject/base_properties.pyx":220
  *         property_ = self.value_to_property(value)
  * 
  *         if property_:             # <<<<<<<<<<<<<<
@@ -7752,7 +7866,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":209
+  /* "jsonobject/jsonobject/base_properties.pyx":215
  * class DefaultProperty(JsonProperty):
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -7778,7 +7892,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":217
+/* "jsonobject/jsonobject/base_properties.pyx":223
  *             return property_.wrap(obj)
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -7818,11 +7932,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 217, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 223, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 217, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 223, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7835,7 +7949,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 217, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 223, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.DefaultProperty.unwrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7859,14 +7973,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("unwrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":218
+  /* "jsonobject/jsonobject/base_properties.pyx":224
  * 
  *     def unwrap(self, obj):
  *         property_ = self.value_to_property(obj)             # <<<<<<<<<<<<<<
  *         if property_:
  *             return property_.unwrap(obj)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value_to_property); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value_to_property); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7879,13 +7993,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -7893,19 +8007,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_obj);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -7914,17 +8028,17 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   __pyx_v_property_ = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":219
+  /* "jsonobject/jsonobject/base_properties.pyx":225
  *     def unwrap(self, obj):
  *         property_ = self.value_to_property(obj)
  *         if property_:             # <<<<<<<<<<<<<<
  *             return property_.unwrap(obj)
  *         else:
  */
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_property_); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_property_); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 225, __pyx_L1_error)
   if (__pyx_t_5) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":220
+    /* "jsonobject/jsonobject/base_properties.pyx":226
  *         property_ = self.value_to_property(obj)
  *         if property_:
  *             return property_.unwrap(obj)             # <<<<<<<<<<<<<<
@@ -7932,7 +8046,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  *             return obj, None
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_property_, __pyx_n_s_unwrap); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_property_, __pyx_n_s_unwrap); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7945,13 +8059,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       }
     }
     if (!__pyx_t_4) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
@@ -7959,19 +8073,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
       #endif
       {
-        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_obj);
         __Pyx_GIVEREF(__pyx_v_obj);
         PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_v_obj);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
@@ -7981,7 +8095,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":219
+    /* "jsonobject/jsonobject/base_properties.pyx":225
  *     def unwrap(self, obj):
  *         property_ = self.value_to_property(obj)
  *         if property_:             # <<<<<<<<<<<<<<
@@ -7990,7 +8104,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":222
+  /* "jsonobject/jsonobject/base_properties.pyx":228
  *             return property_.unwrap(obj)
  *         else:
  *             return obj, None             # <<<<<<<<<<<<<<
@@ -7999,7 +8113,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v_obj);
     __Pyx_GIVEREF(__pyx_v_obj);
@@ -8012,7 +8126,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     goto __pyx_L0;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":217
+  /* "jsonobject/jsonobject/base_properties.pyx":223
  *             return property_.wrap(obj)
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -8035,7 +8149,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":224
+/* "jsonobject/jsonobject/base_properties.pyx":230
  *             return obj, None
  * 
  *     def value_to_property(self, value):             # <<<<<<<<<<<<<<
@@ -8075,11 +8189,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("value_to_property", 1, 2, 2, 1); __PYX_ERR(0, 224, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("value_to_property", 1, 2, 2, 1); __PYX_ERR(0, 230, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "value_to_property") < 0)) __PYX_ERR(0, 224, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "value_to_property") < 0)) __PYX_ERR(0, 230, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8092,7 +8206,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("value_to_property", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 224, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("value_to_property", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 230, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.DefaultProperty.value_to_property", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8127,22 +8241,22 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   int __pyx_t_14;
   __Pyx_RefNannySetupContext("value_to_property", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":225
+  /* "jsonobject/jsonobject/base_properties.pyx":231
  * 
  *     def value_to_property(self, value):
  *         map_types_properties = self.type_config.properties             # <<<<<<<<<<<<<<
  *         if value is None:
  *             return None
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_map_types_properties = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":226
+  /* "jsonobject/jsonobject/base_properties.pyx":232
  *     def value_to_property(self, value):
  *         map_types_properties = self.type_config.properties
  *         if value is None:             # <<<<<<<<<<<<<<
@@ -8153,7 +8267,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":227
+    /* "jsonobject/jsonobject/base_properties.pyx":233
  *         map_types_properties = self.type_config.properties
  *         if value is None:
  *             return None             # <<<<<<<<<<<<<<
@@ -8165,7 +8279,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __pyx_r = Py_None;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":226
+    /* "jsonobject/jsonobject/base_properties.pyx":232
  *     def value_to_property(self, value):
  *         map_types_properties = self.type_config.properties
  *         if value is None:             # <<<<<<<<<<<<<<
@@ -8174,18 +8288,18 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":228
+  /* "jsonobject/jsonobject/base_properties.pyx":234
  *         if value is None:
  *             return None
  *         elif type(value) in map_types_properties:             # <<<<<<<<<<<<<<
  *             return map_types_properties[type(value)](
  *                 type_config=self.type_config)
  */
-  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(((PyObject *)Py_TYPE(__pyx_v_value)), __pyx_v_map_types_properties, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 228, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(((PyObject *)Py_TYPE(__pyx_v_value)), __pyx_v_map_types_properties, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 234, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_4 != 0);
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":229
+    /* "jsonobject/jsonobject/base_properties.pyx":235
  *             return None
  *         elif type(value) in map_types_properties:
  *             return map_types_properties[type(value)](             # <<<<<<<<<<<<<<
@@ -8193,31 +8307,31 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  *         else:
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyObject_GetItem(__pyx_v_map_types_properties, ((PyObject *)Py_TYPE(__pyx_v_value))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_2 = PyObject_GetItem(__pyx_v_map_types_properties, ((PyObject *)Py_TYPE(__pyx_v_value))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
 
-    /* "jsonobject/jsonobject/base_properties.pyx":230
+    /* "jsonobject/jsonobject/base_properties.pyx":236
  *         elif type(value) in map_types_properties:
  *             return map_types_properties[type(value)](
  *                 type_config=self.type_config)             # <<<<<<<<<<<<<<
  *         else:
  *             for value_type, prop_class in map_types_properties.items():
  */
-    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 230, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 236, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_type_config, __pyx_t_5) < 0) __PYX_ERR(0, 230, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_type_config, __pyx_t_5) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":229
+    /* "jsonobject/jsonobject/base_properties.pyx":235
  *             return None
  *         elif type(value) in map_types_properties:
  *             return map_types_properties[type(value)](             # <<<<<<<<<<<<<<
  *                 type_config=self.type_config)
  *         else:
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -8225,7 +8339,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __pyx_t_5 = 0;
     goto __pyx_L0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":228
+    /* "jsonobject/jsonobject/base_properties.pyx":234
  *         if value is None:
  *             return None
  *         elif type(value) in map_types_properties:             # <<<<<<<<<<<<<<
@@ -8234,7 +8348,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":232
+  /* "jsonobject/jsonobject/base_properties.pyx":238
  *                 type_config=self.type_config)
  *         else:
  *             for value_type, prop_class in map_types_properties.items():             # <<<<<<<<<<<<<<
@@ -8242,7 +8356,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  *                     return prop_class(type_config=self.type_config)
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_map_types_properties, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_map_types_properties, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_2 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -8255,10 +8369,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       }
     }
     if (__pyx_t_2) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 238, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 238, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -8266,9 +8380,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       __pyx_t_1 = __pyx_t_5; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 238, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     for (;;) {
@@ -8276,17 +8390,17 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 232, __pyx_L1_error)
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 238, __pyx_L1_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 238, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 232, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 238, __pyx_L1_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 238, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         }
@@ -8296,7 +8410,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 232, __pyx_L1_error)
+            else __PYX_ERR(0, 238, __pyx_L1_error)
           }
           break;
         }
@@ -8312,7 +8426,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 232, __pyx_L1_error)
+          __PYX_ERR(0, 238, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -8325,15 +8439,15 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_INCREF(__pyx_t_2);
         __Pyx_INCREF(__pyx_t_8);
         #else
-        __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 232, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 238, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 232, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 238, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_9 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 232, __pyx_L1_error)
+        __pyx_t_9 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 238, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
@@ -8341,7 +8455,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_GOTREF(__pyx_t_2);
         index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L6_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_8);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 232, __pyx_L1_error)
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 238, __pyx_L1_error)
         __pyx_t_10 = NULL;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         goto __pyx_L7_unpacking_done;
@@ -8349,7 +8463,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __pyx_t_10 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 232, __pyx_L1_error)
+        __PYX_ERR(0, 238, __pyx_L1_error)
         __pyx_L7_unpacking_done:;
       }
       __Pyx_XDECREF_SET(__pyx_v_value_type, __pyx_t_2);
@@ -8357,18 +8471,18 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       __Pyx_XDECREF_SET(__pyx_v_prop_class, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "jsonobject/jsonobject/base_properties.pyx":233
+      /* "jsonobject/jsonobject/base_properties.pyx":239
  *         else:
  *             for value_type, prop_class in map_types_properties.items():
  *                 if isinstance(value, value_type):             # <<<<<<<<<<<<<<
  *                     return prop_class(type_config=self.type_config)
  *             else:
  */
-      __pyx_t_3 = PyObject_IsInstance(__pyx_v_value, __pyx_v_value_type); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 233, __pyx_L1_error)
+      __pyx_t_3 = PyObject_IsInstance(__pyx_v_value, __pyx_v_value_type); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 239, __pyx_L1_error)
       __pyx_t_4 = (__pyx_t_3 != 0);
       if (__pyx_t_4) {
 
-        /* "jsonobject/jsonobject/base_properties.pyx":234
+        /* "jsonobject/jsonobject/base_properties.pyx":240
  *             for value_type, prop_class in map_types_properties.items():
  *                 if isinstance(value, value_type):
  *                     return prop_class(type_config=self.type_config)             # <<<<<<<<<<<<<<
@@ -8376,13 +8490,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  *                 raise BadValueError(
  */
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 234, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 240, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_type_config, __pyx_t_8) < 0) __PYX_ERR(0, 234, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_type_config, __pyx_t_8) < 0) __PYX_ERR(0, 240, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_v_prop_class, __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 234, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_v_prop_class, __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 240, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __pyx_r = __pyx_t_8;
@@ -8390,7 +8504,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
 
-        /* "jsonobject/jsonobject/base_properties.pyx":233
+        /* "jsonobject/jsonobject/base_properties.pyx":239
  *         else:
  *             for value_type, prop_class in map_types_properties.items():
  *                 if isinstance(value, value_type):             # <<<<<<<<<<<<<<
@@ -8399,7 +8513,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
       }
 
-      /* "jsonobject/jsonobject/base_properties.pyx":232
+      /* "jsonobject/jsonobject/base_properties.pyx":238
  *                 type_config=self.type_config)
  *         else:
  *             for value_type, prop_class in map_types_properties.items():             # <<<<<<<<<<<<<<
@@ -8409,34 +8523,34 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     }
     /*else*/ {
 
-      /* "jsonobject/jsonobject/base_properties.pyx":236
+      /* "jsonobject/jsonobject/base_properties.pyx":242
  *                     return prop_class(type_config=self.type_config)
  *             else:
  *                 raise BadValueError(             # <<<<<<<<<<<<<<
  *                     'value {0!r} not in allowed types: {1!r}'.format(
  *                         value, map_types_properties.keys())
  */
-      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 236, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 242, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
 
-      /* "jsonobject/jsonobject/base_properties.pyx":237
+      /* "jsonobject/jsonobject/base_properties.pyx":243
  *             else:
  *                 raise BadValueError(
  *                     'value {0!r} not in allowed types: {1!r}'.format(             # <<<<<<<<<<<<<<
  *                         value, map_types_properties.keys())
  *                 )
  */
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_value_0_r_not_in_allowed_types_1, __pyx_n_s_format); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 237, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_value_0_r_not_in_allowed_types_1, __pyx_n_s_format); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
 
-      /* "jsonobject/jsonobject/base_properties.pyx":238
+      /* "jsonobject/jsonobject/base_properties.pyx":244
  *                 raise BadValueError(
  *                     'value {0!r} not in allowed types: {1!r}'.format(
  *                         value, map_types_properties.keys())             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_map_types_properties, __pyx_n_s_keys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 238, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_map_types_properties, __pyx_n_s_keys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_13 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
@@ -8449,10 +8563,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         }
       }
       if (__pyx_t_13) {
-        __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 238, __pyx_L1_error)
+        __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 244, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       } else {
-        __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 238, __pyx_L1_error)
+        __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 244, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
@@ -8471,7 +8585,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_9)) {
         PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_v_value, __pyx_t_11};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -8480,14 +8594,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_9)) {
         PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_v_value, __pyx_t_11};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       } else
       #endif
       {
-        __pyx_t_13 = PyTuple_New(2+__pyx_t_14); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 237, __pyx_L1_error)
+        __pyx_t_13 = PyTuple_New(2+__pyx_t_14); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         if (__pyx_t_12) {
           __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_12); __pyx_t_12 = NULL;
@@ -8498,7 +8612,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_GIVEREF(__pyx_t_11);
         PyTuple_SET_ITEM(__pyx_t_13, 1+__pyx_t_14, __pyx_t_11);
         __pyx_t_11 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_13, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_13, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       }
@@ -8514,14 +8628,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         }
       }
       if (!__pyx_t_9) {
-        __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 236, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_8);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[2] = {__pyx_t_9, __pyx_t_2};
-          __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 236, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -8530,20 +8644,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[2] = {__pyx_t_9, __pyx_t_2};
-          __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 236, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         } else
         #endif
         {
-          __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 236, __pyx_L1_error)
+          __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 242, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_9); __pyx_t_9 = NULL;
           __Pyx_GIVEREF(__pyx_t_2);
           PyTuple_SET_ITEM(__pyx_t_13, 0+1, __pyx_t_2);
           __pyx_t_2 = 0;
-          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_13, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 236, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_13, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         }
@@ -8551,10 +8665,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __PYX_ERR(0, 236, __pyx_L1_error)
+      __PYX_ERR(0, 242, __pyx_L1_error)
     }
 
-    /* "jsonobject/jsonobject/base_properties.pyx":232
+    /* "jsonobject/jsonobject/base_properties.pyx":238
  *                 type_config=self.type_config)
  *         else:
  *             for value_type, prop_class in map_types_properties.items():             # <<<<<<<<<<<<<<
@@ -8564,7 +8678,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":224
+  /* "jsonobject/jsonobject/base_properties.pyx":230
  *             return obj, None
  * 
  *     def value_to_property(self, value):             # <<<<<<<<<<<<<<
@@ -8593,7 +8707,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":241
+/* "jsonobject/jsonobject/base_properties.pyx":247
  *                 )
  * 
  *     def value_to_python(self, value):             # <<<<<<<<<<<<<<
@@ -8634,11 +8748,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("value_to_python", 1, 2, 2, 1); __PYX_ERR(0, 241, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("value_to_python", 1, 2, 2, 1); __PYX_ERR(0, 247, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "value_to_python") < 0)) __PYX_ERR(0, 241, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "value_to_python") < 0)) __PYX_ERR(0, 247, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8651,7 +8765,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_15DefaultP
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("value_to_python", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 241, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("value_to_python", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 247, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.DefaultProperty.value_to_python", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8687,24 +8801,24 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   __Pyx_RefNannySetupContext("value_to_python", 0);
   __Pyx_INCREF(__pyx_v_value);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":253
+  /* "jsonobject/jsonobject/base_properties.pyx":259
  * 
  *         """
  *         if isinstance(value, six.string_types):             # <<<<<<<<<<<<<<
  *             convert = None
  *             for pattern, _convert in self.type_config.string_conversions:
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_six); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_six); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_string_types); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_string_types); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = PyObject_IsInstance(__pyx_v_value, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_3 = PyObject_IsInstance(__pyx_v_value, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":254
+    /* "jsonobject/jsonobject/base_properties.pyx":260
  *         """
  *         if isinstance(value, six.string_types):
  *             convert = None             # <<<<<<<<<<<<<<
@@ -8714,25 +8828,25 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __Pyx_INCREF(Py_None);
     __pyx_v_convert = Py_None;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":255
+    /* "jsonobject/jsonobject/base_properties.pyx":261
  *         if isinstance(value, six.string_types):
  *             convert = None
  *             for pattern, _convert in self.type_config.string_conversions:             # <<<<<<<<<<<<<<
  *                 if pattern.match(value):
  *                     convert = _convert
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 255, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_string_conversions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_string_conversions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
       __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_5 = 0;
       __pyx_t_6 = NULL;
     } else {
-      __pyx_t_5 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 255, __pyx_L1_error)
+      __pyx_t_5 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
+      __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 261, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -8740,17 +8854,17 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 255, __pyx_L1_error)
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 261, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
           if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 255, __pyx_L1_error)
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 261, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
@@ -8760,7 +8874,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 255, __pyx_L1_error)
+            else __PYX_ERR(0, 261, __pyx_L1_error)
           }
           break;
         }
@@ -8776,7 +8890,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 255, __pyx_L1_error)
+          __PYX_ERR(0, 261, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -8789,15 +8903,15 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_INCREF(__pyx_t_7);
         __Pyx_INCREF(__pyx_t_8);
         #else
-        __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 255, __pyx_L1_error)
+        __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 261, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 255, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 261, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_9 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 255, __pyx_L1_error)
+        __pyx_t_9 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 261, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
@@ -8805,7 +8919,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_GOTREF(__pyx_t_7);
         index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L6_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_8);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 255, __pyx_L1_error)
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 261, __pyx_L1_error)
         __pyx_t_10 = NULL;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         goto __pyx_L7_unpacking_done;
@@ -8813,7 +8927,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __pyx_t_10 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 255, __pyx_L1_error)
+        __PYX_ERR(0, 261, __pyx_L1_error)
         __pyx_L7_unpacking_done:;
       }
       __Pyx_XDECREF_SET(__pyx_v_pattern, __pyx_t_7);
@@ -8821,14 +8935,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
       __Pyx_XDECREF_SET(__pyx_v__convert, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "jsonobject/jsonobject/base_properties.pyx":256
+      /* "jsonobject/jsonobject/base_properties.pyx":262
  *             convert = None
  *             for pattern, _convert in self.type_config.string_conversions:
  *                 if pattern.match(value):             # <<<<<<<<<<<<<<
  *                     convert = _convert
  *                     break
  */
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_pattern, __pyx_n_s_match); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 256, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_pattern, __pyx_n_s_match); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 262, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_7 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
@@ -8841,13 +8955,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         }
       }
       if (!__pyx_t_7) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_8)) {
           PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_value};
-          __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_1);
         } else
@@ -8855,29 +8969,29 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
           PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_value};
-          __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_1);
         } else
         #endif
         {
-          __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 256, __pyx_L1_error)
+          __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 262, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __pyx_t_7 = NULL;
           __Pyx_INCREF(__pyx_v_value);
           __Pyx_GIVEREF(__pyx_v_value);
           PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_v_value);
-          __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         }
       }
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 256, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 262, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_4) {
 
-        /* "jsonobject/jsonobject/base_properties.pyx":257
+        /* "jsonobject/jsonobject/base_properties.pyx":263
  *             for pattern, _convert in self.type_config.string_conversions:
  *                 if pattern.match(value):
  *                     convert = _convert             # <<<<<<<<<<<<<<
@@ -8887,7 +9001,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_INCREF(__pyx_v__convert);
         __Pyx_DECREF_SET(__pyx_v_convert, __pyx_v__convert);
 
-        /* "jsonobject/jsonobject/base_properties.pyx":258
+        /* "jsonobject/jsonobject/base_properties.pyx":264
  *                 if pattern.match(value):
  *                     convert = _convert
  *                     break             # <<<<<<<<<<<<<<
@@ -8896,7 +9010,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
         goto __pyx_L5_break;
 
-        /* "jsonobject/jsonobject/base_properties.pyx":256
+        /* "jsonobject/jsonobject/base_properties.pyx":262
  *             convert = None
  *             for pattern, _convert in self.type_config.string_conversions:
  *                 if pattern.match(value):             # <<<<<<<<<<<<<<
@@ -8905,7 +9019,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
       }
 
-      /* "jsonobject/jsonobject/base_properties.pyx":255
+      /* "jsonobject/jsonobject/base_properties.pyx":261
  *         if isinstance(value, six.string_types):
  *             convert = None
  *             for pattern, _convert in self.type_config.string_conversions:             # <<<<<<<<<<<<<<
@@ -8916,7 +9030,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __pyx_L5_break:;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":260
+    /* "jsonobject/jsonobject/base_properties.pyx":266
  *                     break
  * 
  *             if convert is not None:             # <<<<<<<<<<<<<<
@@ -8927,7 +9041,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
     __pyx_t_3 = (__pyx_t_4 != 0);
     if (__pyx_t_3) {
 
-      /* "jsonobject/jsonobject/base_properties.pyx":261
+      /* "jsonobject/jsonobject/base_properties.pyx":267
  * 
  *             if convert is not None:
  *                 try:             # <<<<<<<<<<<<<<
@@ -8943,7 +9057,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_XGOTREF(__pyx_t_13);
         /*try:*/ {
 
-          /* "jsonobject/jsonobject/base_properties.pyx":263
+          /* "jsonobject/jsonobject/base_properties.pyx":269
  *                 try:
  *                     #sometimes regex fail so return value
  *                     value = convert(value)             # <<<<<<<<<<<<<<
@@ -8962,13 +9076,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
             }
           }
           if (!__pyx_t_8) {
-            __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L10_error)
+            __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L10_error)
             __Pyx_GOTREF(__pyx_t_2);
           } else {
             #if CYTHON_FAST_PYCALL
             if (PyFunction_Check(__pyx_t_1)) {
               PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_v_value};
-              __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L10_error)
+              __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L10_error)
               __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
               __Pyx_GOTREF(__pyx_t_2);
             } else
@@ -8976,19 +9090,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
             #if CYTHON_FAST_PYCCALL
             if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
               PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_v_value};
-              __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L10_error)
+              __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L10_error)
               __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
               __Pyx_GOTREF(__pyx_t_2);
             } else
             #endif
             {
-              __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 263, __pyx_L10_error)
+              __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 269, __pyx_L10_error)
               __Pyx_GOTREF(__pyx_t_9);
               __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
               __Pyx_INCREF(__pyx_v_value);
               __Pyx_GIVEREF(__pyx_v_value);
               PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_v_value);
-              __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L10_error)
+              __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L10_error)
               __Pyx_GOTREF(__pyx_t_2);
               __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
             }
@@ -8997,7 +9111,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
           __Pyx_DECREF_SET(__pyx_v_value, __pyx_t_2);
           __pyx_t_2 = 0;
 
-          /* "jsonobject/jsonobject/base_properties.pyx":261
+          /* "jsonobject/jsonobject/base_properties.pyx":267
  * 
  *             if convert is not None:
  *                 try:             # <<<<<<<<<<<<<<
@@ -9016,7 +9130,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "jsonobject/jsonobject/base_properties.pyx":264
+        /* "jsonobject/jsonobject/base_properties.pyx":270
  *                     #sometimes regex fail so return value
  *                     value = convert(value)
  *                 except Exception:             # <<<<<<<<<<<<<<
@@ -9031,7 +9145,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         goto __pyx_L12_except_error;
         __pyx_L12_except_error:;
 
-        /* "jsonobject/jsonobject/base_properties.pyx":261
+        /* "jsonobject/jsonobject/base_properties.pyx":267
  * 
  *             if convert is not None:
  *                 try:             # <<<<<<<<<<<<<<
@@ -9051,7 +9165,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
         __pyx_L15_try_end:;
       }
 
-      /* "jsonobject/jsonobject/base_properties.pyx":260
+      /* "jsonobject/jsonobject/base_properties.pyx":266
  *                     break
  * 
  *             if convert is not None:             # <<<<<<<<<<<<<<
@@ -9060,7 +9174,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
     }
 
-    /* "jsonobject/jsonobject/base_properties.pyx":253
+    /* "jsonobject/jsonobject/base_properties.pyx":259
  * 
  *         """
  *         if isinstance(value, six.string_types):             # <<<<<<<<<<<<<<
@@ -9069,7 +9183,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":266
+  /* "jsonobject/jsonobject/base_properties.pyx":272
  *                 except Exception:
  *                     pass
  *         return value             # <<<<<<<<<<<<<<
@@ -9081,7 +9195,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   __pyx_r = __pyx_v_value;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":241
+  /* "jsonobject/jsonobject/base_properties.pyx":247
  *                 )
  * 
  *     def value_to_python(self, value):             # <<<<<<<<<<<<<<
@@ -9108,7 +9222,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_15DefaultP
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":272
+/* "jsonobject/jsonobject/base_properties.pyx":278
  *     _type = None
  * 
  *     def assert_type(self, obj):             # <<<<<<<<<<<<<<
@@ -9148,11 +9262,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("assert_type", 1, 2, 2, 1); __PYX_ERR(0, 272, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("assert_type", 1, 2, 2, 1); __PYX_ERR(0, 278, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "assert_type") < 0)) __PYX_ERR(0, 272, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "assert_type") < 0)) __PYX_ERR(0, 278, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -9165,7 +9279,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("assert_type", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 272, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("assert_type", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 278, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AssertTypeProperty.assert_type", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9193,40 +9307,40 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("assert_type", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":273
+  /* "jsonobject/jsonobject/base_properties.pyx":279
  * 
  *     def assert_type(self, obj):
  *         if not isinstance(obj, self._type):             # <<<<<<<<<<<<<<
  *             raise BadValueError(
  *                 '{0!r} not of type {1!r}'.format(obj, self._type)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_2 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((!(__pyx_t_2 != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":274
+    /* "jsonobject/jsonobject/base_properties.pyx":280
  *     def assert_type(self, obj):
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(             # <<<<<<<<<<<<<<
  *                 '{0!r} not of type {1!r}'.format(obj, self._type)
  *             )
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 274, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 280, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
 
-    /* "jsonobject/jsonobject/base_properties.pyx":275
+    /* "jsonobject/jsonobject/base_properties.pyx":281
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(
  *                 '{0!r} not of type {1!r}'.format(obj, self._type)             # <<<<<<<<<<<<<<
  *             )
  * 
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_not_of_type_1_r, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_not_of_type_1_r, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 281, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 281, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_9 = 0;
@@ -9243,7 +9357,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_obj, __pyx_t_7};
-      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -9252,14 +9366,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_obj, __pyx_t_7};
-      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 281, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_8) {
         __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -9270,7 +9384,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
       __Pyx_GIVEREF(__pyx_t_7);
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_7);
       __pyx_t_7 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
@@ -9286,14 +9400,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -9302,20 +9416,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 274, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
@@ -9323,9 +9437,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 274, __pyx_L1_error)
+    __PYX_ERR(0, 280, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/base_properties.pyx":273
+    /* "jsonobject/jsonobject/base_properties.pyx":279
  * 
  *     def assert_type(self, obj):
  *         if not isinstance(obj, self._type):             # <<<<<<<<<<<<<<
@@ -9334,7 +9448,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":272
+  /* "jsonobject/jsonobject/base_properties.pyx":278
  *     _type = None
  * 
  *     def assert_type(self, obj):             # <<<<<<<<<<<<<<
@@ -9361,7 +9475,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":278
+/* "jsonobject/jsonobject/base_properties.pyx":284
  *             )
  * 
  *     def selective_coerce(self, obj):             # <<<<<<<<<<<<<<
@@ -9401,11 +9515,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("selective_coerce", 1, 2, 2, 1); __PYX_ERR(0, 278, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("selective_coerce", 1, 2, 2, 1); __PYX_ERR(0, 284, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "selective_coerce") < 0)) __PYX_ERR(0, 278, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "selective_coerce") < 0)) __PYX_ERR(0, 284, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -9418,7 +9532,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("selective_coerce", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 278, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("selective_coerce", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 284, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AssertTypeProperty.selective_coerce", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9436,7 +9550,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("selective_coerce", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":279
+  /* "jsonobject/jsonobject/base_properties.pyx":285
  * 
  *     def selective_coerce(self, obj):
  *         return obj             # <<<<<<<<<<<<<<
@@ -9448,7 +9562,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __pyx_r = __pyx_v_obj;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":278
+  /* "jsonobject/jsonobject/base_properties.pyx":284
  *             )
  * 
  *     def selective_coerce(self, obj):             # <<<<<<<<<<<<<<
@@ -9463,7 +9577,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":281
+/* "jsonobject/jsonobject/base_properties.pyx":287
  *         return obj
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -9503,11 +9617,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 281, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 287, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 281, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 287, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -9520,7 +9634,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 281, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 287, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AssertTypeProperty.wrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9543,14 +9657,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_RefNannySetupContext("wrap", 0);
   __Pyx_INCREF(__pyx_v_obj);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":282
+  /* "jsonobject/jsonobject/base_properties.pyx":288
  * 
  *     def wrap(self, obj):
  *         obj = self.selective_coerce(obj)             # <<<<<<<<<<<<<<
  *         self.assert_type(obj)
  *         return obj
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_selective_coerce); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 282, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_selective_coerce); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -9563,13 +9677,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -9577,19 +9691,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 282, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 288, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_obj);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -9598,14 +9712,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_DECREF_SET(__pyx_v_obj, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":283
+  /* "jsonobject/jsonobject/base_properties.pyx":289
  *     def wrap(self, obj):
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)             # <<<<<<<<<<<<<<
  *         return obj
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_assert_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_assert_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 289, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -9618,13 +9732,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -9632,19 +9746,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 283, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 289, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_v_obj);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
@@ -9652,7 +9766,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":284
+  /* "jsonobject/jsonobject/base_properties.pyx":290
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)
  *         return obj             # <<<<<<<<<<<<<<
@@ -9664,7 +9778,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __pyx_r = __pyx_v_obj;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":281
+  /* "jsonobject/jsonobject/base_properties.pyx":287
  *         return obj
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -9687,7 +9801,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":286
+/* "jsonobject/jsonobject/base_properties.pyx":292
  *         return obj
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -9727,11 +9841,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 286, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 292, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 286, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 292, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -9744,7 +9858,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_18AssertTy
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 286, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 292, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AssertTypeProperty.unwrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9767,14 +9881,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_RefNannySetupContext("unwrap", 0);
   __Pyx_INCREF(__pyx_v_obj);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":287
+  /* "jsonobject/jsonobject/base_properties.pyx":293
  * 
  *     def unwrap(self, obj):
  *         obj = self.selective_coerce(obj)             # <<<<<<<<<<<<<<
  *         self.assert_type(obj)
  *         return obj, obj
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_selective_coerce); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_selective_coerce); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 293, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -9787,13 +9901,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -9801,19 +9915,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 287, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 293, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_obj);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -9822,14 +9936,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_DECREF_SET(__pyx_v_obj, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":288
+  /* "jsonobject/jsonobject/base_properties.pyx":294
  *     def unwrap(self, obj):
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)             # <<<<<<<<<<<<<<
  *         return obj, obj
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_assert_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_assert_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 294, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -9842,13 +9956,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -9856,19 +9970,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 288, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 294, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_v_obj);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
@@ -9876,7 +9990,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":289
+  /* "jsonobject/jsonobject/base_properties.pyx":295
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)
  *         return obj, obj             # <<<<<<<<<<<<<<
@@ -9884,7 +9998,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_obj);
   __Pyx_GIVEREF(__pyx_v_obj);
@@ -9896,7 +10010,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":286
+  /* "jsonobject/jsonobject/base_properties.pyx":292
  *         return obj
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -9919,7 +10033,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_18AssertTy
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":296
+/* "jsonobject/jsonobject/base_properties.pyx":302
  *     _type = None
  * 
  *     def __init__(self, exact=False, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -9980,7 +10094,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 2) ? pos_args : 2;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, used_pos_args, "__init__") < 0)) __PYX_ERR(0, 296, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, used_pos_args, "__init__") < 0)) __PYX_ERR(0, 302, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9998,7 +10112,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 296, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 302, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_args); __pyx_v_args = 0;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
@@ -10022,16 +10136,16 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":297
+  /* "jsonobject/jsonobject/base_properties.pyx":303
  * 
  *     def __init__(self, exact=False, *args, **kwargs):
  *         super(AbstractDateProperty, self).__init__(*args, **kwargs)             # <<<<<<<<<<<<<<
  *         self.exact = exact
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_AbstractDateProperty); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_AbstractDateProperty); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -10039,27 +10153,27 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_self);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_v_args, __pyx_v_kwargs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_v_args, __pyx_v_kwargs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":298
+  /* "jsonobject/jsonobject/base_properties.pyx":304
  *     def __init__(self, exact=False, *args, **kwargs):
  *         super(AbstractDateProperty, self).__init__(*args, **kwargs)
  *         self.exact = exact             # <<<<<<<<<<<<<<
  * 
  *     def wrap(self, obj):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_exact, __pyx_v_exact) < 0) __PYX_ERR(0, 298, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_exact, __pyx_v_exact) < 0) __PYX_ERR(0, 304, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":296
+  /* "jsonobject/jsonobject/base_properties.pyx":302
  *     _type = None
  * 
  *     def __init__(self, exact=False, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -10081,7 +10195,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":300
+/* "jsonobject/jsonobject/base_properties.pyx":306
  *         self.exact = exact
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10121,11 +10235,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 300, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, 1); __PYX_ERR(0, 306, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 300, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wrap") < 0)) __PYX_ERR(0, 306, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -10138,7 +10252,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 300, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 306, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AbstractDateProperty.wrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -10172,7 +10286,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   PyObject *__pyx_t_16 = NULL;
   __Pyx_RefNannySetupContext("wrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":301
+  /* "jsonobject/jsonobject/base_properties.pyx":307
  * 
  *     def wrap(self, obj):
  *         try:             # <<<<<<<<<<<<<<
@@ -10188,37 +10302,37 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "jsonobject/jsonobject/base_properties.pyx":302
+      /* "jsonobject/jsonobject/base_properties.pyx":308
  *     def wrap(self, obj):
  *         try:
  *             if not isinstance(obj, six.string_types):             # <<<<<<<<<<<<<<
  *                 raise ValueError()
  *             return self._wrap(obj)
  */
-      __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_six); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 302, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_six); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 308, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_string_types); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 302, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_string_types); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 308, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_6 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_5); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 302, __pyx_L3_error)
+      __pyx_t_6 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_5); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 308, __pyx_L3_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_7 = ((!(__pyx_t_6 != 0)) != 0);
       if (__pyx_t_7) {
 
-        /* "jsonobject/jsonobject/base_properties.pyx":303
+        /* "jsonobject/jsonobject/base_properties.pyx":309
  *         try:
  *             if not isinstance(obj, six.string_types):
  *                 raise ValueError()             # <<<<<<<<<<<<<<
  *             return self._wrap(obj)
  *         except ValueError:
  */
-        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 303, __pyx_L3_error)
+        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 309, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_Raise(__pyx_t_5, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __PYX_ERR(0, 303, __pyx_L3_error)
+        __PYX_ERR(0, 309, __pyx_L3_error)
 
-        /* "jsonobject/jsonobject/base_properties.pyx":302
+        /* "jsonobject/jsonobject/base_properties.pyx":308
  *     def wrap(self, obj):
  *         try:
  *             if not isinstance(obj, six.string_types):             # <<<<<<<<<<<<<<
@@ -10227,7 +10341,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
  */
       }
 
-      /* "jsonobject/jsonobject/base_properties.pyx":304
+      /* "jsonobject/jsonobject/base_properties.pyx":310
  *             if not isinstance(obj, six.string_types):
  *                 raise ValueError()
  *             return self._wrap(obj)             # <<<<<<<<<<<<<<
@@ -10235,7 +10349,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
  *             raise BadValueError('{0!r} is not a {1}-formatted string'.format(
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrap_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 304, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrap_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 310, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_8 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -10248,13 +10362,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
         }
       }
       if (!__pyx_t_8) {
-        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_obj); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 304, __pyx_L3_error)
+        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_obj); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 310, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_5);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_v_obj};
-          __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 304, __pyx_L3_error)
+          __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 310, __pyx_L3_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_5);
         } else
@@ -10262,19 +10376,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_v_obj};
-          __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 304, __pyx_L3_error)
+          __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 310, __pyx_L3_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_5);
         } else
         #endif
         {
-          __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 304, __pyx_L3_error)
+          __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 310, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
           __Pyx_INCREF(__pyx_v_obj);
           __Pyx_GIVEREF(__pyx_v_obj);
           PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_v_obj);
-          __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 304, __pyx_L3_error)
+          __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 310, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         }
@@ -10284,7 +10398,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       __pyx_t_5 = 0;
       goto __pyx_L7_try_return;
 
-      /* "jsonobject/jsonobject/base_properties.pyx":301
+      /* "jsonobject/jsonobject/base_properties.pyx":307
  * 
  *     def wrap(self, obj):
  *         try:             # <<<<<<<<<<<<<<
@@ -10298,7 +10412,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":305
+    /* "jsonobject/jsonobject/base_properties.pyx":311
  *                 raise ValueError()
  *             return self._wrap(obj)
  *         except ValueError:             # <<<<<<<<<<<<<<
@@ -10308,33 +10422,33 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     __pyx_t_10 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_ValueError);
     if (__pyx_t_10) {
       __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AbstractDateProperty.wrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_4, &__pyx_t_9) < 0) __PYX_ERR(0, 305, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_4, &__pyx_t_9) < 0) __PYX_ERR(0, 311, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GOTREF(__pyx_t_9);
 
-      /* "jsonobject/jsonobject/base_properties.pyx":306
+      /* "jsonobject/jsonobject/base_properties.pyx":312
  *             return self._wrap(obj)
  *         except ValueError:
  *             raise BadValueError('{0!r} is not a {1}-formatted string'.format(             # <<<<<<<<<<<<<<
  *                 obj,
  *                 self._type.__name__,
  */
-      __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+      __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 312, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_is_not_a_1_formatted_string, __pyx_n_s_format); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_is_not_a_1_formatted_string, __pyx_n_s_format); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 312, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_13);
 
-      /* "jsonobject/jsonobject/base_properties.pyx":308
+      /* "jsonobject/jsonobject/base_properties.pyx":314
  *             raise BadValueError('{0!r} is not a {1}-formatted string'.format(
  *                 obj,
  *                 self._type.__name__,             # <<<<<<<<<<<<<<
  *             ))
  * 
  */
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 308, __pyx_L5_except_error)
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 314, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_14);
-      __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_name); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 308, __pyx_L5_except_error)
+      __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_name); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 314, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_15);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       __pyx_t_14 = NULL;
@@ -10352,7 +10466,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_13)) {
         PyObject *__pyx_temp[3] = {__pyx_t_14, __pyx_v_obj, __pyx_t_15};
-        __pyx_t_12 = __Pyx_PyFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+        __pyx_t_12 = __Pyx_PyFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 312, __pyx_L5_except_error)
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
@@ -10361,14 +10475,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_13)) {
         PyObject *__pyx_temp[3] = {__pyx_t_14, __pyx_v_obj, __pyx_t_15};
-        __pyx_t_12 = __Pyx_PyCFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+        __pyx_t_12 = __Pyx_PyCFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 312, __pyx_L5_except_error)
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
       } else
       #endif
       {
-        __pyx_t_16 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+        __pyx_t_16 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 312, __pyx_L5_except_error)
         __Pyx_GOTREF(__pyx_t_16);
         if (__pyx_t_14) {
           __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_14); __pyx_t_14 = NULL;
@@ -10379,7 +10493,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
         __Pyx_GIVEREF(__pyx_t_15);
         PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_10, __pyx_t_15);
         __pyx_t_15 = 0;
-        __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_16, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+        __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_16, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 312, __pyx_L5_except_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       }
@@ -10395,14 +10509,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
         }
       }
       if (!__pyx_t_13) {
-        __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+        __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 312, __pyx_L5_except_error)
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_GOTREF(__pyx_t_8);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_11)) {
           PyObject *__pyx_temp[2] = {__pyx_t_13, __pyx_t_12};
-          __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+          __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 312, __pyx_L5_except_error)
           __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
@@ -10411,20 +10525,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_11)) {
           PyObject *__pyx_temp[2] = {__pyx_t_13, __pyx_t_12};
-          __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+          __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 312, __pyx_L5_except_error)
           __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         } else
         #endif
         {
-          __pyx_t_16 = PyTuple_New(1+1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+          __pyx_t_16 = PyTuple_New(1+1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 312, __pyx_L5_except_error)
           __Pyx_GOTREF(__pyx_t_16);
           __Pyx_GIVEREF(__pyx_t_13); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_13); __pyx_t_13 = NULL;
           __Pyx_GIVEREF(__pyx_t_12);
           PyTuple_SET_ITEM(__pyx_t_16, 0+1, __pyx_t_12);
           __pyx_t_12 = 0;
-          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_16, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 306, __pyx_L5_except_error)
+          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_16, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 312, __pyx_L5_except_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
         }
@@ -10432,12 +10546,12 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __PYX_ERR(0, 306, __pyx_L5_except_error)
+      __PYX_ERR(0, 312, __pyx_L5_except_error)
     }
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "jsonobject/jsonobject/base_properties.pyx":301
+    /* "jsonobject/jsonobject/base_properties.pyx":307
  * 
  *     def wrap(self, obj):
  *         try:             # <<<<<<<<<<<<<<
@@ -10457,7 +10571,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     goto __pyx_L0;
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":300
+  /* "jsonobject/jsonobject/base_properties.pyx":306
  *         self.exact = exact
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10485,7 +10599,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":311
+/* "jsonobject/jsonobject/base_properties.pyx":317
  *             ))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10525,11 +10639,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 311, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, 1); __PYX_ERR(0, 317, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 311, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unwrap") < 0)) __PYX_ERR(0, 317, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -10542,7 +10656,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 311, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 317, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AbstractDateProperty.unwrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -10570,42 +10684,42 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("unwrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":312
+  /* "jsonobject/jsonobject/base_properties.pyx":318
  * 
  *     def unwrap(self, obj):
  *         if not isinstance(obj, self._type):             # <<<<<<<<<<<<<<
  *             raise BadValueError('{0!r} is not a {1} object'.format(
  *                 obj,
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 312, __pyx_L1_error)
+  __pyx_t_2 = PyObject_IsInstance(__pyx_v_obj, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 318, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((!(__pyx_t_2 != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/base_properties.pyx":313
+    /* "jsonobject/jsonobject/base_properties.pyx":319
  *     def unwrap(self, obj):
  *         if not isinstance(obj, self._type):
  *             raise BadValueError('{0!r} is not a {1} object'.format(             # <<<<<<<<<<<<<<
  *                 obj,
  *                 self._type.__name__,
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 313, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_BadValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 319, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_is_not_a_1_object, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 313, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_0_r_is_not_a_1_object, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 319, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
 
-    /* "jsonobject/jsonobject/base_properties.pyx":315
+    /* "jsonobject/jsonobject/base_properties.pyx":321
  *             raise BadValueError('{0!r} is not a {1} object'.format(
  *                 obj,
  *                 self._type.__name__,             # <<<<<<<<<<<<<<
  *             ))
  *         return self._unwrap(obj)
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 321, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 315, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 321, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_7 = NULL;
@@ -10623,7 +10737,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_obj, __pyx_t_8};
-      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 313, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 319, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -10632,14 +10746,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_obj, __pyx_t_8};
-      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 313, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 319, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 313, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 319, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_7) {
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -10650,7 +10764,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       __Pyx_GIVEREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_8);
       __pyx_t_8 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 313, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 319, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
@@ -10666,14 +10780,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10682,20 +10796,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 313, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 319, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
@@ -10703,9 +10817,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 313, __pyx_L1_error)
+    __PYX_ERR(0, 319, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/base_properties.pyx":312
+    /* "jsonobject/jsonobject/base_properties.pyx":318
  * 
  *     def unwrap(self, obj):
  *         if not isinstance(obj, self._type):             # <<<<<<<<<<<<<<
@@ -10714,7 +10828,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
  */
   }
 
-  /* "jsonobject/jsonobject/base_properties.pyx":317
+  /* "jsonobject/jsonobject/base_properties.pyx":323
  *                 self._type.__name__,
  *             ))
  *         return self._unwrap(obj)             # <<<<<<<<<<<<<<
@@ -10722,7 +10836,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
  *     def _wrap(self, obj):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_unwrap_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 317, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_unwrap_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 323, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_10 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -10735,13 +10849,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     }
   }
   if (!__pyx_t_10) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_obj); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -10749,19 +10863,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_v_obj};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 317, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_10); __pyx_t_10 = NULL;
       __Pyx_INCREF(__pyx_v_obj);
       __Pyx_GIVEREF(__pyx_v_obj);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_obj);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -10771,7 +10885,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":311
+  /* "jsonobject/jsonobject/base_properties.pyx":317
  *             ))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10796,7 +10910,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":319
+/* "jsonobject/jsonobject/base_properties.pyx":325
  *         return self._unwrap(obj)
  * 
  *     def _wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10836,11 +10950,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_wrap", 1, 2, 2, 1); __PYX_ERR(0, 319, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_wrap", 1, 2, 2, 1); __PYX_ERR(0, 325, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_wrap") < 0)) __PYX_ERR(0, 319, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_wrap") < 0)) __PYX_ERR(0, 325, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -10853,7 +10967,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 319, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_wrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 325, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AbstractDateProperty._wrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -10872,20 +10986,20 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("_wrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":320
+  /* "jsonobject/jsonobject/base_properties.pyx":326
  * 
  *     def _wrap(self, obj):
  *         raise NotImplementedError()             # <<<<<<<<<<<<<<
  * 
  *     def _unwrap(self, obj):
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 326, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 320, __pyx_L1_error)
+  __PYX_ERR(0, 326, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":319
+  /* "jsonobject/jsonobject/base_properties.pyx":325
  *         return self._unwrap(obj)
  * 
  *     def _wrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10903,7 +11017,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/base_properties.pyx":322
+/* "jsonobject/jsonobject/base_properties.pyx":328
  *         raise NotImplementedError()
  * 
  *     def _unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -10942,11 +11056,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_obj)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_unwrap", 1, 2, 2, 1); __PYX_ERR(0, 322, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_unwrap", 1, 2, 2, 1); __PYX_ERR(0, 328, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_unwrap") < 0)) __PYX_ERR(0, 322, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_unwrap") < 0)) __PYX_ERR(0, 328, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -10959,7 +11073,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_15base_properties_20Abstract
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 322, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_unwrap", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 328, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.base_properties.AbstractDateProperty._unwrap", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -10978,18 +11092,18 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_15base_properties_20Abstract
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("_unwrap", 0);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":323
+  /* "jsonobject/jsonobject/base_properties.pyx":329
  * 
  *     def _unwrap(self, obj):
  *         raise NotImplementedError()             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 323, __pyx_L1_error)
+  __PYX_ERR(0, 329, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":322
+  /* "jsonobject/jsonobject/base_properties.pyx":328
  *         raise NotImplementedError()
  * 
  *     def _unwrap(self, obj):             # <<<<<<<<<<<<<<
@@ -11312,11 +11426,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 15, __pyx_L1_error)
   __pyx_builtin_Ellipsis = __Pyx_GetBuiltinName(__pyx_n_s_Ellipsis); if (!__pyx_builtin_Ellipsis) __PYX_ERR(0, 20, __pyx_L1_error)
-  __pyx_builtin_property = __Pyx_GetBuiltinName(__pyx_n_s_property); if (!__pyx_builtin_property) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_builtin_property = __Pyx_GetBuiltinName(__pyx_n_s_property); if (!__pyx_builtin_property) __PYX_ERR(0, 162, __pyx_L1_error)
   __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 50, __pyx_L1_error)
   __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 153, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 194, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -11555,242 +11669,242 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *     def set_item_type(self, item_type):             # <<<<<<<<<<<<<<
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):
+ *         if isinstance(item_type, JsonProperty):
  */
   __pyx_tuple__40 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_item_type, __pyx_n_s_JsonObjectMeta, __pyx_n_s_allowed_types); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__40);
   __Pyx_GIVEREF(__pyx_tuple__40);
   __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_set_item_type, 141, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 141, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":159
+  /* "jsonobject/jsonobject/base_properties.pyx":163
  * 
  *     @property
  *     def item_type(self):             # <<<<<<<<<<<<<<
  *         if hasattr(self, '_item_type_deferred'):
  *             if inspect.isfunction(self._item_type_deferred):
  */
-  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__42);
   __Pyx_GIVEREF(__pyx_tuple__42);
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_item_type, 159, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_item_type, 163, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 163, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":168
+  /* "jsonobject/jsonobject/base_properties.pyx":172
  *         return self._item_type
  * 
  *     def empty(self, value):             # <<<<<<<<<<<<<<
  *         return not value
  * 
  */
-  __pyx_tuple__44 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_value); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_value); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__44);
   __Pyx_GIVEREF(__pyx_tuple__44);
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_empty, 168, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_empty, 172, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 172, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":171
+  /* "jsonobject/jsonobject/base_properties.pyx":175
  *         return not value
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         wrapper = self.type_to_property(self.item_type) if self.item_type else None
  *         return self.container_class(obj, wrapper=wrapper,
  */
-  __pyx_tuple__46 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_wrapper); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_tuple__46 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_wrapper); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__46);
   __Pyx_GIVEREF(__pyx_tuple__46);
-  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 171, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 175, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 175, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":176
+  /* "jsonobject/jsonobject/base_properties.pyx":180
  *                                     type_config=self.type_config)
  * 
  *     def type_to_property(self, item_type):             # <<<<<<<<<<<<<<
  *         map_types_properties = self.type_config.properties
  *         from .properties import ObjectProperty
  */
-  __pyx_tuple__48 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_item_type, __pyx_n_s_map_types_properties, __pyx_n_s_ObjectProperty, __pyx_n_s_JsonObjectBase, __pyx_n_s_key, __pyx_n_s_value); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __pyx_tuple__48 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_item_type, __pyx_n_s_map_types_properties, __pyx_n_s_ObjectProperty, __pyx_n_s_JsonObjectBase, __pyx_n_s_key, __pyx_n_s_value); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__48);
   __Pyx_GIVEREF(__pyx_tuple__48);
-  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_type_to_property, 176, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_type_to_property, 180, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 180, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":190
+  /* "jsonobject/jsonobject/base_properties.pyx":196
  *             raise TypeError('Type {0} not recognized'.format(item_type))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(
  */
-  __pyx_tuple__50 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_wrapped); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_tuple__50 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_wrapped); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__50);
   __Pyx_GIVEREF(__pyx_tuple__50);
-  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 190, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 196, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 196, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":203
+  /* "jsonobject/jsonobject/base_properties.pyx":209
  *             return self.unwrap(wrapped)
  * 
  *     def _update(self, container, extension):             # <<<<<<<<<<<<<<
  *         raise NotImplementedError()
  * 
  */
-  __pyx_tuple__52 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_container, __pyx_n_s_extension); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_tuple__52 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_container, __pyx_n_s_extension); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__52);
   __Pyx_GIVEREF(__pyx_tuple__52);
-  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_update, 203, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_update, 209, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(0, 209, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":209
+  /* "jsonobject/jsonobject/base_properties.pyx":215
  * class DefaultProperty(JsonProperty):
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         assert self.type_config.string_conversions is not None
  *         value = self.value_to_python(obj)
  */
-  __pyx_tuple__54 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_value, __pyx_n_s_property_2); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_tuple__54 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_value, __pyx_n_s_property_2); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__54);
   __Pyx_GIVEREF(__pyx_tuple__54);
-  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__54, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 209, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__54, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 215, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 215, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":217
+  /* "jsonobject/jsonobject/base_properties.pyx":223
  *             return property_.wrap(obj)
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         property_ = self.value_to_property(obj)
  *         if property_:
  */
-  __pyx_tuple__56 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_property_2); if (unlikely(!__pyx_tuple__56)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_tuple__56 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_obj, __pyx_n_s_property_2); if (unlikely(!__pyx_tuple__56)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__56);
   __Pyx_GIVEREF(__pyx_tuple__56);
-  __pyx_codeobj__57 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__56, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 217, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__57)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_codeobj__57 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__56, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 223, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__57)) __PYX_ERR(0, 223, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":224
+  /* "jsonobject/jsonobject/base_properties.pyx":230
  *             return obj, None
  * 
  *     def value_to_property(self, value):             # <<<<<<<<<<<<<<
  *         map_types_properties = self.type_config.properties
  *         if value is None:
  */
-  __pyx_tuple__58 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_value, __pyx_n_s_map_types_properties, __pyx_n_s_value_type, __pyx_n_s_prop_class); if (unlikely(!__pyx_tuple__58)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_tuple__58 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_value, __pyx_n_s_map_types_properties, __pyx_n_s_value_type, __pyx_n_s_prop_class); if (unlikely(!__pyx_tuple__58)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__58);
   __Pyx_GIVEREF(__pyx_tuple__58);
-  __pyx_codeobj__59 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__58, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_value_to_property, 224, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__59)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_codeobj__59 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__58, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_value_to_property, 230, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__59)) __PYX_ERR(0, 230, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":241
+  /* "jsonobject/jsonobject/base_properties.pyx":247
  *                 )
  * 
  *     def value_to_python(self, value):             # <<<<<<<<<<<<<<
  *         """
  *         convert encoded string values to the proper python type
  */
-  __pyx_tuple__60 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_value, __pyx_n_s_convert, __pyx_n_s_pattern, __pyx_n_s_convert_2); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_tuple__60 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_value, __pyx_n_s_convert, __pyx_n_s_pattern, __pyx_n_s_convert_2); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__60);
   __Pyx_GIVEREF(__pyx_tuple__60);
-  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__60, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_value_to_python, 241, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__60, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_value_to_python, 247, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(0, 247, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":272
+  /* "jsonobject/jsonobject/base_properties.pyx":278
  *     _type = None
  * 
  *     def assert_type(self, obj):             # <<<<<<<<<<<<<<
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(
  */
-  __pyx_tuple__62 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__62)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_tuple__62 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__62)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__62);
   __Pyx_GIVEREF(__pyx_tuple__62);
-  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__62, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_assert_type, 272, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__62, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_assert_type, 278, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(0, 278, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":278
+  /* "jsonobject/jsonobject/base_properties.pyx":284
  *             )
  * 
  *     def selective_coerce(self, obj):             # <<<<<<<<<<<<<<
  *         return obj
  * 
  */
-  __pyx_tuple__64 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__64)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_tuple__64 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__64)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__64);
   __Pyx_GIVEREF(__pyx_tuple__64);
-  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__64, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_selective_coerce, 278, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__64, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_selective_coerce, 284, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(0, 284, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":281
+  /* "jsonobject/jsonobject/base_properties.pyx":287
  *         return obj
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)
  */
-  __pyx_tuple__66 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__66)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_tuple__66 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__66)) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__66);
   __Pyx_GIVEREF(__pyx_tuple__66);
-  __pyx_codeobj__67 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__66, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 281, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__67)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_codeobj__67 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__66, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 287, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__67)) __PYX_ERR(0, 287, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":286
+  /* "jsonobject/jsonobject/base_properties.pyx":292
  *         return obj
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)
  */
-  __pyx_tuple__68 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__68)) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_tuple__68 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__68)) __PYX_ERR(0, 292, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__68);
   __Pyx_GIVEREF(__pyx_tuple__68);
-  __pyx_codeobj__69 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__68, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 286, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__69)) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_codeobj__69 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__68, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 292, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__69)) __PYX_ERR(0, 292, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":296
+  /* "jsonobject/jsonobject/base_properties.pyx":302
  *     _type = None
  * 
  *     def __init__(self, exact=False, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         super(AbstractDateProperty, self).__init__(*args, **kwargs)
  *         self.exact = exact
  */
-  __pyx_tuple__70 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_exact, __pyx_n_s_args, __pyx_n_s_kwargs); if (unlikely(!__pyx_tuple__70)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_tuple__70 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_exact, __pyx_n_s_args, __pyx_n_s_kwargs); if (unlikely(!__pyx_tuple__70)) __PYX_ERR(0, 302, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__70);
   __Pyx_GIVEREF(__pyx_tuple__70);
-  __pyx_codeobj__71 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__70, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_init, 296, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__71)) __PYX_ERR(0, 296, __pyx_L1_error)
-  __pyx_tuple__72 = PyTuple_Pack(1, ((PyObject *)Py_False)); if (unlikely(!__pyx_tuple__72)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_codeobj__71 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__70, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_init, 302, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__71)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __pyx_tuple__72 = PyTuple_Pack(1, ((PyObject *)Py_False)); if (unlikely(!__pyx_tuple__72)) __PYX_ERR(0, 302, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__72);
   __Pyx_GIVEREF(__pyx_tuple__72);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":300
+  /* "jsonobject/jsonobject/base_properties.pyx":306
  *         self.exact = exact
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         try:
  *             if not isinstance(obj, six.string_types):
  */
-  __pyx_tuple__73 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__73)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_tuple__73 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__73)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__73);
   __Pyx_GIVEREF(__pyx_tuple__73);
-  __pyx_codeobj__74 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__73, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 300, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__74)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_codeobj__74 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__73, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap, 306, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__74)) __PYX_ERR(0, 306, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":311
+  /* "jsonobject/jsonobject/base_properties.pyx":317
  *             ))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         if not isinstance(obj, self._type):
  *             raise BadValueError('{0!r} is not a {1} object'.format(
  */
-  __pyx_tuple__75 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__75)) __PYX_ERR(0, 311, __pyx_L1_error)
+  __pyx_tuple__75 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__75)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__75);
   __Pyx_GIVEREF(__pyx_tuple__75);
-  __pyx_codeobj__76 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__75, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 311, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__76)) __PYX_ERR(0, 311, __pyx_L1_error)
+  __pyx_codeobj__76 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__75, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap, 317, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__76)) __PYX_ERR(0, 317, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":319
+  /* "jsonobject/jsonobject/base_properties.pyx":325
  *         return self._unwrap(obj)
  * 
  *     def _wrap(self, obj):             # <<<<<<<<<<<<<<
  *         raise NotImplementedError()
  * 
  */
-  __pyx_tuple__77 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__77)) __PYX_ERR(0, 319, __pyx_L1_error)
+  __pyx_tuple__77 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__77)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__77);
   __Pyx_GIVEREF(__pyx_tuple__77);
-  __pyx_codeobj__78 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__77, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap_2, 319, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__78)) __PYX_ERR(0, 319, __pyx_L1_error)
+  __pyx_codeobj__78 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__77, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_wrap_2, 325, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__78)) __PYX_ERR(0, 325, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":322
+  /* "jsonobject/jsonobject/base_properties.pyx":328
  *         raise NotImplementedError()
  * 
  *     def _unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         raise NotImplementedError()
  */
-  __pyx_tuple__79 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__79)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_tuple__79 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_obj); if (unlikely(!__pyx_tuple__79)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__79);
   __Pyx_GIVEREF(__pyx_tuple__79);
-  __pyx_codeobj__80 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__79, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap_2, 322, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__80)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_codeobj__80 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__79, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_base_properties_pyx, __pyx_n_s_unwrap_2, 328, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__80)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -12334,99 +12448,99 @@ static int __pyx_pymod_exec_base_properties(PyObject *__pyx_pyinit_module)
  * 
  *     def set_item_type(self, item_type):             # <<<<<<<<<<<<<<
  *         from jsonobject.base import JsonObjectMeta
- *         if hasattr(item_type, '_type'):
+ *         if isinstance(item_type, JsonProperty):
  */
   __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_5set_item_type, 0, __pyx_n_s_JsonContainerProperty_set_item_t, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_set_item_type, __pyx_t_5) < 0) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":159
+  /* "jsonobject/jsonobject/base_properties.pyx":163
  * 
  *     @property
  *     def item_type(self):             # <<<<<<<<<<<<<<
  *         if hasattr(self, '_item_type_deferred'):
  *             if inspect.isfunction(self._item_type_deferred):
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_7item_type, 0, __pyx_n_s_JsonContainerProperty_item_type, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_7item_type, 0, __pyx_n_s_JsonContainerProperty_item_type, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":158
+  /* "jsonobject/jsonobject/base_properties.pyx":162
  *             ))
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def item_type(self):
  *         if hasattr(self, '_item_type_deferred'):
  */
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_property, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_property, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_item_type, __pyx_t_5) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_item_type, __pyx_t_5) < 0) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":168
+  /* "jsonobject/jsonobject/base_properties.pyx":172
  *         return self._item_type
  * 
  *     def empty(self, value):             # <<<<<<<<<<<<<<
  *         return not value
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_9empty, 0, __pyx_n_s_JsonContainerProperty_empty, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_9empty, 0, __pyx_n_s_JsonContainerProperty_empty, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_empty, __pyx_t_5) < 0) __PYX_ERR(0, 168, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_empty, __pyx_t_5) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":171
+  /* "jsonobject/jsonobject/base_properties.pyx":175
  *         return not value
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         wrapper = self.type_to_property(self.item_type) if self.item_type else None
  *         return self.container_class(obj, wrapper=wrapper,
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_11wrap, 0, __pyx_n_s_JsonContainerProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_11wrap, 0, __pyx_n_s_JsonContainerProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":176
+  /* "jsonobject/jsonobject/base_properties.pyx":180
  *                                     type_config=self.type_config)
  * 
  *     def type_to_property(self, item_type):             # <<<<<<<<<<<<<<
  *         map_types_properties = self.type_config.properties
  *         from .properties import ObjectProperty
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_13type_to_property, 0, __pyx_n_s_JsonContainerProperty_type_to_pr, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_13type_to_property, 0, __pyx_n_s_JsonContainerProperty_type_to_pr, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_type_to_property, __pyx_t_5) < 0) __PYX_ERR(0, 176, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_type_to_property, __pyx_t_5) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":190
+  /* "jsonobject/jsonobject/base_properties.pyx":196
  *             raise TypeError('Type {0} not recognized'.format(item_type))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_15unwrap, 0, __pyx_n_s_JsonContainerProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_15unwrap, 0, __pyx_n_s_JsonContainerProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 190, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":203
+  /* "jsonobject/jsonobject/base_properties.pyx":209
  *             return self.unwrap(wrapped)
  * 
  *     def _update(self, container, extension):             # <<<<<<<<<<<<<<
  *         raise NotImplementedError()
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_17_update, 0, __pyx_n_s_JsonContainerProperty__update, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__53)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_21JsonContainerProperty_17_update, 0, __pyx_n_s_JsonContainerProperty__update, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__53)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_update, __pyx_t_5) < 0) __PYX_ERR(0, 203, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_update, __pyx_t_5) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "jsonobject/jsonobject/base_properties.pyx":126
@@ -12444,277 +12558,277 @@ static int __pyx_pymod_exec_base_properties(PyObject *__pyx_pyinit_module)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":207
+  /* "jsonobject/jsonobject/base_properties.pyx":213
  * 
  * 
  * class DefaultProperty(JsonProperty):             # <<<<<<<<<<<<<<
  * 
  *     def wrap(self, obj):
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_DefaultProperty, __pyx_n_s_DefaultProperty, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_DefaultProperty, __pyx_n_s_DefaultProperty, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 213, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":209
+  /* "jsonobject/jsonobject/base_properties.pyx":215
  * class DefaultProperty(JsonProperty):
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         assert self.type_config.string_conversions is not None
  *         value = self.value_to_python(obj)
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_1wrap, 0, __pyx_n_s_DefaultProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__55)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_1wrap, 0, __pyx_n_s_DefaultProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__55)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":217
+  /* "jsonobject/jsonobject/base_properties.pyx":223
  *             return property_.wrap(obj)
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         property_ = self.value_to_property(obj)
  *         if property_:
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_3unwrap, 0, __pyx_n_s_DefaultProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__57)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_3unwrap, 0, __pyx_n_s_DefaultProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__57)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":224
+  /* "jsonobject/jsonobject/base_properties.pyx":230
  *             return obj, None
  * 
  *     def value_to_property(self, value):             # <<<<<<<<<<<<<<
  *         map_types_properties = self.type_config.properties
  *         if value is None:
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_5value_to_property, 0, __pyx_n_s_DefaultProperty_value_to_propert, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__59)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_5value_to_property, 0, __pyx_n_s_DefaultProperty_value_to_propert, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__59)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_value_to_property, __pyx_t_5) < 0) __PYX_ERR(0, 224, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_value_to_property, __pyx_t_5) < 0) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":241
+  /* "jsonobject/jsonobject/base_properties.pyx":247
  *                 )
  * 
  *     def value_to_python(self, value):             # <<<<<<<<<<<<<<
  *         """
  *         convert encoded string values to the proper python type
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_7value_to_python, 0, __pyx_n_s_DefaultProperty_value_to_python, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__61)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_15DefaultProperty_7value_to_python, 0, __pyx_n_s_DefaultProperty_value_to_python, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__61)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_value_to_python, __pyx_t_5) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_value_to_python, __pyx_t_5) < 0) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":207
+  /* "jsonobject/jsonobject/base_properties.pyx":213
  * 
  * 
  * class DefaultProperty(JsonProperty):             # <<<<<<<<<<<<<<
  * 
  *     def wrap(self, obj):
  */
-  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_DefaultProperty, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_DefaultProperty, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 213, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DefaultProperty, __pyx_t_5) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DefaultProperty, __pyx_t_5) < 0) __PYX_ERR(0, 213, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":269
+  /* "jsonobject/jsonobject/base_properties.pyx":275
  * 
  * 
  * class AssertTypeProperty(JsonProperty):             # <<<<<<<<<<<<<<
  *     _type = None
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_AssertTypeProperty, __pyx_n_s_AssertTypeProperty, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_AssertTypeProperty, __pyx_n_s_AssertTypeProperty, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":270
+  /* "jsonobject/jsonobject/base_properties.pyx":276
  * 
  * class AssertTypeProperty(JsonProperty):
  *     _type = None             # <<<<<<<<<<<<<<
  * 
  *     def assert_type(self, obj):
  */
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_type, Py_None) < 0) __PYX_ERR(0, 270, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_type, Py_None) < 0) __PYX_ERR(0, 276, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":272
+  /* "jsonobject/jsonobject/base_properties.pyx":278
  *     _type = None
  * 
  *     def assert_type(self, obj):             # <<<<<<<<<<<<<<
  *         if not isinstance(obj, self._type):
  *             raise BadValueError(
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_1assert_type, 0, __pyx_n_s_AssertTypeProperty_assert_type, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__63)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_1assert_type, 0, __pyx_n_s_AssertTypeProperty_assert_type, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__63)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_assert_type, __pyx_t_5) < 0) __PYX_ERR(0, 272, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_assert_type, __pyx_t_5) < 0) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":278
+  /* "jsonobject/jsonobject/base_properties.pyx":284
  *             )
  * 
  *     def selective_coerce(self, obj):             # <<<<<<<<<<<<<<
  *         return obj
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_3selective_coerce, 0, __pyx_n_s_AssertTypeProperty_selective_coe, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__65)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_3selective_coerce, 0, __pyx_n_s_AssertTypeProperty_selective_coe, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__65)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_selective_coerce, __pyx_t_5) < 0) __PYX_ERR(0, 278, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_selective_coerce, __pyx_t_5) < 0) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":281
+  /* "jsonobject/jsonobject/base_properties.pyx":287
  *         return obj
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_5wrap, 0, __pyx_n_s_AssertTypeProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__67)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_5wrap, 0, __pyx_n_s_AssertTypeProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__67)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 281, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":286
+  /* "jsonobject/jsonobject/base_properties.pyx":292
  *         return obj
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         obj = self.selective_coerce(obj)
  *         self.assert_type(obj)
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_7unwrap, 0, __pyx_n_s_AssertTypeProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__69)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_18AssertTypeProperty_7unwrap, 0, __pyx_n_s_AssertTypeProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__69)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 292, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 292, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":269
+  /* "jsonobject/jsonobject/base_properties.pyx":275
  * 
  * 
  * class AssertTypeProperty(JsonProperty):             # <<<<<<<<<<<<<<
  *     _type = None
  * 
  */
-  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_AssertTypeProperty, __pyx_t_2, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_AssertTypeProperty, __pyx_t_2, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AssertTypeProperty, __pyx_t_5) < 0) __PYX_ERR(0, 269, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AssertTypeProperty, __pyx_t_5) < 0) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":292
+  /* "jsonobject/jsonobject/base_properties.pyx":298
  * 
  * 
  * class AbstractDateProperty(JsonProperty):             # <<<<<<<<<<<<<<
  * 
  *     _type = None
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonProperty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_AbstractDateProperty, __pyx_n_s_AbstractDateProperty, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_AbstractDateProperty, __pyx_n_s_AbstractDateProperty, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "jsonobject/jsonobject/base_properties.pyx":294
+  /* "jsonobject/jsonobject/base_properties.pyx":300
  * class AbstractDateProperty(JsonProperty):
  * 
  *     _type = None             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self, exact=False, *args, **kwargs):
  */
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_type, Py_None) < 0) __PYX_ERR(0, 294, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_type, Py_None) < 0) __PYX_ERR(0, 300, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/base_properties.pyx":296
+  /* "jsonobject/jsonobject/base_properties.pyx":302
  *     _type = None
  * 
  *     def __init__(self, exact=False, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         super(AbstractDateProperty, self).__init__(*args, **kwargs)
  *         self.exact = exact
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_1__init__, 0, __pyx_n_s_AbstractDateProperty___init, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__71)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_1__init__, 0, __pyx_n_s_AbstractDateProperty___init, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__71)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 302, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_tuple__72);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 296, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 302, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":300
+  /* "jsonobject/jsonobject/base_properties.pyx":306
  *         self.exact = exact
  * 
  *     def wrap(self, obj):             # <<<<<<<<<<<<<<
  *         try:
  *             if not isinstance(obj, six.string_types):
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_3wrap, 0, __pyx_n_s_AbstractDateProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__74)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_3wrap, 0, __pyx_n_s_AbstractDateProperty_wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__74)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 300, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap, __pyx_t_5) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":311
+  /* "jsonobject/jsonobject/base_properties.pyx":317
  *             ))
  * 
  *     def unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         if not isinstance(obj, self._type):
  *             raise BadValueError('{0!r} is not a {1} object'.format(
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_5unwrap, 0, __pyx_n_s_AbstractDateProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__76)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 311, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_5unwrap, 0, __pyx_n_s_AbstractDateProperty_unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__76)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 311, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap, __pyx_t_5) < 0) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":319
+  /* "jsonobject/jsonobject/base_properties.pyx":325
  *         return self._unwrap(obj)
  * 
  *     def _wrap(self, obj):             # <<<<<<<<<<<<<<
  *         raise NotImplementedError()
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_7_wrap, 0, __pyx_n_s_AbstractDateProperty__wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__78)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 319, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_7_wrap, 0, __pyx_n_s_AbstractDateProperty__wrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__78)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap_2, __pyx_t_5) < 0) __PYX_ERR(0, 319, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_wrap_2, __pyx_t_5) < 0) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":322
+  /* "jsonobject/jsonobject/base_properties.pyx":328
  *         raise NotImplementedError()
  * 
  *     def _unwrap(self, obj):             # <<<<<<<<<<<<<<
  *         raise NotImplementedError()
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_9_unwrap, 0, __pyx_n_s_AbstractDateProperty__unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__80)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_15base_properties_20AbstractDateProperty_9_unwrap, 0, __pyx_n_s_AbstractDateProperty__unwrap, NULL, __pyx_n_s_jsonobject_jsonobject_base_prope, __pyx_d, ((PyObject *)__pyx_codeobj__80)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap_2, __pyx_t_5) < 0) __PYX_ERR(0, 322, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_unwrap_2, __pyx_t_5) < 0) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/base_properties.pyx":292
+  /* "jsonobject/jsonobject/base_properties.pyx":298
  * 
  * 
  * class AbstractDateProperty(JsonProperty):             # <<<<<<<<<<<<<<
  * 
  *     _type = None
  */
-  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_AbstractDateProperty, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_AbstractDateProperty, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AbstractDateProperty, __pyx_t_5) < 0) __PYX_ERR(0, 292, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AbstractDateProperty, __pyx_t_5) < 0) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;

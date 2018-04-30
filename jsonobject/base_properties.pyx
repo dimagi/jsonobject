@@ -140,13 +140,17 @@ class JsonContainerProperty(JsonProperty):
 
     def set_item_type(self, item_type):
         from jsonobject.base import JsonObjectMeta
-        if hasattr(item_type, '_type'):
-            item_type = item_type._type
-        if isinstance(item_type, tuple):
-            # this is for the case where item_type = (int, long)
-            item_type = item_type[0]
+        if isinstance(item_type, JsonProperty):
+            if item_type.type_config is None:
+                item_type.type_config = self.type_config
+        else:
+            if hasattr(item_type, '_type'):
+                item_type = item_type._type
+            if isinstance(item_type, tuple):
+                # this is for the case where item_type = (int, long)
+                item_type = item_type[0]
         allowed_types = set(self.type_config.properties.keys())
-        if isinstance(item_type, JsonObjectMeta) \
+        if isinstance(item_type, (JsonObjectMeta, JsonProperty)) \
                 or not item_type or item_type in allowed_types:
             self._item_type = item_type
         else:
@@ -177,7 +181,9 @@ class JsonContainerProperty(JsonProperty):
         map_types_properties = self.type_config.properties
         from .properties import ObjectProperty
         from .base import JsonObjectBase
-        if issubclass(item_type, JsonObjectBase):
+        if isinstance(item_type, JsonProperty):
+            return item_type
+        elif issubclass(item_type, JsonObjectBase):
             return ObjectProperty(item_type, type_config=self.type_config)
         elif item_type in map_types_properties:
             return map_types_properties[item_type](type_config=self.type_config)
