@@ -456,4 +456,4 @@ OK
 
 ## Recreating C source files
 
-For any changes in the pyx files, the cooresponding C files should be recompiled with `python setup.py build_ext --inplace`
+For any changes in the pyx files, the corresponding C files should be recompiled with `python setup.py build_ext --inplace`
