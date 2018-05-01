@@ -9,10 +9,6 @@ fi
 find jsonobject -iname '*.c' -delete
 find jsonobject -iname '*.so' -delete
 
-# grep setup.py for the pinned version of cython
-PINNED_CYTHON=$(grep -oE 'cython==[0-9]+\.[0-9]+\.[0-9]+' setup.py)
-
-pip install $PINNED_CYTHON
 python setup.py build_ext --inplace
 
 git update-index -q --refresh

@@ -3,7 +3,9 @@ python:
   - 2.7
   - 3.5
   - 3.6
-install: "pip install ."
+install:
+  - ".travis/install_cython.sh"
+  - "pip install ."
 script:
   - "python setup.py test"
-  - "./test_cython_files.sh"
+  - ".travis/test_cython_files.sh"
