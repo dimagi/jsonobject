@@ -402,7 +402,7 @@ class JsonObjectTestCase(unittest2.TestCase):
             cities_by_state_by_country = DictProperty(DictProperty(City))
 
         # testing an internal assumption; can remove if internals change
-        self.assertEqual(Foo.cities_by_state_by_country.item_type.item_type, City)
+        self.assertEqual(Foo.cities_by_state_by_country.item_wrapper.item_wrapper.item_type, City)
 
         city = City.wrap({'name': 'Boston'})
         with self.assertRaises(AttributeError):
@@ -412,6 +412,16 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertIsInstance(foo.cities_by_state_by_country['USA']['MA'], City)
         with self.assertRaises(AttributeError):
             foo.cities_by_state_by_country['USA']['MA'].off_spec = 'bar'
+
+    def test_object_property_with_lambda(self):
+        class Bar(JsonObject):
+            string = StringProperty()
+
+        class Foo(JsonObject):
+            bar = ObjectProperty(lambda: Bar)
+
+        foo = Foo()
+        self.assertIsInstance(foo.bar, Bar)
 
 
 class PropertyInsideContainerTest(unittest2.TestCase):
