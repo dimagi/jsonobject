@@ -177,8 +177,7 @@ class JsonContainerProperty(JsonProperty):
         return not value
 
     def wrap(self, obj):
-        wrapper = self.item_wrapper
-        return self.container_class(obj, wrapper=wrapper,
+        return self.container_class(obj, wrapper=self.item_wrapper,
                                     type_config=self.type_config)
 
     def unwrap(self, obj):
