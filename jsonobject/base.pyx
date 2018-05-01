@@ -275,21 +275,25 @@ class JsonObjectBase(object):
 
     def __unwrap(self, key, value):
         property_ = self.__get_property(key)
-        try:
-            property_.validate(
-                value,
-                required=not self._validate_required_lazily,
-                recursive=False,
-            )
-        except TypeError:
-            property_.validate(
-                value,
-                required=not self._validate_required_lazily,
-            )
         if value is None:
-            return None, None
+            wrapped, unwrapped = None, None
+        else:
+            wrapped, unwrapped = property_.unwrap(value)
 
-        return property_.unwrap(value)
+        if isinstance(wrapped, JsonObjectBase):
+            # validate containers but not objects
+            recursive_kwargs = {'recursive': False}
+        else:
+            # omit the argument for backwards compatibility of custom properties
+            # that do not contain `recursive` in their signature
+            # and let the default of True shine through
+            recursive_kwargs = {}
+        property_.validate(
+            wrapped,
+            required=not self._validate_required_lazily,
+            **recursive_kwargs,
+        )
+        return wrapped, unwrapped
 
     def __setitem__(self, key, value):
         wrapped, unwrapped = self.__unwrap(key, value)

@@ -331,9 +331,16 @@ If you want it set to `None` you must do so explicitly.
 Maps to a `list` with items of type `item_type`,
 which can be any of the following:
 
-- one of the scalar properties listed above
-- one of their corresponding python types (this is syntactic sugar)
+- an _instance_ of a property class. This is the most flexible option,
+  and all validation (`required`, etc.) will be done as as specified by the property instance.
+- a property class, which will be instantiated with `required=True`
+- one of their corresponding python types (i.e. `int` for `IntegerProperty`, etc.)
 - a `JsonObject` subclass
+
+Note that a property _class_ (as well as the related python type syntax)
+will be instantiated with `required=True`,
+so `ListProperty(IntegerProperty)` and `ListProperty(int)` do not allow `None`, and
+`ListProperty(IntegerProperty())` _does_ allow `None`.
 
 The serialization behavior of whatever item type is given is recursively
 applied to each member of the list.
@@ -456,4 +463,4 @@ OK
 
 ## Recreating C source files
 
-For any changes in the pyx files, the cooresponding C files should be recompiled with `python setup.py build_ext --inplace`
+For any changes in the pyx files, the corresponding C files should be recompiled with `python setup.py build_ext --inplace`

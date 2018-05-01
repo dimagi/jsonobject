@@ -136,56 +136,49 @@ class JsonContainerProperty(JsonProperty):
         super(JsonContainerProperty, self).init_property(**kwargs)
         if not inspect.isfunction(self._item_type_deferred):
             # trigger validation
-            self.item_type
+            self.item_wrapper
 
-    def set_item_type(self, item_type):
+    def to_item_wrapper(self, item_type):
         from jsonobject.base import JsonObjectMeta
-        if hasattr(item_type, '_type'):
-            item_type = item_type._type
-        if isinstance(item_type, tuple):
-            # this is for the case where item_type = (int, long)
-            item_type = item_type[0]
-        allowed_types = set(self.type_config.properties.keys())
-        if isinstance(item_type, JsonObjectMeta) \
-                or not item_type or item_type in allowed_types:
-            self._item_type = item_type
+        from .properties import ObjectProperty
+        if item_type is None:
+            return None
+        if isinstance(item_type, JsonObjectMeta):
+            return ObjectProperty(item_type, type_config=self.type_config)
+        elif isinstance(item_type, JsonProperty):
+            item_wrapper = item_type
+            if item_wrapper.type_config is None:
+                item_wrapper.type_config = self.type_config
+            return item_wrapper
+        elif issubclass(item_type, JsonProperty):
+            return item_type(type_config=self.type_config, required=True)
+        elif item_type in self.type_config.properties:
+            return self.type_config.properties[item_type](type_config=self.type_config, required=True)
         else:
+            for general_type, property_cls in self.type_config.properties.items():
+                if issubclass(item_type, general_type):
+                    return property_cls(type_config=self.type_config, required=True)
             raise ValueError("item_type {0!r} not in {1!r}".format(
                 item_type,
-                allowed_types,
+                self.type_config.properties,
             ))
 
     @property
-    def item_type(self):
+    def item_wrapper(self):
         if hasattr(self, '_item_type_deferred'):
             if inspect.isfunction(self._item_type_deferred):
-                self.set_item_type(self._item_type_deferred())
+                self._item_wrapper = self.to_item_wrapper(self._item_type_deferred())
             else:
-                self.set_item_type(self._item_type_deferred)
+                self._item_wrapper = self.to_item_wrapper(self._item_type_deferred)
             del self._item_type_deferred
-        return self._item_type
+        return self._item_wrapper
 
     def empty(self, value):
         return not value
 
     def wrap(self, obj):
-        wrapper = self.type_to_property(self.item_type) if self.item_type else None
-        return self.container_class(obj, wrapper=wrapper,
+        return self.container_class(obj, wrapper=self.item_wrapper,
                                     type_config=self.type_config)
-
-    def type_to_property(self, item_type):
-        map_types_properties = self.type_config.properties
-        from .properties import ObjectProperty
-        from .base import JsonObjectBase
-        if issubclass(item_type, JsonObjectBase):
-            return ObjectProperty(item_type, type_config=self.type_config)
-        elif item_type in map_types_properties:
-            return map_types_properties[item_type](type_config=self.type_config)
-        else:
-            for key, value in map_types_properties.items():
-                if issubclass(item_type, key):
-                    return value(type_config=self.type_config)
-            raise TypeError('Type {0} not recognized'.format(item_type))
 
     def unwrap(self, obj):
         if not isinstance(obj, self._type):
@@ -270,7 +263,9 @@ class AssertTypeProperty(JsonProperty):
     _type = None
 
     def assert_type(self, obj):
-        if not isinstance(obj, self._type):
+        if obj is None:
+            return
+        elif not isinstance(obj, self._type):
             raise BadValueError(
                 '{0!r} not of type {1!r}'.format(obj, self._type)
             )

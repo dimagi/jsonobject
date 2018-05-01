@@ -1,6 +1,8 @@
 # DateTimeProperty, DateProperty, and TimeProperty
 # include code copied from couchdbkit
 from __future__ import absolute_import
+
+import inspect
 import sys
 import datetime
 import time
@@ -123,9 +125,30 @@ class TimeProperty(AbstractDateProperty):
         return value, value.isoformat()
 
 
-class ObjectProperty(JsonContainerProperty):
+class ObjectProperty(JsonProperty):
 
+    _type = None
     default = lambda self: self.item_type()
+
+    def __init__(self, item_type=None, **kwargs):
+        self._item_type_deferred = item_type
+        super(ObjectProperty, self).__init__(**kwargs)
+
+    @property
+    def item_type(self):
+        from .base import JsonObjectBase
+        if hasattr(self, '_item_type_deferred'):
+            if inspect.isfunction(self._item_type_deferred):
+                self._item_type = self._item_type_deferred()
+            else:
+                self._item_type = self._item_type_deferred
+            del self._item_type_deferred
+        if not issubclass(self._item_type, JsonObjectBase):
+            raise ValueError("item_type {0!r} not a JsonObject subclass".format(
+                self._item_type,
+                self.type_config.properties,
+            ))
+        return self._item_type
 
     def wrap(self, obj, string_conversions=None):
         return self.item_type.wrap(obj)

@@ -389,7 +389,71 @@ class JsonObjectTestCase(unittest2.TestCase):
             string_list = ListProperty(StringProperty)
 
         foo = Foo({'string_list': ['a', 'b', 'c']})
-        self.assertEqual(foo.string_list, ['a', 'b', 'c'])
+        self.assertEqual(foo.string_list, ['a', 'b' , 'c'])
+
+    def test_typed_dict_of_dict(self):
+
+        class City(JsonObject):
+            _allow_dynamic_properties = False
+            name = StringProperty()
+
+        class Foo(JsonObject):
+            _allow_dynamic_properties = False
+            cities_by_state_by_country = DictProperty(DictProperty(City))
+
+        # testing an internal assumption; can remove if internals change
+        self.assertEqual(Foo.cities_by_state_by_country.item_wrapper.item_wrapper.item_type, City)
+
+        city = City.wrap({'name': 'Boston'})
+        with self.assertRaises(AttributeError):
+            city.off_spec = 'bar'
+
+        foo = Foo.wrap({'cities_by_state_by_country': {'USA': {'MA': {'name': 'Boston'}}}})
+        self.assertIsInstance(foo.cities_by_state_by_country['USA']['MA'], City)
+        with self.assertRaises(AttributeError):
+            foo.cities_by_state_by_country['USA']['MA'].off_spec = 'bar'
+
+    def test_object_property_with_lambda(self):
+        class Bar(JsonObject):
+            string = StringProperty()
+
+        class Foo(JsonObject):
+            bar = ObjectProperty(lambda: Bar)
+
+        foo = Foo()
+        self.assertIsInstance(foo.bar, Bar)
+
+
+class PropertyInsideContainerTest(unittest2.TestCase):
+
+    def test_default_is_required(self):
+        class Foo(JsonObject):
+            container = ListProperty(int)
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
+
+    def test_property_class_required(self):
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty)
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
+
+    def test_property(self):
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty())
+
+        # assert does not error
+        Foo(container=[None])
+
+    def test_required_property(self):
+
+        class Foo(JsonObject):
+            container = ListProperty(IntegerProperty(required=True))
+
+        with self.assertRaises(BadValueError):
+            Foo(container=[None])
 
 
 class LazyValidationTest(unittest2.TestCase):
