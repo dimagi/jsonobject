@@ -279,11 +279,19 @@ class JsonObjectBase(object):
             wrapped, unwrapped = None, None
         else:
             wrapped, unwrapped = property_.unwrap(value)
+
+        if isinstance(wrapped, JsonObjectBase):
+            # validate containers but not objects
+            recursive_kwargs = {'recursive': False}
+        else:
+            # omit the argument for backwards compatibility of custom properties
+            # that do not contain `recursive` in their signature
+            # and let the default of True shine through
+            recursive_kwargs = {}
         property_.validate(
             wrapped,
             required=not self._validate_required_lazily,
-            # validate containers but not objects
-            recursive=not isinstance(wrapped, JsonObjectBase),
+            **recursive_kwargs,
         )
         return wrapped, unwrapped
 
