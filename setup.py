@@ -30,8 +30,6 @@ else:
     print("You are running without Cython installed. It is highly recommended to run\n"
           "  pip install {}\n"
           "before you continue".format(' '.join(CYTHON_REQUIRES)))
-    if 'egg_info' not in argv:
-        exit(1)
 
 
 with io.open('README.md', 'rt', encoding="utf-8") as readme_file:
