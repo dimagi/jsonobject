@@ -1,12 +1,14 @@
 from __future__ import absolute_import
-from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
+
+import datetime
+import decimal
+import re
 
 import six
-import decimal
-import datetime
 
+from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
 from . import properties
-import re
+from .containers import JsonArray, JsonDict, JsonSet
 
 
 re_date = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
@@ -17,7 +19,8 @@ re_datetime = re.compile(
     r'(\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?'
     r'([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$'
 )
-re_decimal = re.compile('^(\d+)\.(\d+)$')
+re_decimal = re.compile(r'^(\d+)\.(\d+)$')
+
 if six.PY3:
     unicode = str
     long = int
@@ -45,6 +48,9 @@ class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
             list: properties.ListProperty,
             dict: properties.DictProperty,
             set: properties.SetProperty,
+            JsonArray: properties.ListProperty,
+            JsonDict: properties.DictProperty,
+            JsonSet: properties.SetProperty,
         }
         string_conversions = (
             (re_date, datetime.date),

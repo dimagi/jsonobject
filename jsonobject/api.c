@@ -1066,6 +1066,7 @@ static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_module[] = "__module__";
 static const char __pyx_k_object[] = "object";
 static const char __pyx_k_Decimal[] = "Decimal";
+static const char __pyx_k_JsonSet[] = "JsonSet";
 static const char __pyx_k_compile[] = "compile";
 static const char __pyx_k_decimal[] = "decimal";
 static const char __pyx_k_prepare[] = "__prepare__";
@@ -1073,12 +1074,15 @@ static const char __pyx_k_re_date[] = "re_date";
 static const char __pyx_k_re_time[] = "re_time";
 static const char __pyx_k_to_json[] = "to_json";
 static const char __pyx_k_unicode[] = "unicode";
+static const char __pyx_k_JsonDict[] = "JsonDict";
 static const char __pyx_k_datetime[] = "datetime";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_setstate[] = "__setstate__";
+static const char __pyx_k_JsonArray[] = "JsonArray";
 static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_JsonObject[] = "JsonObject";
+static const char __pyx_k_containers[] = "containers";
 static const char __pyx_k_properties[] = "properties";
 static const char __pyx_k_re_decimal[] = "re_decimal";
 static const char __pyx_k_SetProperty[] = "SetProperty";
@@ -1116,11 +1120,14 @@ static PyObject *__pyx_n_s_DecimalProperty;
 static PyObject *__pyx_n_s_DictProperty;
 static PyObject *__pyx_n_s_FloatProperty;
 static PyObject *__pyx_n_s_IntegerProperty;
+static PyObject *__pyx_n_s_JsonArray;
+static PyObject *__pyx_n_s_JsonDict;
 static PyObject *__pyx_n_s_JsonObject;
 static PyObject *__pyx_n_s_JsonObjectBase;
 static PyObject *__pyx_n_s_JsonObject_Meta;
 static PyObject *__pyx_n_s_JsonObject___getstate;
 static PyObject *__pyx_n_s_JsonObject___setstate;
+static PyObject *__pyx_n_s_JsonSet;
 static PyObject *__pyx_n_s_LimitedDictInterfaceMixin;
 static PyObject *__pyx_n_s_ListProperty;
 static PyObject *__pyx_n_s_Meta;
@@ -1130,6 +1137,7 @@ static PyObject *__pyx_n_s_StringProperty;
 static PyObject *__pyx_n_s_TimeProperty;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_compile;
+static PyObject *__pyx_n_s_containers;
 static PyObject *__pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9;
 static PyObject *__pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9_2;
 static PyObject *__pyx_kp_s_d_d;
@@ -1177,7 +1185,7 @@ static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_codeobj__7;
 static PyObject *__pyx_codeobj__9;
 
-/* "jsonobject/jsonobject/api.pyx":27
+/* "jsonobject/jsonobject/api.pyx":30
  * 
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
  *     def __getstate__(self):             # <<<<<<<<<<<<<<
@@ -1207,7 +1215,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject___getstate
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__getstate__", 0);
 
-  /* "jsonobject/jsonobject/api.pyx":28
+  /* "jsonobject/jsonobject/api.pyx":31
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
  *     def __getstate__(self):
  *         return self.to_json()             # <<<<<<<<<<<<<<
@@ -1215,7 +1223,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject___getstate
  *     def __setstate__(self, dct):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_to_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_to_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1228,10 +1236,10 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject___getstate
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -1239,7 +1247,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject___getstate
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jsonobject/jsonobject/api.pyx":27
+  /* "jsonobject/jsonobject/api.pyx":30
  * 
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
  *     def __getstate__(self):             # <<<<<<<<<<<<<<
@@ -1260,7 +1268,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject___getstate
   return __pyx_r;
 }
 
-/* "jsonobject/jsonobject/api.pyx":30
+/* "jsonobject/jsonobject/api.pyx":33
  *         return self.to_json()
  * 
  *     def __setstate__(self, dct):             # <<<<<<<<<<<<<<
@@ -1300,11 +1308,11 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_3api_10JsonObject_3__setstat
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_dct)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__setstate__", 1, 2, 2, 1); __PYX_ERR(0, 30, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__setstate__", 1, 2, 2, 1); __PYX_ERR(0, 33, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__setstate__") < 0)) __PYX_ERR(0, 30, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__setstate__") < 0)) __PYX_ERR(0, 33, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1317,7 +1325,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_3api_10JsonObject_3__setstat
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__setstate__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 30, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__setstate__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 33, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jsonobject.jsonobject.api.JsonObject.__setstate__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1339,14 +1347,14 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject_2__setstat
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__setstate__", 0);
 
-  /* "jsonobject/jsonobject/api.pyx":31
+  /* "jsonobject/jsonobject/api.pyx":34
  * 
  *     def __setstate__(self, dct):
  *         self.__init__(dct)             # <<<<<<<<<<<<<<
  * 
  *     class Meta(object):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1359,13 +1367,13 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject_2__setstat
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_dct); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_dct); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_dct};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -1373,19 +1381,19 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject_2__setstat
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_dct};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 34, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_dct);
       __Pyx_GIVEREF(__pyx_v_dct);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_dct);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -1393,7 +1401,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_3api_10JsonObject_2__setstat
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":30
+  /* "jsonobject/jsonobject/api.pyx":33
  *         return self.to_json()
  * 
  *     def __setstate__(self, dct):             # <<<<<<<<<<<<<<
@@ -1464,11 +1472,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_DictProperty, __pyx_k_DictProperty, sizeof(__pyx_k_DictProperty), 0, 0, 1, 1},
   {&__pyx_n_s_FloatProperty, __pyx_k_FloatProperty, sizeof(__pyx_k_FloatProperty), 0, 0, 1, 1},
   {&__pyx_n_s_IntegerProperty, __pyx_k_IntegerProperty, sizeof(__pyx_k_IntegerProperty), 0, 0, 1, 1},
+  {&__pyx_n_s_JsonArray, __pyx_k_JsonArray, sizeof(__pyx_k_JsonArray), 0, 0, 1, 1},
+  {&__pyx_n_s_JsonDict, __pyx_k_JsonDict, sizeof(__pyx_k_JsonDict), 0, 0, 1, 1},
   {&__pyx_n_s_JsonObject, __pyx_k_JsonObject, sizeof(__pyx_k_JsonObject), 0, 0, 1, 1},
   {&__pyx_n_s_JsonObjectBase, __pyx_k_JsonObjectBase, sizeof(__pyx_k_JsonObjectBase), 0, 0, 1, 1},
   {&__pyx_n_s_JsonObject_Meta, __pyx_k_JsonObject_Meta, sizeof(__pyx_k_JsonObject_Meta), 0, 0, 1, 1},
   {&__pyx_n_s_JsonObject___getstate, __pyx_k_JsonObject___getstate, sizeof(__pyx_k_JsonObject___getstate), 0, 0, 1, 1},
   {&__pyx_n_s_JsonObject___setstate, __pyx_k_JsonObject___setstate, sizeof(__pyx_k_JsonObject___setstate), 0, 0, 1, 1},
+  {&__pyx_n_s_JsonSet, __pyx_k_JsonSet, sizeof(__pyx_k_JsonSet), 0, 0, 1, 1},
   {&__pyx_n_s_LimitedDictInterfaceMixin, __pyx_k_LimitedDictInterfaceMixin, sizeof(__pyx_k_LimitedDictInterfaceMixin), 0, 0, 1, 1},
   {&__pyx_n_s_ListProperty, __pyx_k_ListProperty, sizeof(__pyx_k_ListProperty), 0, 0, 1, 1},
   {&__pyx_n_s_Meta, __pyx_k_Meta, sizeof(__pyx_k_Meta), 0, 0, 1, 1},
@@ -1478,6 +1489,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_TimeProperty, __pyx_k_TimeProperty, sizeof(__pyx_k_TimeProperty), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_compile, __pyx_k_compile, sizeof(__pyx_k_compile), 0, 0, 1, 1},
+  {&__pyx_n_s_containers, __pyx_k_containers, sizeof(__pyx_k_containers), 0, 0, 1, 1},
   {&__pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9, __pyx_k_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9, sizeof(__pyx_k_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9), 0, 0, 1, 0},
   {&__pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9_2, __pyx_k_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9_2, sizeof(__pyx_k_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9_2), 0, 0, 1, 0},
   {&__pyx_kp_s_d_d, __pyx_k_d_d, sizeof(__pyx_k_d_d), 0, 0, 1, 0},
@@ -1516,7 +1528,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 36, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1526,82 +1538,82 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "jsonobject/jsonobject/api.pyx":12
+  /* "jsonobject/jsonobject/api.pyx":14
  * 
  * 
  * re_date = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')             # <<<<<<<<<<<<<<
  * re_time = re.compile(
  *     r'^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?$')
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "jsonobject/jsonobject/api.pyx":13
+  /* "jsonobject/jsonobject/api.pyx":15
  * 
  * re_date = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
  * re_time = re.compile(             # <<<<<<<<<<<<<<
  *     r'^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?$')
  * re_datetime = re.compile(
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_01_d_2_0_3_D_0_5_d_D_0_5_d_D_d); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_01_d_2_0_3_D_0_5_d_D_0_5_d_D_d); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "jsonobject/jsonobject/api.pyx":15
+  /* "jsonobject/jsonobject/api.pyx":17
  * re_time = re.compile(
  *     r'^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?$')
  * re_datetime = re.compile(             # <<<<<<<<<<<<<<
  *     r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])'
  *     r'(\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?'
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9_2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_d_4_D_0_1_9_1_0_2_D_12_d_0_1_9_2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "jsonobject/jsonobject/api.pyx":20
+  /* "jsonobject/jsonobject/api.pyx":22
  *     r'([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$'
  * )
- * re_decimal = re.compile('^(\d+)\.(\d+)$')             # <<<<<<<<<<<<<<
+ * re_decimal = re.compile(r'^(\d+)\.(\d+)$')             # <<<<<<<<<<<<<<
+ * 
  * if six.PY3:
- *     unicode = str
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_d_d); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_d_d); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "jsonobject/jsonobject/api.pyx":27
+  /* "jsonobject/jsonobject/api.pyx":30
  * 
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
  *     def __getstate__(self):             # <<<<<<<<<<<<<<
  *         return self.to_json()
  * 
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_api_pyx, __pyx_n_s_getstate, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_api_pyx, __pyx_n_s_getstate, 30, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 30, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/api.pyx":30
+  /* "jsonobject/jsonobject/api.pyx":33
  *         return self.to_json()
  * 
  *     def __setstate__(self, dct):             # <<<<<<<<<<<<<<
  *         self.__init__(dct)
  * 
  */
-  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_dct); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_dct); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_api_pyx, __pyx_n_s_setstate, 30, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_api_pyx, __pyx_n_s_setstate, 33, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 33, __pyx_L1_error)
 
-  /* "jsonobject/jsonobject/api.pyx":33
+  /* "jsonobject/jsonobject/api.pyx":36
  *         self.__init__(dct)
  * 
  *     class Meta(object):             # <<<<<<<<<<<<<<
  *         properties = {
  *             decimal.Decimal: properties.DecimalProperty,
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
   __Pyx_RefNannyFinishContext();
@@ -1774,13 +1786,62 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "jsonobject/jsonobject/api.pyx":2
+  /* "jsonobject/jsonobject/api.pyx":3
  * from __future__ import absolute_import
- * from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin             # <<<<<<<<<<<<<<
+ * 
+ * import datetime             # <<<<<<<<<<<<<<
+ * import decimal
+ * import re
+ */
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_datetime, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_datetime, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":4
+ * 
+ * import datetime
+ * import decimal             # <<<<<<<<<<<<<<
+ * import re
+ * 
+ */
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_decimal, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decimal, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":5
+ * import datetime
+ * import decimal
+ * import re             # <<<<<<<<<<<<<<
  * 
  * import six
  */
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_re, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":7
+ * import re
+ * 
+ * import six             # <<<<<<<<<<<<<<
+ * 
+ * from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
+ */
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_six, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_six, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":9
+ * import six
+ * 
+ * from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin             # <<<<<<<<<<<<<<
+ * from . import properties
+ * from .containers import JsonArray, JsonDict, JsonSet
+ */
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_JsonObjectBase);
   __Pyx_GIVEREF(__pyx_n_s_JsonObjectBase);
@@ -1788,354 +1849,341 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   __Pyx_INCREF(__pyx_n_s_LimitedDictInterfaceMixin);
   __Pyx_GIVEREF(__pyx_n_s_LimitedDictInterfaceMixin);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_LimitedDictInterfaceMixin);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_jsonobject_base, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_jsonobject_base, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonObjectBase); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonObjectBase); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonObjectBase, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonObjectBase, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_LimitedDictInterfaceMixin); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_LimitedDictInterfaceMixin); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LimitedDictInterfaceMixin, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LimitedDictInterfaceMixin, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":4
+  /* "jsonobject/jsonobject/api.pyx":10
+ * 
  * from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
- * 
- * import six             # <<<<<<<<<<<<<<
- * import decimal
- * import datetime
- */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_six, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_six, __pyx_t_2) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "jsonobject/jsonobject/api.pyx":5
- * 
- * import six
- * import decimal             # <<<<<<<<<<<<<<
- * import datetime
- * 
- */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_decimal, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decimal, __pyx_t_2) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "jsonobject/jsonobject/api.pyx":6
- * import six
- * import decimal
- * import datetime             # <<<<<<<<<<<<<<
- * 
- * from . import properties
- */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_datetime, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 6, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_datetime, __pyx_t_2) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "jsonobject/jsonobject/api.pyx":8
- * import datetime
- * 
  * from . import properties             # <<<<<<<<<<<<<<
- * import re
+ * from .containers import JsonArray, JsonDict, JsonSet
  * 
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_properties);
   __Pyx_GIVEREF(__pyx_n_s_properties);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_properties);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_properties); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_properties, __pyx_t_2) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_properties, __pyx_t_2) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":9
- * 
+  /* "jsonobject/jsonobject/api.pyx":11
+ * from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
  * from . import properties
- * import re             # <<<<<<<<<<<<<<
+ * from .containers import JsonArray, JsonDict, JsonSet             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_re, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s_JsonArray);
+  __Pyx_GIVEREF(__pyx_n_s_JsonArray);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_JsonArray);
+  __Pyx_INCREF(__pyx_n_s_JsonDict);
+  __Pyx_GIVEREF(__pyx_n_s_JsonDict);
+  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_JsonDict);
+  __Pyx_INCREF(__pyx_n_s_JsonSet);
+  __Pyx_GIVEREF(__pyx_n_s_JsonSet);
+  PyList_SET_ITEM(__pyx_t_1, 2, __pyx_n_s_JsonSet);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_containers, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonArray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonArray, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonDict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonDict, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_JsonSet); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonSet, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":12
+  /* "jsonobject/jsonobject/api.pyx":14
  * 
  * 
  * re_date = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')             # <<<<<<<<<<<<<<
  * re_time = re.compile(
  *     r'^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?$')
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_compile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_compile); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_date, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_date, __pyx_t_2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":13
+  /* "jsonobject/jsonobject/api.pyx":15
  * 
  * re_date = re.compile(r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$')
  * re_time = re.compile(             # <<<<<<<<<<<<<<
  *     r'^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?$')
  * re_datetime = re.compile(
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_compile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_compile); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_time, __pyx_t_1) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_time, __pyx_t_2) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":15
+  /* "jsonobject/jsonobject/api.pyx":17
  * re_time = re.compile(
  *     r'^([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?$')
  * re_datetime = re.compile(             # <<<<<<<<<<<<<<
  *     r'^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])'
  *     r'(\D?([01]\d|2[0-3])\D?([0-5]\d)\D?([0-5]\d)?\D?(\d{3,6})?'
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_compile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_compile); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_datetime, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_datetime, __pyx_t_2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":20
+  /* "jsonobject/jsonobject/api.pyx":22
  *     r'([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$'
  * )
- * re_decimal = re.compile('^(\d+)\.(\d+)$')             # <<<<<<<<<<<<<<
+ * re_decimal = re.compile(r'^(\d+)\.(\d+)$')             # <<<<<<<<<<<<<<
+ * 
  * if six.PY3:
- *     unicode = str
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_compile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_compile); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_decimal, __pyx_t_1) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re_decimal, __pyx_t_2) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":21
- * )
- * re_decimal = re.compile('^(\d+)\.(\d+)$')
+  /* "jsonobject/jsonobject/api.pyx":24
+ * re_decimal = re.compile(r'^(\d+)\.(\d+)$')
+ * 
  * if six.PY3:             # <<<<<<<<<<<<<<
  *     unicode = str
  *     long = int
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_six); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_PY3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_six); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_PY3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_3) {
 
-    /* "jsonobject/jsonobject/api.pyx":22
- * re_decimal = re.compile('^(\d+)\.(\d+)$')
+    /* "jsonobject/jsonobject/api.pyx":25
+ * 
  * if six.PY3:
  *     unicode = str             # <<<<<<<<<<<<<<
  *     long = int
  * 
  */
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_unicode, ((PyObject *)(&PyString_Type))) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_unicode, ((PyObject *)(&PyString_Type))) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/api.pyx":23
+    /* "jsonobject/jsonobject/api.pyx":26
  * if six.PY3:
  *     unicode = str
  *     long = int             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_long, ((PyObject *)(&PyInt_Type))) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_long, ((PyObject *)(&PyInt_Type))) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
 
-    /* "jsonobject/jsonobject/api.pyx":21
- * )
- * re_decimal = re.compile('^(\d+)\.(\d+)$')
+    /* "jsonobject/jsonobject/api.pyx":24
+ * re_decimal = re.compile(r'^(\d+)\.(\d+)$')
+ * 
  * if six.PY3:             # <<<<<<<<<<<<<<
  *     unicode = str
  *     long = int
  */
   }
 
-  /* "jsonobject/jsonobject/api.pyx":26
+  /* "jsonobject/jsonobject/api.pyx":29
  * 
  * 
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):             # <<<<<<<<<<<<<<
  *     def __getstate__(self):
  *         return self.to_json()
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonObjectBase); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_LimitedDictInterfaceMixin); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonObjectBase); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_LimitedDictInterfaceMixin); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_1);
-  __pyx_t_2 = 0;
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_2);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_4, __pyx_n_s_JsonObject, __pyx_n_s_JsonObject, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_api, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_4, __pyx_n_s_JsonObject, __pyx_n_s_JsonObject, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_api, (PyObject *) NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
 
-  /* "jsonobject/jsonobject/api.pyx":27
+  /* "jsonobject/jsonobject/api.pyx":30
  * 
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
  *     def __getstate__(self):             # <<<<<<<<<<<<<<
  *         return self.to_json()
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_3api_10JsonObject_1__getstate__, 0, __pyx_n_s_JsonObject___getstate, NULL, __pyx_n_s_jsonobject_jsonobject_api, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_3api_10JsonObject_1__getstate__, 0, __pyx_n_s_JsonObject___getstate, NULL, __pyx_n_s_jsonobject_jsonobject_api, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_getstate, __pyx_t_5) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_getstate, __pyx_t_5) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":30
+  /* "jsonobject/jsonobject/api.pyx":33
  *         return self.to_json()
  * 
  *     def __setstate__(self, dct):             # <<<<<<<<<<<<<<
  *         self.__init__(dct)
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_3api_10JsonObject_3__setstate__, 0, __pyx_n_s_JsonObject___setstate, NULL, __pyx_n_s_jsonobject_jsonobject_api, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_3api_10JsonObject_3__setstate__, 0, __pyx_n_s_JsonObject___setstate, NULL, __pyx_n_s_jsonobject_jsonobject_api, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_setstate, __pyx_t_5) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_setstate, __pyx_t_5) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":33
+  /* "jsonobject/jsonobject/api.pyx":36
  *         self.__init__(dct)
  * 
  *     class Meta(object):             # <<<<<<<<<<<<<<
  *         properties = {
  *             decimal.Decimal: properties.DecimalProperty,
  */
-  __pyx_t_5 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_Py3MetaclassPrepare(__pyx_t_5, __pyx_tuple__10, __pyx_n_s_Meta, __pyx_n_s_JsonObject_Meta, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_api, (PyObject *) NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_Py3MetaclassPrepare(__pyx_t_5, __pyx_tuple__10, __pyx_n_s_Meta, __pyx_n_s_JsonObject_Meta, (PyObject *) NULL, __pyx_n_s_jsonobject_jsonobject_api, (PyObject *) NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
 
-  /* "jsonobject/jsonobject/api.pyx":35
+  /* "jsonobject/jsonobject/api.pyx":38
  *     class Meta(object):
  *         properties = {
  *             decimal.Decimal: properties.DecimalProperty,             # <<<<<<<<<<<<<<
  *             datetime.datetime: properties.DateTimeProperty,
  *             datetime.date: properties.DateProperty,
  */
-  __pyx_t_7 = __Pyx_PyDict_NewPresized(13); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(16); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DecimalProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DecimalProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":36
+  /* "jsonobject/jsonobject/api.pyx":39
  *         properties = {
  *             decimal.Decimal: properties.DecimalProperty,
  *             datetime.datetime: properties.DateTimeProperty,             # <<<<<<<<<<<<<<
  *             datetime.date: properties.DateProperty,
  *             datetime.time: properties.TimeProperty,
  */
-  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_datetime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_datetime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_DateTimeProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_DateTimeProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_8) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_8) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":37
+  /* "jsonobject/jsonobject/api.pyx":40
  *             decimal.Decimal: properties.DecimalProperty,
  *             datetime.datetime: properties.DateTimeProperty,
  *             datetime.date: properties.DateProperty,             # <<<<<<<<<<<<<<
  *             datetime.time: properties.TimeProperty,
  *             str: properties.StringProperty,
  */
-  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_date); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_date); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DateProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DateProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":38
+  /* "jsonobject/jsonobject/api.pyx":41
  *             datetime.datetime: properties.DateTimeProperty,
  *             datetime.date: properties.DateProperty,
  *             datetime.time: properties.TimeProperty,             # <<<<<<<<<<<<<<
  *             str: properties.StringProperty,
  *             unicode: properties.StringProperty,
  */
-  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_time); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_time); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_TimeProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_TimeProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_8) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_8) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":39
+  /* "jsonobject/jsonobject/api.pyx":42
  *             datetime.date: properties.DateProperty,
  *             datetime.time: properties.TimeProperty,
  *             str: properties.StringProperty,             # <<<<<<<<<<<<<<
@@ -2143,34 +2191,34 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
  *             bool: properties.BooleanProperty,
  */
   __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_StringProperty); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_StringProperty); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyString_Type)), __pyx_t_9) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyString_Type)), __pyx_t_9) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":40
+  /* "jsonobject/jsonobject/api.pyx":43
  *             datetime.time: properties.TimeProperty,
  *             str: properties.StringProperty,
  *             unicode: properties.StringProperty,             # <<<<<<<<<<<<<<
  *             bool: properties.BooleanProperty,
  *             int: properties.IntegerProperty,
  */
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_StringProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_StringProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":41
+  /* "jsonobject/jsonobject/api.pyx":44
  *             str: properties.StringProperty,
  *             unicode: properties.StringProperty,
  *             bool: properties.BooleanProperty,             # <<<<<<<<<<<<<<
@@ -2178,15 +2226,15 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
  *             long: properties.IntegerProperty,
  */
   __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 41, __pyx_L1_error)
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_BooleanProperty); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_BooleanProperty); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject*)&PyBool_Type), __pyx_t_9) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject*)&PyBool_Type), __pyx_t_9) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":42
+  /* "jsonobject/jsonobject/api.pyx":45
  *             unicode: properties.StringProperty,
  *             bool: properties.BooleanProperty,
  *             int: properties.IntegerProperty,             # <<<<<<<<<<<<<<
@@ -2194,34 +2242,34 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
  *             float: properties.FloatProperty,
  */
   __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_IntegerProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_IntegerProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyInt_Type)), __pyx_t_10) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyInt_Type)), __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":43
+  /* "jsonobject/jsonobject/api.pyx":46
  *             bool: properties.BooleanProperty,
  *             int: properties.IntegerProperty,
  *             long: properties.IntegerProperty,             # <<<<<<<<<<<<<<
  *             float: properties.FloatProperty,
  *             list: properties.ListProperty,
  */
-  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_long); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_long); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_IntegerProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_IntegerProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_t_10, __pyx_t_8) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_10, __pyx_t_8) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":44
+  /* "jsonobject/jsonobject/api.pyx":47
  *             int: properties.IntegerProperty,
  *             long: properties.IntegerProperty,
  *             float: properties.FloatProperty,             # <<<<<<<<<<<<<<
@@ -2229,15 +2277,15 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
  *             dict: properties.DictProperty,
  */
   __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_FloatProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_FloatProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyFloat_Type)), __pyx_t_10) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyFloat_Type)), __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":45
+  /* "jsonobject/jsonobject/api.pyx":48
  *             long: properties.IntegerProperty,
  *             float: properties.FloatProperty,
  *             list: properties.ListProperty,             # <<<<<<<<<<<<<<
@@ -2245,63 +2293,120 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
  *             set: properties.SetProperty,
  */
   __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_ListProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_ListProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyList_Type)), __pyx_t_8) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyList_Type)), __pyx_t_8) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":46
+  /* "jsonobject/jsonobject/api.pyx":49
  *             float: properties.FloatProperty,
  *             list: properties.ListProperty,
  *             dict: properties.DictProperty,             # <<<<<<<<<<<<<<
  *             set: properties.SetProperty,
- *         }
+ *             JsonArray: properties.ListProperty,
  */
   __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DictProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DictProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyDict_Type)), __pyx_t_10) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PyDict_Type)), __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":47
+  /* "jsonobject/jsonobject/api.pyx":50
  *             list: properties.ListProperty,
  *             dict: properties.DictProperty,
  *             set: properties.SetProperty,             # <<<<<<<<<<<<<<
+ *             JsonArray: properties.ListProperty,
+ *             JsonDict: properties.DictProperty,
+ */
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_SetProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PySet_Type)), __pyx_t_8) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":51
+ *             dict: properties.DictProperty,
+ *             set: properties.SetProperty,
+ *             JsonArray: properties.ListProperty,             # <<<<<<<<<<<<<<
+ *             JsonDict: properties.DictProperty,
+ *             JsonSet: properties.SetProperty,
+ */
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonArray); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
+  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_ListProperty); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_8, __pyx_t_9) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":52
+ *             set: properties.SetProperty,
+ *             JsonArray: properties.ListProperty,
+ *             JsonDict: properties.DictProperty,             # <<<<<<<<<<<<<<
+ *             JsonSet: properties.SetProperty,
+ *         }
+ */
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonDict); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_DictProperty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_9, __pyx_t_10) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+
+  /* "jsonobject/jsonobject/api.pyx":53
+ *             JsonArray: properties.ListProperty,
+ *             JsonDict: properties.DictProperty,
+ *             JsonSet: properties.SetProperty,             # <<<<<<<<<<<<<<
  *         }
  *         string_conversions = (
  */
-  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
-  if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_JsonSet); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_SetProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_properties);
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_SetProperty); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  if (PyDict_SetItem(__pyx_t_7, __pyx_t_10, __pyx_t_8) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (PyDict_SetItem(__pyx_t_7, ((PyObject *)(&PySet_Type)), __pyx_t_8) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyObject_SetItem(__pyx_t_6, __pyx_n_s_properties, __pyx_t_7) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_6, __pyx_n_s_properties, __pyx_t_7) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":50
+  /* "jsonobject/jsonobject/api.pyx":56
  *         }
  *         string_conversions = (
  *             (re_date, datetime.date),             # <<<<<<<<<<<<<<
  *             (re_time, datetime.time),
  *             (re_datetime, datetime.datetime),
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_date); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_date); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_date); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_date); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7);
@@ -2310,21 +2415,21 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   __pyx_t_7 = 0;
   __pyx_t_10 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":51
+  /* "jsonobject/jsonobject/api.pyx":57
  *         string_conversions = (
  *             (re_date, datetime.date),
  *             (re_time, datetime.time),             # <<<<<<<<<<<<<<
  *             (re_datetime, datetime.datetime),
  *             (re_decimal, decimal.Decimal),
  */
-  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_time); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_time); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_time); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_time); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_10);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_10);
@@ -2333,21 +2438,21 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   __pyx_t_10 = 0;
   __pyx_t_9 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":52
+  /* "jsonobject/jsonobject/api.pyx":58
  *             (re_date, datetime.date),
  *             (re_time, datetime.time),
  *             (re_datetime, datetime.datetime),             # <<<<<<<<<<<<<<
  *             (re_decimal, decimal.Decimal),
  *         )
  */
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_datetime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_datetime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_datetime); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_datetime); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_datetime); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_9);
   PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9);
@@ -2356,20 +2461,20 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   __pyx_t_9 = 0;
   __pyx_t_11 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":53
+  /* "jsonobject/jsonobject/api.pyx":59
  *             (re_time, datetime.time),
  *             (re_datetime, datetime.datetime),
  *             (re_decimal, decimal.Decimal),             # <<<<<<<<<<<<<<
  *         )
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_decimal); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_re_decimal); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_11);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_11);
@@ -2378,14 +2483,14 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   __pyx_t_11 = 0;
   __pyx_t_12 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":50
+  /* "jsonobject/jsonobject/api.pyx":56
  *         }
  *         string_conversions = (
  *             (re_date, datetime.date),             # <<<<<<<<<<<<<<
  *             (re_time, datetime.time),
  *             (re_datetime, datetime.datetime),
  */
-  __pyx_t_12 = PyTuple_New(4); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_12 = PyTuple_New(4); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_8);
@@ -2399,42 +2504,42 @@ static int __pyx_pymod_exec_api(PyObject *__pyx_pyinit_module)
   __pyx_t_7 = 0;
   __pyx_t_10 = 0;
   __pyx_t_9 = 0;
-  if (PyObject_SetItem(__pyx_t_6, __pyx_n_s_string_conversions, __pyx_t_12) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_6, __pyx_n_s_string_conversions, __pyx_t_12) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":33
+  /* "jsonobject/jsonobject/api.pyx":36
  *         self.__init__(dct)
  * 
  *     class Meta(object):             # <<<<<<<<<<<<<<
  *         properties = {
  *             decimal.Decimal: properties.DecimalProperty,
  */
-  __pyx_t_12 = __Pyx_Py3ClassCreate(__pyx_t_5, __pyx_n_s_Meta, __pyx_tuple__10, __pyx_t_6, NULL, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_Py3ClassCreate(__pyx_t_5, __pyx_n_s_Meta, __pyx_tuple__10, __pyx_t_6, NULL, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_Meta, __pyx_t_12) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_Meta, __pyx_t_12) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "jsonobject/jsonobject/api.pyx":26
+  /* "jsonobject/jsonobject/api.pyx":29
  * 
  * 
  * class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):             # <<<<<<<<<<<<<<
  *     def __getstate__(self):
  *         return self.to_json()
  */
-  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_JsonObject, __pyx_t_4, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_JsonObject, __pyx_t_4, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonObject, __pyx_t_5) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_JsonObject, __pyx_t_5) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "jsonobject/jsonobject/api.pyx":1
  * from __future__ import absolute_import             # <<<<<<<<<<<<<<
- * from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
  * 
+ * import datetime
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
