@@ -1,4 +1,8 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 import random
+import six
+from six.moves import range
 
 
 def generate_object_type(jo=None):
@@ -7,10 +11,10 @@ def generate_object_type(jo=None):
     or couchdbkit_shim for comparison with couchdbkit
     """
     if jo is None:
-        import jsonobject as jo
+        from . import jsonobject as jo
     WORDS = 'dog cat elephant river candle stripe pin plum'.split()
     leaf_types = {
-        jo.StringProperty: unicode,
+        jo.StringProperty: six.text_type,
         jo.IntegerProperty: int,
     }
     used_phrases = set()
@@ -25,7 +29,7 @@ def generate_object_type(jo=None):
 
     def generate_class_name(words=None):
         words = words or get_phrase()
-        return ''.join(map(lambda s: s.title(), words))
+        return ''.join([s.title() for s in words])
 
     def generate_property_name(words=None):
         words = words or get_phrase()
@@ -39,7 +43,7 @@ def generate_object_type(jo=None):
 
     def generate_object_type(words=None):
         class_name = generate_class_name(words)
-        n_properties = random.choice(range(5))
+        n_properties = random.choice(list(range(5)))
         dct = {}
         for _ in range(n_properties):
             words = get_phrase()
@@ -65,7 +69,7 @@ def generate_object_type(jo=None):
         if property_type is jo.ObjectProperty:
             return generate_object_type(words)
         else:
-            return random.choice(leaf_types.values())
+            return random.choice(list(leaf_types.values()))
 
     return generate_object_type(), object_types
 

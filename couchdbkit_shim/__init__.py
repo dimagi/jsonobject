@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+import six
 __all__ = ['StringProperty', 'IntegerProperty', 'ObjectProperty', 'JsonObject', 'ListProperty']
 
 from couchdbkit import (
@@ -15,7 +18,7 @@ def ListProperty(obj_type):
     elif obj_type is int:
         from couchdbkit import ListProperty
         return ListProperty
-    elif issubclass(obj_type, basestring):
+    elif issubclass(obj_type, six.string_types):
         from couchdbkit import StringListProperty
         return StringListProperty
     else:
