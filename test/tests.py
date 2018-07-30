@@ -141,12 +141,20 @@ class JsonObjectTestCase(unittest2.TestCase):
         for error_type in (AttributeError, WrappingAttributeError):
             with self.assertRaises(error_type) as cm:
                 Person.wrap({'full_name': 'Danny Roberts'})
-            self.assertEqual(
-                six.text_type(cm.exception),
-                "can't set attribute corresponding to "
-                "'full_name' on a <class 'test.tests.Person'> "
-                "while wrapping {'full_name': 'Danny Roberts'}"
-            )
+            if six.PY2:
+                self.assertEqual(
+                    six.text_type(cm.exception),
+                    "can't set attribute corresponding to "
+                    "u'full_name' on a <class 'test.tests.Person'> "
+                    "while wrapping {u'full_name': u'Danny Roberts'}"
+                )
+            else:
+                self.assertEqual(
+                    six.text_type(cm.exception),
+                    "can't set attribute corresponding to "
+                    "'full_name' on a <class 'test.tests.Person'> "
+                    "while wrapping {'full_name': 'Danny Roberts'}"
+                )
 
     def test_pickle(self):
         import pickle

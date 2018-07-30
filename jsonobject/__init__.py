@@ -4,11 +4,21 @@ from .base import JsonObjectMeta
 from .containers import JsonArray
 from .properties import *
 from .api import JsonObject
+import six
 
-__all__ = [
-    'IntegerProperty', 'FloatProperty', 'DecimalProperty',
-    'StringProperty', 'BooleanProperty',
-    'DateProperty', 'DateTimeProperty', 'TimeProperty',
-    'ObjectProperty', 'ListProperty', 'DictProperty',
-    'JsonObject', 'JsonArray',
-]
+if six.PY3:
+    __all__ = [
+        'IntegerProperty', 'FloatProperty', 'DecimalProperty',
+        'StringProperty', 'BooleanProperty',
+        'DateProperty', 'DateTimeProperty', 'TimeProperty',
+        'ObjectProperty', 'ListProperty', 'DictProperty',
+        'JsonObject', 'JsonArray',
+    ]
+else:
+    __all__ = [
+        b'IntegerProperty', b'FloatProperty', b'DecimalProperty',
+        b'StringProperty', b'BooleanProperty',
+        b'DateProperty', b'DateTimeProperty', b'TimeProperty',
+        b'ObjectProperty', b'ListProperty', b'DictProperty',
+        b'JsonObject', b'JsonArray',
+    ]
