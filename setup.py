@@ -15,14 +15,14 @@ try:
 except ImportError:
     USE_CYTHON = False
 
-ext = '.pyx' if USE_CYTHON else '.c'
+ext = b'.pyx' if USE_CYTHON else b'.c'
 extensions = [
-    Extension('jsonobject.api', ["jsonobject/api" + ext],),
-    Extension('jsonobject.base', ["jsonobject/base" + ext],),
-    Extension('jsonobject.base_properties', ["jsonobject/base_properties" + ext],),
-    Extension('jsonobject.containers', ["jsonobject/containers" + ext],),
-    Extension('jsonobject.properties', ["jsonobject/properties" + ext],),
-    Extension('jsonobject.utils', ["jsonobject/utils" + ext],),
+    Extension(b'jsonobject.api', [b"jsonobject/api" + ext],),
+    Extension(b'jsonobject.base', [b"jsonobject/base" + ext],),
+    Extension(b'jsonobject.base_properties', [b"jsonobject/base_properties" + ext],),
+    Extension(b'jsonobject.containers', [b"jsonobject/containers" + ext],),
+    Extension(b'jsonobject.properties', [b"jsonobject/properties" + ext],),
+    Extension(b'jsonobject.utils', [b"jsonobject/utils" + ext],),
 ]
 
 CYTHON_REQUIRES = ['cython==0.27.3']
