@@ -64,5 +64,5 @@ setup(
     install_requires=['six'],
     tests_require=['unittest2'],
     ext_modules=extensions,
-    test_suite='test',
+    test_suite='test' if six.PY3 else b'test',
 )
