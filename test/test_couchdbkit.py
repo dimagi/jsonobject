@@ -1,8 +1,10 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
 import json
 import os
 from unittest2 import TestCase
 from .couchdbkit.application import Application
+from io import open
 
 
 class CouchdbkitTestCase(TestCase):
