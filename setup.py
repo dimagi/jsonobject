@@ -4,7 +4,6 @@ from sys import argv
 
 from setuptools import setup
 import io
-import six
 
 from setuptools.extension import Extension
 
