@@ -197,7 +197,7 @@ class JsonObjectBase(object):
                                'JsonObject must wrap a dict or None')
         self._wrapped = {}
 
-        for key, value in self._obj.items():
+        for key, value in list(self._obj.items()):
             try:
                 self.set_raw_value(key, value)
             except AttributeError:
