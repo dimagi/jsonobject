@@ -32,7 +32,15 @@ class JsonArray(list):
         del self._obj[i]
 
     def __setitem__(self, i, wrapped):
-        wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        if isinstance(i, slice):
+            wrapped = []
+            unwrapped = []
+            for _wrapped in wrapped:
+                _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
+                wrapped.append(_wrapped)
+                unwrapped.append(_unwrapped)
+        else:
+            wrapped, unwrapped = self._wrapper.unwrap(wrapped)
         self._obj[i] = unwrapped
         super(JsonArray, self).__setitem__(i, wrapped)
 
@@ -61,7 +69,7 @@ class JsonArray(list):
         return super(JsonArray, self).pop(index)
 
     def sort(self, cmp=None, key=None, reverse=False):
-        zipped = zip(self, self._obj)
+        zipped = list(zip(self, self._obj))
         if key:
             new_key = lambda pair: key(pair[0])
             zipped.sort(key=new_key, reverse=reverse)
@@ -71,7 +79,7 @@ class JsonArray(list):
         else:
             zipped.sort(reverse=reverse)
 
-        wrapped_list, unwrapped_list = zip(*zipped)
+        wrapped_list, unwrapped_list = list(zip(*zipped))
         while self:
             self.pop()
         super(JsonArray, self).extend(wrapped_list)
