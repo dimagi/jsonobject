@@ -33,16 +33,16 @@ class JsonArray(list):
 
     def __setitem__(self, i, wrapped):
         if isinstance(i, slice):
-            wrapped = []
+            new_wrapped = []
             unwrapped = []
             for _wrapped in wrapped:
                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
                 wrapped.append(_wrapped)
                 unwrapped.append(_unwrapped)
         else:
-            wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+            new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
         self._obj[i] = unwrapped
-        super(JsonArray, self).__setitem__(i, wrapped)
+        super(JsonArray, self).__setitem__(i, new_wrapped)
 
     def extend(self, wrapped_list):
         if wrapped_list:
