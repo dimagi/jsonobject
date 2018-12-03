@@ -1308,6 +1308,7 @@ static const char __pyx_k_SimpleDict[] = "SimpleDict";
 static const char __pyx_k_check_type[] = "check_type";
 static const char __pyx_k_JsonSet_add[] = "JsonSet.add";
 static const char __pyx_k_JsonSet_pop[] = "JsonSet.pop";
+static const char __pyx_k_new_wrapped[] = "new_wrapped";
 static const char __pyx_k_type_config[] = "type_config";
 static const char __pyx_k_unwrapped_2[] = "_unwrapped";
 static const char __pyx_k_union_update[] = "union_update";
@@ -1456,6 +1457,7 @@ static PyObject *__pyx_n_s_metaclass;
 static PyObject *__pyx_n_s_module;
 static PyObject *__pyx_n_s_new_cmp;
 static PyObject *__pyx_n_s_new_key;
+static PyObject *__pyx_n_s_new_wrapped;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_obj_2;
 static PyObject *__pyx_n_s_other;
@@ -2720,7 +2722,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_6__d
  * 
  *     def __setitem__(self, i, wrapped):             # <<<<<<<<<<<<<<
  *         if isinstance(i, slice):
- *             wrapped = []
+ *             new_wrapped = []
  */
 
 /* Python wrapper */
@@ -2797,6 +2799,7 @@ static PyObject *__pyx_pw_10jsonobject_10jsonobject_10containers_9JsonArray_9__s
 }
 
 static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__setitem__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_i, PyObject *__pyx_v_wrapped) {
+  PyObject *__pyx_v_new_wrapped = NULL;
   PyObject *__pyx_v_unwrapped = NULL;
   PyObject *__pyx_v__wrapped = NULL;
   PyObject *__pyx_v__unwrapped = NULL;
@@ -2815,13 +2818,12 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
   int __pyx_t_11;
   int __pyx_t_12;
   __Pyx_RefNannySetupContext("__setitem__", 0);
-  __Pyx_INCREF(__pyx_v_wrapped);
 
   /* "jsonobject/jsonobject/containers.pyx":35
  * 
  *     def __setitem__(self, i, wrapped):
  *         if isinstance(i, slice):             # <<<<<<<<<<<<<<
- *             wrapped = []
+ *             new_wrapped = []
  *             unwrapped = []
  */
   __pyx_t_1 = PySlice_Check(__pyx_v_i); 
@@ -2831,18 +2833,18 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
     /* "jsonobject/jsonobject/containers.pyx":36
  *     def __setitem__(self, i, wrapped):
  *         if isinstance(i, slice):
- *             wrapped = []             # <<<<<<<<<<<<<<
+ *             new_wrapped = []             # <<<<<<<<<<<<<<
  *             unwrapped = []
  *             for _wrapped in wrapped:
  */
     __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF_SET(__pyx_v_wrapped, __pyx_t_3);
+    __pyx_v_new_wrapped = __pyx_t_3;
     __pyx_t_3 = 0;
 
     /* "jsonobject/jsonobject/containers.pyx":37
  *         if isinstance(i, slice):
- *             wrapped = []
+ *             new_wrapped = []
  *             unwrapped = []             # <<<<<<<<<<<<<<
  *             for _wrapped in wrapped:
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
@@ -2853,7 +2855,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
     __pyx_t_3 = 0;
 
     /* "jsonobject/jsonobject/containers.pyx":38
- *             wrapped = []
+ *             new_wrapped = []
  *             unwrapped = []
  *             for _wrapped in wrapped:             # <<<<<<<<<<<<<<
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
@@ -3025,12 +3027,12 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
  *                 wrapped.append(_wrapped)
  *                 unwrapped.append(_unwrapped)             # <<<<<<<<<<<<<<
  *         else:
- *             wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+ *             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
  */
       __pyx_t_11 = __Pyx_PyObject_Append(__pyx_v_unwrapped, __pyx_v__unwrapped); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 41, __pyx_L1_error)
 
       /* "jsonobject/jsonobject/containers.pyx":38
- *             wrapped = []
+ *             new_wrapped = []
  *             unwrapped = []
  *             for _wrapped in wrapped:             # <<<<<<<<<<<<<<
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
@@ -3043,7 +3045,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
  * 
  *     def __setitem__(self, i, wrapped):
  *         if isinstance(i, slice):             # <<<<<<<<<<<<<<
- *             wrapped = []
+ *             new_wrapped = []
  *             unwrapped = []
  */
     goto __pyx_L3;
@@ -3052,9 +3054,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
   /* "jsonobject/jsonobject/containers.pyx":43
  *                 unwrapped.append(_unwrapped)
  *         else:
- *             wrapped, unwrapped = self._wrapper.unwrap(wrapped)             # <<<<<<<<<<<<<<
+ *             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)             # <<<<<<<<<<<<<<
  *         self._obj[i] = unwrapped
- *         super(JsonArray, self).__setitem__(i, wrapped)
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)
  */
   /*else*/ {
     __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrapper_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 43, __pyx_L1_error)
@@ -3155,7 +3157,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
       __PYX_ERR(0, 43, __pyx_L1_error)
       __pyx_L9_unpacking_done:;
     }
-    __Pyx_DECREF_SET(__pyx_v_wrapped, __pyx_t_9);
+    __pyx_v_new_wrapped = __pyx_t_9;
     __pyx_t_9 = 0;
     __pyx_v_unwrapped = __pyx_t_8;
     __pyx_t_8 = 0;
@@ -3164,9 +3166,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
 
   /* "jsonobject/jsonobject/containers.pyx":44
  *         else:
- *             wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+ *             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
  *         self._obj[i] = unwrapped             # <<<<<<<<<<<<<<
- *         super(JsonArray, self).__setitem__(i, wrapped)
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)
  * 
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_obj); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
@@ -3175,9 +3177,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "jsonobject/jsonobject/containers.pyx":45
- *             wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+ *             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
  *         self._obj[i] = unwrapped
- *         super(JsonArray, self).__setitem__(i, wrapped)             # <<<<<<<<<<<<<<
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)             # <<<<<<<<<<<<<<
  * 
  *     def extend(self, wrapped_list):
  */
@@ -3211,7 +3213,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_9)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_i, __pyx_v_wrapped};
+    PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_i, __pyx_v_new_wrapped};
     __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_3);
@@ -3219,7 +3221,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_9)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_i, __pyx_v_wrapped};
+    PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_i, __pyx_v_new_wrapped};
     __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_3);
@@ -3234,9 +3236,9 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
     __Pyx_INCREF(__pyx_v_i);
     __Pyx_GIVEREF(__pyx_v_i);
     PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_12, __pyx_v_i);
-    __Pyx_INCREF(__pyx_v_wrapped);
-    __Pyx_GIVEREF(__pyx_v_wrapped);
-    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_12, __pyx_v_wrapped);
+    __Pyx_INCREF(__pyx_v_new_wrapped);
+    __Pyx_GIVEREF(__pyx_v_new_wrapped);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_12, __pyx_v_new_wrapped);
     __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -3249,7 +3251,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
  * 
  *     def __setitem__(self, i, wrapped):             # <<<<<<<<<<<<<<
  *         if isinstance(i, slice):
- *             wrapped = []
+ *             new_wrapped = []
  */
 
   /* function exit code */
@@ -3264,17 +3266,17 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
   __Pyx_AddTraceback("jsonobject.jsonobject.containers.JsonArray.__setitem__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_new_wrapped);
   __Pyx_XDECREF(__pyx_v_unwrapped);
   __Pyx_XDECREF(__pyx_v__wrapped);
   __Pyx_XDECREF(__pyx_v__unwrapped);
-  __Pyx_XDECREF(__pyx_v_wrapped);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* "jsonobject/jsonobject/containers.pyx":47
- *         super(JsonArray, self).__setitem__(i, wrapped)
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)
  * 
  *     def extend(self, wrapped_list):             # <<<<<<<<<<<<<<
  *         if wrapped_list:
@@ -3609,7 +3611,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_10ex
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "jsonobject/jsonobject/containers.pyx":47
- *         super(JsonArray, self).__setitem__(i, wrapped)
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)
  * 
  *     def extend(self, wrapped_list):             # <<<<<<<<<<<<<<
  *         if wrapped_list:
@@ -12323,6 +12325,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_module, __pyx_k_module, sizeof(__pyx_k_module), 0, 0, 1, 1},
   {&__pyx_n_s_new_cmp, __pyx_k_new_cmp, sizeof(__pyx_k_new_cmp), 0, 0, 1, 1},
   {&__pyx_n_s_new_key, __pyx_k_new_key, sizeof(__pyx_k_new_key), 0, 0, 1, 1},
+  {&__pyx_n_s_new_wrapped, __pyx_k_new_wrapped, sizeof(__pyx_k_new_wrapped), 0, 0, 1, 1},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_obj_2, __pyx_k_obj_2, sizeof(__pyx_k_obj_2), 0, 0, 1, 1},
   {&__pyx_n_s_other, __pyx_k_other, sizeof(__pyx_k_other), 0, 0, 1, 1},
@@ -12443,15 +12446,15 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *     def __setitem__(self, i, wrapped):             # <<<<<<<<<<<<<<
  *         if isinstance(i, slice):
- *             wrapped = []
+ *             new_wrapped = []
  */
-  __pyx_tuple__11 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_i, __pyx_n_s_wrapped, __pyx_n_s_unwrapped, __pyx_n_s_wrapped_2, __pyx_n_s_unwrapped_2); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_i, __pyx_n_s_wrapped, __pyx_n_s_new_wrapped, __pyx_n_s_unwrapped, __pyx_n_s_wrapped_2, __pyx_n_s_unwrapped_2); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_containers_pyx, __pyx_n_s_setitem, 34, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_jsonobject_containers_pyx, __pyx_n_s_setitem, 34, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 34, __pyx_L1_error)
 
   /* "jsonobject/jsonobject/containers.pyx":47
- *         super(JsonArray, self).__setitem__(i, wrapped)
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)
  * 
  *     def extend(self, wrapped_list):             # <<<<<<<<<<<<<<
  *         if wrapped_list:
@@ -13128,7 +13131,7 @@ static int __pyx_pymod_exec_containers(PyObject *__pyx_pyinit_module)
  * 
  *     def __setitem__(self, i, wrapped):             # <<<<<<<<<<<<<<
  *         if isinstance(i, slice):
- *             wrapped = []
+ *             new_wrapped = []
  */
   __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10jsonobject_10jsonobject_10containers_9JsonArray_9__setitem__, 0, __pyx_n_s_JsonArray___setitem, NULL, __pyx_n_s_jsonobject_jsonobject_containers, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -13136,7 +13139,7 @@ static int __pyx_pymod_exec_containers(PyObject *__pyx_pyinit_module)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "jsonobject/jsonobject/containers.pyx":47
- *         super(JsonArray, self).__setitem__(i, wrapped)
+ *         super(JsonArray, self).__setitem__(i, new_wrapped)
  * 
  *     def extend(self, wrapped_list):             # <<<<<<<<<<<<<<
  *         if wrapped_list:
