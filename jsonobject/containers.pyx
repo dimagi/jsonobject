@@ -32,16 +32,24 @@ class JsonArray(list):
         del self._obj[i]
 
     def __setitem__(self, i, wrapped):
+        print('__setitem__')
         if isinstance(i, slice):
+            print('A')
             new_wrapped = []
             unwrapped = []
             for _wrapped in wrapped:
+                print('B')
                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
+                print('C')
                 wrapped.append(_wrapped)
+                print('D')
                 unwrapped.append(_unwrapped)
+                print('E')
         else:
             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
+        print('F')
         self._obj[i] = unwrapped
+        print('G')
         super(JsonArray, self).__setitem__(i, new_wrapped)
 
     def extend(self, wrapped_list):
