@@ -102,7 +102,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         danny.brothers[1].first_name = 'Nick'
         self.assertEqual(danny.brothers[1].full_name, 'Nick Roberts')
 
-        brothers = [{
+        brothers_json = [{
             'first_name': 'Alex',
             'last_name': 'Roberts',
         }, {
@@ -110,14 +110,18 @@ class JsonObjectTestCase(unittest2.TestCase):
             'last_name': 'Roberts',
         }]
         with self.assertRaises(AssertionError):
-            danny.brothers = brothers
+            danny.brothers = brothers_json
 
-        brothers = list(map(FamilyMember.wrap, brothers))
+        brothers = list(map(FamilyMember.wrap, brothers_json))
         danny.brothers = brothers
 
         self.assertEqual(danny.brothers, brothers)
         self.assertTrue(isinstance(danny.brothers, JsonArray))
         self.assertEqual(danny.to_json(), data)
+
+        new_brothers = list(map(FamilyMember.wrap, brothers_json))
+        danny.brothers[2:3] = new_brothers
+        self.assertEqual(len(danny.brothers), 4)
 
         danny.features.hair = 'blond'
         self.assertEqual(danny.features.hair, 'blond')
