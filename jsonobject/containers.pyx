@@ -43,7 +43,7 @@ class JsonArray(list):
                 print('B')
                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
                 print('C')
-                wrapped.append(_wrapped)
+                new_wrapped.append(_wrapped)
                 print('D')
                 unwrapped.append(_unwrapped)
                 print('E')
