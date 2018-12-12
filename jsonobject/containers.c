@@ -3033,7 +3033,7 @@ static PyObject *__pyx_pf_10jsonobject_10containers_9JsonArray_8__setitem__(CYTH
  *                 print('B')
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)             # <<<<<<<<<<<<<<
  *                 print('C')
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  */
       __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrapper_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
@@ -3110,7 +3110,7 @@ static PyObject *__pyx_pf_10jsonobject_10containers_9JsonArray_8__setitem__(CYTH
  *                 print('B')
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
  *                 print('C')             # <<<<<<<<<<<<<<
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  *                 print('D')
  */
       if (__Pyx_PrintOne(0, __pyx_n_s_C) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
@@ -3118,15 +3118,15 @@ static PyObject *__pyx_pf_10jsonobject_10containers_9JsonArray_8__setitem__(CYTH
       /* "jsonobject/containers.pyx":46
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
  *                 print('C')
- *                 wrapped.append(_wrapped)             # <<<<<<<<<<<<<<
+ *                 new_wrapped.append(_wrapped)             # <<<<<<<<<<<<<<
  *                 print('D')
  *                 unwrapped.append(_unwrapped)
  */
-      __pyx_t_11 = __Pyx_PyObject_Append(__pyx_v_wrapped, __pyx_v__wrapped); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 46, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_Append(__pyx_v_new_wrapped, __pyx_v__wrapped); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 46, __pyx_L1_error)
 
       /* "jsonobject/containers.pyx":47
  *                 print('C')
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  *                 print('D')             # <<<<<<<<<<<<<<
  *                 unwrapped.append(_unwrapped)
  *                 print('E')
@@ -3134,7 +3134,7 @@ static PyObject *__pyx_pf_10jsonobject_10containers_9JsonArray_8__setitem__(CYTH
       if (__Pyx_PrintOne(0, __pyx_n_s_D) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
 
       /* "jsonobject/containers.pyx":48
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  *                 print('D')
  *                 unwrapped.append(_unwrapped)             # <<<<<<<<<<<<<<
  *                 print('E')
