@@ -37,6 +37,8 @@ class JsonArray(list):
             print('A')
             new_wrapped = []
             unwrapped = []
+            print(type(wrapped))
+            print(wrapped)
             for _wrapped in wrapped:
                 print('B')
                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
