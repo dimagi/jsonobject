@@ -37,7 +37,7 @@ class JsonArray(list):
             unwrapped = []
             for _wrapped in wrapped:
                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
-                wrapped.append(_wrapped)
+                new_wrapped.append(_wrapped)
                 unwrapped.append(_unwrapped)
         else:
             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
