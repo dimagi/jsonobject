@@ -2859,7 +2859,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
  *             unwrapped = []
  *             for _wrapped in wrapped:             # <<<<<<<<<<<<<<
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  */
     if (likely(PyList_CheckExact(__pyx_v_wrapped)) || PyTuple_CheckExact(__pyx_v_wrapped)) {
       __pyx_t_3 = __pyx_v_wrapped; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
@@ -2907,7 +2907,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
  *             unwrapped = []
  *             for _wrapped in wrapped:
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)             # <<<<<<<<<<<<<<
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  *                 unwrapped.append(_unwrapped)
  */
       __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_wrapper_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 39, __pyx_L1_error)
@@ -3016,15 +3016,15 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
       /* "jsonobject/jsonobject/containers.pyx":40
  *             for _wrapped in wrapped:
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
- *                 wrapped.append(_wrapped)             # <<<<<<<<<<<<<<
+ *                 new_wrapped.append(_wrapped)             # <<<<<<<<<<<<<<
  *                 unwrapped.append(_unwrapped)
  *         else:
  */
-      __pyx_t_11 = __Pyx_PyObject_Append(__pyx_v_wrapped, __pyx_v__wrapped); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 40, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_Append(__pyx_v_new_wrapped, __pyx_v__wrapped); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 40, __pyx_L1_error)
 
       /* "jsonobject/jsonobject/containers.pyx":41
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  *                 unwrapped.append(_unwrapped)             # <<<<<<<<<<<<<<
  *         else:
  *             new_wrapped, unwrapped = self._wrapper.unwrap(wrapped)
@@ -3036,7 +3036,7 @@ static PyObject *__pyx_pf_10jsonobject_10jsonobject_10containers_9JsonArray_8__s
  *             unwrapped = []
  *             for _wrapped in wrapped:             # <<<<<<<<<<<<<<
  *                 _wrapped, _unwrapped = self._wrapper.unwrap(_wrapped)
- *                 wrapped.append(_wrapped)
+ *                 new_wrapped.append(_wrapped)
  */
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
