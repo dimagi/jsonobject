@@ -2,7 +2,7 @@
 jsonobject
 ==========
 
-.. image:: https://travis-ci.org/dimagi/jsonobject.png
+.. image:: https://travis-ci.org/dimagi/jsonobject.svg
     :target: https://travis-ci.org/dimagi/jsonobject
 
 jsonobject is a python library for handling deeply nested JSON objects
