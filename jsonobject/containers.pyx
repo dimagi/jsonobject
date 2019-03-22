@@ -114,7 +114,8 @@ class JsonArray(list):
             self.pop(i)
 
     def __iadd__(self, b):
-        self._obj = self._obj + b
+        self.extend(b)
+        return self
 
 
 class JsonDict(SimpleDict):

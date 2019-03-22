@@ -554,9 +554,11 @@ class LazyValidationTest(unittest2.TestCase):
 
         foo = Foo()
         foo.bar = [1, 2, 3]
-        self.assertEqual(foo.bar, foo.to_json()['bar'])
+        self.assertEqual(foo.bar, [1, 2, 3])
+        self.assertEqual(foo.to_json()['bar'], [1, 2, 3])
         foo.bar += [4]
-        self.assertEqual(foo.bar, foo.to_json()['bar'])
+        self.assertEqual(foo.bar, [1, 2, 3, 4])
+        self.assertEqual(foo.to_json()['bar'], [1, 2, 3, 4])
 
     def test_dict(self):
         class Bar(JsonObject):
