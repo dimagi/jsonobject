@@ -548,6 +548,16 @@ class LazyValidationTest(unittest2.TestCase):
         self.assertIsInstance(foo.bar[0], Bar)
         self.assertIsInstance(foo.to_json()['bar'][0], dict)
 
+    def test_list_plus_equals(self):
+        class Foo(JsonObject):
+            bar = ListProperty()
+
+        foo = Foo()
+        foo.bar = [1, 2, 3]
+        self.assertEqual(foo.bar, foo.to_json()['bar'])
+        foo.bar += [4]
+        self.assertEqual(foo.bar, foo.to_json()['bar'])
+
     def test_dict(self):
         class Bar(JsonObject):
             _validate_required_lazily = True

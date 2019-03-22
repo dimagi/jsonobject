@@ -113,6 +113,9 @@ class JsonArray(list):
         for _ in range(j - i):
             self.pop(i)
 
+    def __iadd__(self, b):
+        self._obj = self._obj + b
+
 
 class JsonDict(SimpleDict):
 
