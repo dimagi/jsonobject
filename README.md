@@ -461,6 +461,23 @@ Ran 4 tests in 0.153s
 OK
 ```
 
+## Running tests
+
+You must rebuild C files for the tests to pick up your changes.  Try this for iterating:
+
+```
+$ python setup.py build_ext --inplace && python setup.py test
+```
+
+
 ## Recreating C source files
 
-For any changes in the pyx files, the corresponding C files should be recompiled with `python setup.py build_ext --inplace`
+For any changes in the pyx files, the corresponding C files should be recompiled with
+
+```
+$ find jsonobject -iname '*.c' -delete
+$ find jsonobject -iname '*.so' -delete
+$ python setup.py build_ext --inplace
+```
+
+These changes should be committed independently of the non-automated changes you made.
