@@ -11,7 +11,7 @@ if six.PY3:
         'IntegerProperty', 'FloatProperty', 'DecimalProperty',
         'StringProperty', 'BooleanProperty',
         'DateProperty', 'DateTimeProperty', 'TimeProperty',
-        'ObjectProperty', 'ListProperty', 'DictProperty',
+        'ObjectProperty', 'ListProperty', 'DictProperty', 'SetProperty',
         'JsonObject', 'JsonArray',
     ]
 else:
@@ -19,6 +19,6 @@ else:
         b'IntegerProperty', b'FloatProperty', b'DecimalProperty',
         b'StringProperty', b'BooleanProperty',
         b'DateProperty', b'DateTimeProperty', b'TimeProperty',
-        b'ObjectProperty', b'ListProperty', b'DictProperty',
+        b'ObjectProperty', b'ListProperty', b'DictProperty', b'SetProperty',
         b'JsonObject', b'JsonArray',
     ]
