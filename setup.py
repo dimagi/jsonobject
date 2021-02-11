@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import print_function
-from sys import argv
 
 from setuptools import setup
 import io
@@ -40,7 +39,7 @@ with io.open('README.md', 'rt', encoding="utf-8") as readme_file:
 
 setup(
     name='jsonobject',
-    version='0.9.9',
+    version='0.9.10',
     author='Danny Roberts',
     author_email='droberts@dimagi.com',
     description='A library for dealing with JSON as python objects',
@@ -59,6 +58,9 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ),
 )
