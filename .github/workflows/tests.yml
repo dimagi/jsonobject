@@ -33,5 +33,5 @@ jobs:
         python setup.py test
     - name: Test cython files
       run: |
-        .travis/install_cython.sh
-        .travis/test_cython_files.sh
+        scripts/install_cython.sh
+        scripts/test_cython_files.sh

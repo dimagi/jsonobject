@@ -9,5 +9,5 @@ python:
 install: "pip install ."
 script:
   - "python setup.py test"
-  - "if [[ $TRAVIS_PYTHON_VERSION > 3.5 ]]; then .travis/install_cython.sh; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION > 3.5 ]]; then .travis/test_cython_files.sh; fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION > 3.5 ]]; then scripts/install_cython.sh; fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION > 3.5 ]]; then scripts/test_cython_files.sh; fi"
