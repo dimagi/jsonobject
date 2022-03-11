@@ -3,11 +3,11 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "name": "jsonobject.utils", 
+        "name": "jsonobject.utils",
         "sources": [
             "jsonobject/utils.pyx"
         ]
-    }, 
+    },
     "module_name": "jsonobject.utils"
 }
 END: Cython Metadata */
