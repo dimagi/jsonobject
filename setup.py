@@ -49,7 +49,6 @@ setup(
     packages=['jsonobject'],
     setup_requires=CYTHON_REQUIRES,
     install_requires=['six'],
-    tests_require=['unittest2'],
     ext_modules=extensions,
     test_suite='test',
     classifiers=(

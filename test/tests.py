@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import six
 from copy import deepcopy
-import unittest2
+import unittest
 from jsonobject import *
 from jsonobject.exceptions import (
     BadValueError,
@@ -68,7 +68,7 @@ class ObjectWithDictProperty(JsonObject):
     mapping = DictProperty()
 
 
-class JsonObjectTestCase(unittest2.TestCase):
+class JsonObjectTestCase(unittest.TestCase):
     def _danny_data(self):
         return {
             'first_name': 'Danny',
@@ -434,7 +434,7 @@ class JsonObjectTestCase(unittest2.TestCase):
         self.assertIsInstance(foo.bar, Bar)
 
 
-class PropertyInsideContainerTest(unittest2.TestCase):
+class PropertyInsideContainerTest(unittest.TestCase):
 
     def test_default_is_required(self):
         class Foo(JsonObject):
@@ -466,7 +466,7 @@ class PropertyInsideContainerTest(unittest2.TestCase):
             Foo(container=[None])
 
 
-class LazyValidationTest(unittest2.TestCase):
+class LazyValidationTest(unittest.TestCase):
 
     def _validate_raises(self, foo):
         with self.assertRaises(BadValueError):
@@ -577,7 +577,7 @@ class LazyValidationTest(unittest2.TestCase):
         self._validate_not_raises(foo)
 
 
-class PropertyTestCase(unittest2.TestCase):
+class PropertyTestCase(unittest.TestCase):
     def test_date(self):
         import datetime
         p = DateProperty()
@@ -755,12 +755,12 @@ class PropertyTestCase(unittest2.TestCase):
         class Foo(JsonObject):
             pass
         foo = Foo()
-        
+
         with self.assertRaises(AttributeError):
             foo.hello
 
 
-class DynamicConversionTestCase(unittest2.TestCase):
+class DynamicConversionTestCase(unittest.TestCase):
     import datetime
 
     class Foo(JsonObject):
@@ -843,7 +843,7 @@ class User(JsonObject):
     tags = ListProperty(six.text_type)
 
 
-class TestExactDateTime(unittest2.TestCase):
+class TestExactDateTime(unittest.TestCase):
     def test_exact(self):
         class DateObj(JsonObject):
             date = DateTimeProperty(exact=True)
@@ -862,7 +862,7 @@ class TestExactDateTime(unittest2.TestCase):
         self.assertEqual(len(date_obj.to_json()['date']), 27)
 
 
-class IntegerTest(unittest2.TestCase):
+class IntegerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         class Foo(JsonObject):
@@ -883,7 +883,7 @@ class IntegerTest(unittest2.TestCase):
         self.assertEqual(foo.to_json()['my_int'], 0)
 
 
-class TestReadmeExamples(unittest2.TestCase):
+class TestReadmeExamples(unittest.TestCase):
     def test(self):
         import datetime
         user1 = User(
