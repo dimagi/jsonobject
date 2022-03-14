@@ -1,0 +1,24 @@
+on:
+  schedule:
+    - cron: 0 0 * * *
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+name: Rebuild .c files with latest Cython
+jobs:
+  rebuild_c_files:
+    name: Rebuild .c files with latest Cython
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rebuild .c files with latest Cython
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            pip install cython
+            cython_version=$(pip freeze | grep -i cython | cut -d'=' -f3)
+            find jsonobject -iname '*.c' -delete
+            find jsonobject -iname '*.so' -delete
+            python setup.py build_ext --inplace
+          COMMIT_MESSAGE: 'Rebuild C files using cython==${cython_version}'
+          PR_BRANCH_NAME: 'cython-${cython_version}'
+          PR_TITLE: 'Rebuild C files using cython==${cython_version}'
