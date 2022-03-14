@@ -1,6 +1,6 @@
 # jsonobject
 
-[![Build Status](https://travis-ci.org/dimagi/jsonobject.png)](https://travis-ci.org/dimagi/jsonobject)
+[![Build Status](https://github.com/dimagi/jsonobject/actions/workflows/tests.yml/badge.svg)](https://github.com/dimagi/jsonobject/actions/workflows/tests.yml)
 
 jsonobject is a python library for handling deeply nested JSON objects
 as well-schema'd python objects.

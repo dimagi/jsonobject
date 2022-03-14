@@ -11,7 +11,7 @@ if git diff --quiet HEAD --; then
     exit 0
 else
     echo "====================================="
-    echo "ERROR: ./.travis/test_cython_files.sh"
+    echo "ERROR: ./scripts/test_cython_files.sh"
     echo "-------------------------------------"
     git diff HEAD -- | head -n 20
     echo "-------------------------------------"
