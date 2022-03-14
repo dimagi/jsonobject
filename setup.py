@@ -49,7 +49,6 @@ setup(
     packages=['jsonobject'],
     setup_requires=CYTHON_REQUIRES,
     install_requires=['six'],
-    tests_require=['unittest2'],
     ext_modules=extensions,
     test_suite='test',
     classifiers=(
@@ -62,6 +61,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'License :: OSI Approved :: BSD License',
     ),
 )
