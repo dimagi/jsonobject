@@ -13,6 +13,8 @@ jobs:
           pip install cython
           echo "cython_version=$(pip freeze | grep -i cython | cut -d'=' -f3)" >> $GITHUB_ENV
       - name: Rebuild .c files with latest Cython
+        # From https://github.com/marketplace/actions/create-pr-action:
+        # > executes an arbitrary command and commits the changes to the new pull request
         uses: technote-space/create-pr-action@v2
         with:
           EXECUTE_COMMANDS: |
