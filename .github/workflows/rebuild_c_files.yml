@@ -1,0 +1,28 @@
+on:
+  schedule:
+    - cron: 0 0 1 * *
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+name: Rebuild .c files with latest Cython
+jobs:
+  rebuild_c_files:
+    name: Rebuild .c files with latest Cython
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          pip install cython
+          echo "cython_version=$(pip freeze | grep -i cython | cut -d'=' -f3)" >> $GITHUB_ENV
+      - name: Rebuild .c files with latest Cython
+        # From https://github.com/marketplace/actions/create-pr-action:
+        # > executes an arbitrary command and commits the changes to the new pull request
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            find jsonobject -iname '*.c' -delete
+            find jsonobject -iname '*.so' -delete
+            python setup.py build_ext --inplace
+          COMMIT_MESSAGE: 'Rebuild C files using cython==${{ env.cython_version }}'
+          PR_BRANCH_NAME: 'cython-${{ env.cython_version }}'
+          PR_TITLE: 'Rebuild C files using cython==${{ env.cython_version }}'
