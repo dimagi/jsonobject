@@ -4,7 +4,12 @@ from jsonobject.utils import check_type, SimpleDict
 
 
 class JsonArray(list):
-    def __init__(self, _obj=None, wrapper=None, type_config=None):
+    def __new__(cls, _obj, wrapper=None, type_config=None):
+        if wrapper is None and type_config is None:
+            return list(_obj) if not isinstance(_obj, list) else _obj
+        return super().__new__(cls, _obj, wrapper, type_config)
+
+    def __init__(self, _obj, wrapper, type_config):
         super(JsonArray, self).__init__()
         self._obj = check_type(_obj, list,
                                'JsonArray must wrap a list or None')

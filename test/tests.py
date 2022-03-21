@@ -434,6 +434,38 @@ class JsonObjectTestCase(unittest.TestCase):
         self.assertIsInstance(foo.bar, Bar)
 
 
+class TestJsonArray(unittest.TestCase):
+
+    def test_init_with_list(self):
+        data = [1, 2, 3]
+        value = JsonArray(data, wrapper=None, type_config=self.type_config)
+        self.assertEqual(value, data)
+        self.assertIs(value._obj, data)
+
+    def test_init_with_none(self):
+        value = JsonArray(None, wrapper=None, type_config=self.type_config)
+        self.assertEqual(value, [])
+        self.assertEqual(value._obj, [])
+
+    def test_init_with_str(self):
+        with self.assertRaises(BadValueError):
+            JsonArray("abc", wrapper=None, type_config=self.type_config)
+
+    def test_single_arg_constructor_with_list(self):
+        data = [1, 2, 3]
+        value = JsonArray(data)
+        self.assertIs(value, data)
+
+    def test_single_arg_constructor_with_generator(self):
+        value = JsonArray(x for x in range(3))
+        self.assertEqual(value, [0, 1, 2])
+
+    @property
+    def type_config(self):
+        from jsonobject.base import TypeConfig
+        return TypeConfig(JsonObject.Meta.properties)
+
+
 class PropertyInsideContainerTest(unittest.TestCase):
 
     def test_default_is_required(self):
