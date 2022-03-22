@@ -4,6 +4,19 @@
 
 No significant changes since the last release
 
+## 2.0.0
+
+| Released on | Released by   |
+|-------------|---------------|
+| 2022-03-23  | @dannyroberts |
+
+This is a major release because it changes behavior in a way that we regard as fixing an unintuitive behavior
+but could technically be breaking if the previous behavior was relied upon.
+
+- Assignment of a generator to a ListProperty property, which previously resulted in an error,
+  now results in the generator first being converted to a list. (https://github.com/dimagi/jsonobject/pull/200)
+
+
 ## 1.0.0
 
 | Released on | Released by   |
