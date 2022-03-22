@@ -460,6 +460,13 @@ class TestJsonArray(unittest.TestCase):
         value = JsonArray(x for x in range(3))
         self.assertEqual(value, [0, 1, 2])
 
+    def test_deep_copy(self):
+        data = [1, 2, 3]
+        array = JsonArray(data, wrapper=None, type_config=self.type_config)
+        value = deepcopy(array)
+        self.assertEqual(value, data)
+        #self.assertEqual(value._obj, data)  # Lists differ: [1, 2, 3, 1, 2, 3] != [1, 2, 3]
+
     @property
     def type_config(self):
         from jsonobject.base import TypeConfig

@@ -4,8 +4,8 @@ from jsonobject.utils import check_type, SimpleDict
 
 
 class JsonArray(list):
-    def __new__(cls, _obj, wrapper=None, type_config=None):
-        if wrapper is None and type_config is None:
+    def __new__(cls, _obj=None, wrapper=None, type_config=None):
+        if _obj is not None and wrapper is None and type_config is None:
             return list(_obj) if not isinstance(_obj, list) else _obj
         return super().__new__(cls, _obj, wrapper, type_config)
 
