@@ -23,6 +23,16 @@ class JsonArray(list):
         for item in self._obj:
             super(JsonArray, self).append(self._wrapper.wrap(item))
 
+    def __getstate__(self):
+        # This breaks symmetry with JsonObject.__getstate__(), which
+        # calls and returns self.to_json(). Here the JSON-y value,
+        # self._obj, is not copied because it will be repopulated by
+        # deepcopy/pickle list reconstruction logic, which is done
+        # after obj.__setstate__(data).
+        data = self.__dict__.copy()
+        data["_obj"] = []
+        return data
+
     def validate(self, required=True):
         for obj in self:
             self._wrapper.validate(obj, required=required)

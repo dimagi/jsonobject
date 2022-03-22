@@ -401,6 +401,14 @@ class JsonObjectTestCase(unittest.TestCase):
         foo = Foo({'string_list': ['a', 'b', 'c']})
         self.assertEqual(foo.string_list, ['a', 'b' , 'c'])
 
+    def test_string_list_property_deepcopy(self):
+        class Foo(JsonObject):
+            strings = ListProperty(StringProperty)
+
+        foo = Foo(strings=['a', 'b', 'c'])
+        bar = Foo(strings=deepcopy(foo.strings))
+        self.assertEqual(bar.to_json(), {'strings': ['a', 'b', 'c']})
+
     def test_typed_dict_of_dict(self):
 
         class City(JsonObject):
@@ -465,7 +473,7 @@ class TestJsonArray(unittest.TestCase):
         array = JsonArray(data, wrapper=None, type_config=self.type_config)
         value = deepcopy(array)
         self.assertEqual(value, data)
-        #self.assertEqual(value._obj, data)  # Lists differ: [1, 2, 3, 1, 2, 3] != [1, 2, 3]
+        self.assertEqual(value._obj, data)
 
     @property
     def type_config(self):
