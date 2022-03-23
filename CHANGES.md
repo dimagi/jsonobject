@@ -13,8 +13,9 @@ No significant changes since the last release
 This is a major release because it changes behavior in a way that we regard as fixing an unintuitive behavior
 but could technically be breaking if the previous behavior was relied upon.
 
-- Assignment of a generator to a ListProperty property, which previously resulted in an error,
-  now results in the generator first being converted to a list. (https://github.com/dimagi/jsonobject/pull/200)
+- Passing an iterable to the value type of a ``ListProperty``
+  (``JsonArray(iterable)``) returns a plain Python ``list`` rather than raising
+  ``BadValueError``. (https://github.com/dimagi/jsonobject/pull/200)
 
 
 ## 1.0.0
