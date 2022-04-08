@@ -8,7 +8,7 @@ No significant changes since the last release
 
 | Released on | Released by   |
 |-------------|---------------|
-| 2022-03-23  | @dannyroberts |
+| 2022-04-08  | @dannyroberts |
 
 This is a major release because it changes behavior in a way that we regard as fixing an unintuitive behavior
 but could technically be breaking if the previous behavior was relied upon.
