@@ -4,6 +4,20 @@
 
 No significant changes since the last release
 
+## 2.0.0
+
+| Released on | Released by   |
+|-------------|---------------|
+| 2022-04-08  | @dannyroberts |
+
+This is a major release because it changes behavior in a way that we regard as fixing an unintuitive behavior
+but could technically be breaking if the previous behavior was relied upon.
+
+- Passing an iterable to the value type of a ``ListProperty``
+  (``JsonArray(iterable)``) returns a plain Python ``list`` rather than raising
+  ``BadValueError``. (https://github.com/dimagi/jsonobject/pull/200)
+
+
 ## 1.0.0
 
 | Released on | Released by   |
