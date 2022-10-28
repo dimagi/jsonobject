@@ -464,23 +464,9 @@ Ran 4 tests in 0.153s
 OK
 ```
 
-## Running tests
+# Development Lifecycle
+`jsonobject` versions follow [semantic versioning](https://semver.org/).
+Version information can be found in [CHANGES.md](CHANGES.md).
 
-You must rebuild C files for the tests to pick up your changes.  Try this for iterating:
-
-```
-$ python setup.py build_ext --inplace && python setup.py test
-```
-
-
-## Recreating C source files
-
-For any changes in the pyx files, the corresponding C files should be recompiled with
-
-```
-$ find jsonobject -iname '*.c' -delete
-$ find jsonobject -iname '*.so' -delete
-$ python setup.py build_ext --inplace
-```
-
-These changes should be committed independently of the non-automated changes you made.
+Information for developers and maintainers, such as how to run tests and release new versions,
+can be found in [LIFECYCLE.md](LIFECYCLE.md).

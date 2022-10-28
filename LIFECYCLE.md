@@ -1,3 +1,11 @@
+# Running tests
+
+You must rebuild C files for the tests to pick up your changes.  Try this for iterating:
+
+```
+$ python setup.py build_ext --inplace && python setup.py test
+```
+
 # Maintaining built C files
 
 For speed, jsonobject uses Cython to build C files from the .py files.
@@ -9,9 +17,24 @@ Additionally, this Github Action will run once a month, and if there are any exo
 such as the release of a new Cython version, it will create a PR into the master branch
 that updates these C files as needed.
 
+## Recreating C source files locally
+It's always an option to build the C files locally and commit the changes,
+rather than waiting for Github Actions to do that for you.
+
+For any changes in the pyx files, the corresponding C files can be recompiled with
+
+```
+$ find jsonobject -iname '*.c' -delete
+$ find jsonobject -iname '*.so' -delete
+$ python setup.py build_ext --inplace
+```
+
+These changes should be committed independently of the non-automated changes you made,
+in a separate commit containing only automated changes.
+
 # Release Process
 
-This section contains instructions for the person performing the release process.
+This section contains instructions for the Dimagi team member performing the release process.
 
 ## Bump version & update CHANGES.md
 
