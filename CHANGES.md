@@ -4,6 +4,14 @@
 
 No significant changes since the last release
 
+## 2.1.0
+
+| Released on | Released by   |
+|-------------|---------------|
+| 2022-11-08  | @dannyroberts |
+
+- Add support for Python 3.11 (https://github.com/dimagi/jsonobject/pull/205, https://github.com/dimagi/jsonobject/pull/206)
+
 ## 2.0.0
 
 | Released on | Released by   |
