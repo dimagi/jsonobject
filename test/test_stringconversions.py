@@ -97,7 +97,7 @@ class StringConversionsTest(unittest.TestCase):
             get_settings(Foo).type_config.properties[datetime.datetime],
             ExactDateTimeProperty
         )
-        with self.assertRaisesRegexp(BadValueError,
+        with self.assertRaisesRegex(BadValueError,
                                      'is not a datetime-formatted string'):
             Foo.wrap(self.EXAMPLES)
         examples = self.EXAMPLES.copy()
