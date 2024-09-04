@@ -3,7 +3,7 @@
 You must rebuild C files for the tests to pick up your changes.  Try this for iterating:
 
 ```
-$ python setup.py build_ext --inplace && python setup.py test
+$ python setup.py build_ext --inplace && python -m unittest
 ```
 
 # Maintaining built C files
