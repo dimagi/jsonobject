@@ -50,7 +50,6 @@ setup(
     setup_requires=CYTHON_REQUIRES,
     install_requires=['six'],
     ext_modules=extensions,
-    test_suite='test',
     classifiers=(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
