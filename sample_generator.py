@@ -4,14 +4,10 @@ import random
 import six
 from six.moves import range
 
+from . import jsonobject as jo
 
-def generate_object_type(jo=None):
-    """
-    jo can be either jsonobject (default)
-    or couchdbkit_shim for comparison with couchdbkit
-    """
-    if jo is None:
-        from . import jsonobject as jo
+
+def generate_object_type():
     WORDS = 'dog cat elephant river candle stripe pin plum'.split()
     leaf_types = {
         jo.StringProperty: six.text_type,
@@ -72,4 +68,3 @@ def generate_object_type(jo=None):
             return random.choice(list(leaf_types.values()))
 
     return generate_object_type(), object_types
-
