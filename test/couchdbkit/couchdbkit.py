@@ -1,12 +1,9 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
 import functools
-import six
 from jsonobject import *
 
 SchemaProperty = ObjectProperty
 SchemaListProperty = ListProperty
-StringListProperty = functools.partial(ListProperty, six.text_type)
+StringListProperty = functools.partial(ListProperty, str)
 SchemaDictProperty = DictProperty
 
 

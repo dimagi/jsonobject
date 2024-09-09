@@ -1,10 +1,6 @@
-from __future__ import absolute_import
-
 import datetime
 import decimal
 import re
-
-import six
 
 from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
 from . import properties
@@ -21,10 +17,6 @@ re_datetime = re.compile(
 )
 re_decimal = re.compile(r'^(\d+)\.(\d+)$')
 
-if six.PY3:
-    unicode = str
-    long = int
-
 
 class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
     def __getstate__(self):
@@ -40,10 +32,10 @@ class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
             datetime.date: properties.DateProperty,
             datetime.time: properties.TimeProperty,
             str: properties.StringProperty,
-            unicode: properties.StringProperty,
+            str: properties.StringProperty,
             bool: properties.BooleanProperty,
             int: properties.IntegerProperty,
-            long: properties.IntegerProperty,
+            int: properties.IntegerProperty,
             float: properties.FloatProperty,
             list: properties.ListProperty,
             dict: properties.DictProperty,

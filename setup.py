@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import print_function
-
 from setuptools import setup
 import io
 
@@ -48,7 +45,6 @@ setup(
     url='https://github.com/dimagi/jsonobject',
     packages=['jsonobject'],
     setup_requires=CYTHON_REQUIRES,
-    install_requires=['six'],
     ext_modules=extensions,
     classifiers=(
         'Programming Language :: Python',
