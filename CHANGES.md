@@ -4,6 +4,18 @@
 
 No significant changes since the last release
 
+
+## 2.2.0
+
+| Released on | Released by   |
+|-------------|---------------|
+| 2024-09-09  | @gherceg      |
+
+- Add support for Python 3.12 (https://github.com/dimagi/jsonobject/pull/227)
+- Build C files with Cython 0.29.37 (https://github.com/dimagi/jsonobject/pull/225)
+
+Contributors: @nickbaum
+
 ## 2.1.0
 
 | Released on | Released by   |
