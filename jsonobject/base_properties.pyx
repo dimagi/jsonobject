@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import inspect
 from jsonobject.exceptions import BadValueError
 

@@ -1,7 +1,5 @@
 # DateTimeProperty, DateProperty, and TimeProperty
 # include code copied from couchdbkit
-from __future__ import absolute_import
-
 import inspect
 import sys
 import datetime

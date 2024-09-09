@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from jsonobject.base_properties import DefaultProperty
 from jsonobject.utils import check_type, SimpleDict
 

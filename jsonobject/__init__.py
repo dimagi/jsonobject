@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from .containers import JsonArray
 from .properties import *
 from .api import JsonObject
