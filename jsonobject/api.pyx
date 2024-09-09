@@ -4,8 +4,6 @@ import datetime
 import decimal
 import re
 
-import six
-
 from jsonobject.base import JsonObjectBase, _LimitedDictInterfaceMixin
 from . import properties
 from .containers import JsonArray, JsonDict, JsonSet
@@ -20,10 +18,6 @@ re_datetime = re.compile(
     r'([zZ]|([\+-])([01]\d|2[0-3])\D?([0-5]\d)?)?)?$'
 )
 re_decimal = re.compile(r'^(\d+)\.(\d+)$')
-
-if six.PY3:
-    unicode = str
-    long = int
 
 
 class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
@@ -40,10 +34,10 @@ class JsonObject(JsonObjectBase, _LimitedDictInterfaceMixin):
             datetime.date: properties.DateProperty,
             datetime.time: properties.TimeProperty,
             str: properties.StringProperty,
-            unicode: properties.StringProperty,
+            str: properties.StringProperty,
             bool: properties.BooleanProperty,
             int: properties.IntegerProperty,
-            long: properties.IntegerProperty,
+            int: properties.IntegerProperty,
             float: properties.FloatProperty,
             list: properties.ListProperty,
             dict: properties.DictProperty,

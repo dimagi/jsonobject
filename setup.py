@@ -48,7 +48,6 @@ setup(
     url='https://github.com/dimagi/jsonobject',
     packages=['jsonobject'],
     setup_requires=CYTHON_REQUIRES,
-    install_requires=['six'],
     ext_modules=extensions,
     classifiers=(
         'Programming Language :: Python',

@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
-import six
 from copy import deepcopy
 import unittest
 from jsonobject import *
@@ -9,7 +8,6 @@ from jsonobject.exceptions import (
     DeleteNotAllowed,
     WrappingAttributeError,
 )
-from six.moves import map
 
 
 class Features(JsonObject):
@@ -39,7 +37,7 @@ class Person(Document):
     last_name = StringProperty()
     features = ObjectProperty(Features)
     favorite_numbers = ListProperty(int)
-    tags = ListProperty(six.text_type)
+    tags = ListProperty(str)
 
     @property
     def full_name(self):
@@ -89,7 +87,7 @@ class JsonObjectTestCase(unittest.TestCase):
         data = self._danny_data()
         danny = FamilyMember.wrap(data)
         self.assertEqual(danny.doc_type, 'FamilyMember')
-        self.assertIsInstance(danny.doc_type, six.text_type)
+        self.assertIsInstance(danny.doc_type, str)
         self.assertEqual(danny.first_name, 'Danny')
         self.assertEqual(danny.last_name, 'Roberts')
         self.assertEqual(danny.brothers[0].full_name, 'Alex Roberts')
@@ -145,20 +143,12 @@ class JsonObjectTestCase(unittest.TestCase):
         for error_type in (AttributeError, WrappingAttributeError):
             with self.assertRaises(error_type) as cm:
                 Person.wrap({'full_name': 'Danny Roberts'})
-            if six.PY2:
-                self.assertEqual(
-                    six.text_type(cm.exception),
-                    "can't set attribute corresponding to "
-                    "u'full_name' on a <class 'test.tests.Person'> "
-                    "while wrapping {u'full_name': u'Danny Roberts'}"
-                )
-            else:
-                self.assertEqual(
-                    six.text_type(cm.exception),
-                    "can't set attribute corresponding to "
-                    "'full_name' on a <class 'test.tests.Person'> "
-                    "while wrapping {'full_name': 'Danny Roberts'}"
-                )
+            self.assertEqual(
+                str(cm.exception),
+                "can't set attribute corresponding to "
+                "'full_name' on a <class 'test.tests.Person'> "
+                "while wrapping {'full_name': 'Danny Roberts'}"
+            )
 
     def test_pickle(self):
         import pickle
@@ -385,7 +375,7 @@ class JsonObjectTestCase(unittest.TestCase):
             l2 = ListProperty(IntegerProperty)
         d = Dummy()
         longint = 2 ** 63
-        self.assertIsInstance(longint, six.integer_types)
+        self.assertIsInstance(longint, int)
         d.i = longint
         self.assertEqual(d.i, longint)
         d.l = [longint]
@@ -887,7 +877,7 @@ class User(JsonObject):
     name = StringProperty()
     active = BooleanProperty(default=False, required=True)
     date_joined = DateTimeProperty()
-    tags = ListProperty(six.text_type)
+    tags = ListProperty(str)
 
 
 class TestExactDateTime(unittest.TestCase):
