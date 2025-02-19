@@ -883,7 +883,7 @@ class TestExactDateTime(unittest.TestCase):
         class DateObj(JsonObject):
             date = DateTimeProperty(exact=True)
         import datetime
-        date = datetime.datetime.utcnow()
+        date = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
         date_obj = DateObj(date=date)
         self.assertEqual(date_obj.date, date)
         self.assertEqual(date_obj.to_json()['date'], date.isoformat() + 'Z')
