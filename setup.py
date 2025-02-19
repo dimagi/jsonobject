@@ -20,7 +20,7 @@ extensions = [
     Extension('jsonobject.utils', ["jsonobject/utils" + ext],),
 ]
 
-CYTHON_REQUIRES = ['cython>=0.29.21,<1.0.0']
+CYTHON_REQUIRES = ['cython>=3.0.0,<4.0.0']
 if USE_CYTHON:
     from Cython.Build import cythonize
     extensions = cythonize(extensions)
