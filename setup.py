@@ -5,7 +5,7 @@ from setuptools.extension import Extension
 
 try:
     # Only use Cython if it's installed in the environment, otherwise use the provided C
-    import Cython
+    import Cython  # noqa: F401
     USE_CYTHON = True
 except ImportError:
     USE_CYTHON = False
@@ -23,7 +23,7 @@ extensions = [
 CYTHON_REQUIRES = ['cython>=3.0.0,<4.0.0']
 if USE_CYTHON:
     from Cython.Build import cythonize
-    extensions = cythonize(extensions)
+    extensions = cythonize(extensions, compiler_directives={"language_level" : "3str"})
 else:
     print("You are running without Cython installed. It is highly recommended to run\n"
           "  pip install {}\n"
@@ -46,7 +46,7 @@ setup(
     packages=['jsonobject'],
     setup_requires=CYTHON_REQUIRES,
     ext_modules=extensions,
-    classifiers=(
+    classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
@@ -56,5 +56,5 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'License :: OSI Approved :: BSD License',
-    ),
+    ],
 )
