@@ -63,6 +63,9 @@ Once this PR is reviewed and merged, move on to the steps to release the update 
 
 ## Release the new version
 
-To push the package to pypi, we follow Dimagi's internal documentation.
-Follow the steps in https://confluence.dimagi.com/display/saas/Python+Packaging+Crash+Course
-to release.
+To push the package to pypi, create a git tag named "vX.Y.Z" using  the version
+in `jsonobject/__init__.py` and push it to Github.
+
+A test release is pushed to test.pypi.com/projects/jsonobject on each push/merge
+to master. A test release may also be published on-demand for any branch with
+[workflow dispatch](https://github.com/dimagi/jsonobject/actions/workflows/pypi.yml).
