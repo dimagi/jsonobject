@@ -9,11 +9,15 @@ requires-python = ">= 3.9"
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+
+    # The following classifiers are parsed by Github Actions workflows.
+    # Precise formatting is important (no extra spaces, etc.)
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+
     "License :: OSI Approved :: BSD License",
 ]
 
