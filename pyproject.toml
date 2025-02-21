@@ -1,0 +1,34 @@
+[project]
+name = "jsonobject"
+description = "A library for dealing with JSON as python objects"
+authors = [{name = "Danny Roberts", email = "droberts@dimagi.com"}]
+license = {file = "LICENSE"}
+readme = {file = "README.md", content-type = "text/markdown"}
+dynamic = ["version"]
+requires-python = ">= 3.9"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: BSD License",
+]
+
+[project.urls]
+Home = "https://github.com/dimagi/jsonobject"
+
+[build-system]
+requires = [
+    "setuptools>=75",
+    "Cython>=3.0.0,<4.0.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["jsonobject"]
+
+[tool.setuptools.dynamic]
+version = {attr = "jsonobject.__version__"}

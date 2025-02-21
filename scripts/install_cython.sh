@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# grep setup.py for the pinned version of cython
-PINNED_CYTHON=$(grep -oE 'cython>=[0-9]+\.[0-9]+\.[0-9]+,<[0-9]+\.[0-9]+\.[0-9]+' setup.py)
+# grep pyproject.toml for the pinned version of cython
+PINNED_CYTHON=$(grep -oE 'Cython>?=[^"]+' pyproject.toml)
 
-pip install $PINNED_CYTHON
+echo "Installing $PINNED_CYTHON"
+pip install $PINNED_CYTHON setuptools

@@ -1,5 +1,4 @@
 from setuptools import setup
-import io
 
 from setuptools.extension import Extension
 
@@ -20,40 +19,15 @@ extensions = [
     Extension('jsonobject.utils', ["jsonobject/utils" + ext],),
 ]
 
-CYTHON_REQUIRES = ['cython>=3.0.0,<4.0.0']
 if USE_CYTHON:
     from Cython.Build import cythonize
     extensions = cythonize(extensions, compiler_directives={"language_level" : "3str"})
 else:
     print("You are running without Cython installed. It is highly recommended to run\n"
-          "  pip install {}\n"
-          "before you continue".format(' '.join(CYTHON_REQUIRES)))
-
-
-with io.open('README.md', 'rt', encoding="utf-8") as readme_file:
-    long_description = readme_file.read()
-
+          "  ./scripts/install_cython.sh\n"
+          "before you continue")
 
 setup(
     name='jsonobject',
-    version='2.2.0',
-    author='Danny Roberts',
-    author_email='droberts@dimagi.com',
-    description='A library for dealing with JSON as python objects',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='https://github.com/dimagi/jsonobject',
-    packages=['jsonobject'],
-    setup_requires=CYTHON_REQUIRES,
     ext_modules=extensions,
-    classifiers=[
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-        'License :: OSI Approved :: BSD License',
-    ],
 )

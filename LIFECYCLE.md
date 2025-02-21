@@ -38,7 +38,8 @@ This section contains instructions for the Dimagi team member performing the rel
 
 ## Bump version & update CHANGES.md
 
-In a single PR, bump the version number and update CHANGES.md to include release notes for this new version.
+In a single PR, bump the version number in `jsonobject/__init__.py` and update
+CHANGES.md to include release notes for this new version.
 
 ### Pick a version number
 
