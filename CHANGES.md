@@ -9,7 +9,7 @@ No significant changes since the last release
 
 | Released on | Released by   |
 |-------------|---------------|
-| UNRELEASED  | @millerdev    |
+| 2025-02-24  | @millerdev    |
 
 - Improve build and automate push to PyPI (https://github.com/dimagi/jsonobject/pull/236)
   - Add pyproject.toml to replace most of setup.py
