@@ -5,6 +5,20 @@
 No significant changes since the last release
 
 
+## 2.3.0
+
+| Released on | Released by   |
+|-------------|---------------|
+| 2025-02-24  | @millerdev    |
+
+- Improve build and automate push to PyPI (https://github.com/dimagi/jsonobject/pull/236)
+  - Add pyproject.toml to replace most of setup.py
+  - Automate python version matrix on gitub actions
+  - Update github action versions
+  - Publish releases to pypi.org
+- Build C files with Cython 3.0.12 (https://github.com/dimagi/jsonobject/pull/235)
+  - Add support for Python 3.13
+
 ## 2.2.0
 
 | Released on | Released by   |

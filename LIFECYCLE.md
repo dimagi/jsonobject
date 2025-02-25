@@ -38,7 +38,8 @@ This section contains instructions for the Dimagi team member performing the rel
 
 ## Bump version & update CHANGES.md
 
-In a single PR, bump the version number and update CHANGES.md to include release notes for this new version.
+In a single PR, bump the version number in `jsonobject/__init__.py` and update
+CHANGES.md to include release notes for this new version.
 
 ### Pick a version number
 
@@ -62,6 +63,9 @@ Once this PR is reviewed and merged, move on to the steps to release the update 
 
 ## Release the new version
 
-To push the package to pypi, we follow Dimagi's internal documentation.
-Follow the steps in https://confluence.dimagi.com/display/saas/Python+Packaging+Crash+Course
-to release.
+To push the package to pypi, create a git tag named "vX.Y.Z" using  the version
+in `jsonobject/__init__.py` and push it to Github.
+
+A dev release is pushed to pypi.com/p/jsonobject/#history on each push/merge to
+master. A dev release may also be published on-demand for any branch with
+[workflow dispatch](https://github.com/dimagi/jsonobject/actions/workflows/pypi.yml).
