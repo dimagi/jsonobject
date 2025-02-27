@@ -5,6 +5,14 @@
 No significant changes since the last release
 
 
+## 2.3.1
+
+| Released on | Released by   |
+|-------------|---------------|
+| 2025-02-27  | @millerdev    |
+
+- Restore `jsonobject.JsonObjectMeta`
+
 ## 2.3.0
 
 | Released on | Released by   |
