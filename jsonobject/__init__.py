@@ -1,3 +1,4 @@
+from .base import JsonObjectMeta
 from .containers import JsonArray
 from .properties import *
 from .api import JsonObject
@@ -8,5 +9,5 @@ __all__ = [
     'StringProperty', 'BooleanProperty',
     'DateProperty', 'DateTimeProperty', 'TimeProperty',
     'ObjectProperty', 'ListProperty', 'DictProperty', 'SetProperty',
-    'JsonObject', 'JsonArray',
+    'JsonObject', 'JsonObjectMeta', 'JsonArray',
 ]

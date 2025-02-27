@@ -1,5 +1,6 @@
 from copy import deepcopy
 import unittest
+import jsonobject
 from jsonobject import *
 from jsonobject.exceptions import (
     BadValueError,
@@ -428,6 +429,10 @@ class JsonObjectTestCase(unittest.TestCase):
 
         foo = Foo()
         self.assertIsInstance(foo.bar, Bar)
+
+    def test_module_has_jsonobjectmeta(self):
+        # regression test
+        self.assertIsInstance(jsonobject.JsonObjectMeta, type)
 
 
 class TestJsonArray(unittest.TestCase):
