@@ -33,10 +33,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check version
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-        run: python version.py check "${{ github.ref }}"
+        run: pipx run pyverno check jsonobject/__init__.py "${{ github.ref }}"
       - name: Add untagged version suffix
         if: ${{ ! startsWith(github.ref, 'refs/tags/v') }}
-        run: python version.py update
+        run: pipx run pyverno update jsonobject/__init__.py
       - name: Build sdist
         run: pipx run build --sdist
       - uses: actions/upload-artifact@v4
